@@ -1,6 +1,6 @@
 export const PROFILE_INFO = {
   role: 'Software Engineer / Full-stack Developer',
-  logo: 'Fight Injustice, Fight Evil',
+  logo: 'Shahrez Ahmad',
   slogan: 'Coding, Creativity, Coffee...',
   displayName: "Louai Boumediene",
   email: "boumedienelouai2@gmail.com",
