@@ -20,15 +20,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-          cache: "pnpm"
       - name: Install pnpm
-        uses: pnpm/action-setup@v3 # <-- THIS IS THE NEW STEP
-        with:
-          version: 8 # Or the version of pnpm you use
+        run: npm install -g pnpm
       - name: Install dependencies
         run: pnpm install
       - name: Build with Astro
