@@ -14,6 +14,7 @@ const coreProjects = projects.filter(project => project.data.type === "core");
 const sideProjects = projects.filter(project => project.data.type === "side");
 ---
 
+<input type="text" id="project-search-bar" placeholder="Search projects...">
 <PageLayout
   description="A collection of things I’ve built, full-stack apps, experiments, and side projects."
   title="My Projects"
@@ -41,3 +42,25 @@ const sideProjects = projects.filter(project => project.data.type === "side");
  
   <Pattern />
 </PageLayout>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchBar = document.getElementById('project-search-bar');
+    // Assuming each project is wrapped in an element with the class 'project-item'
+    const projects = document.querySelectorAll('.project-item');
+
+    searchBar.addEventListener('input', (e) => {
+      const searchTerm = e.target.value.toLowerCase();
+
+      projects.forEach(project => {
+        // This will search the entire text content of the project card
+        const projectText = project.textContent.toLowerCase();
+        
+        if (projectText.includes(searchTerm)) {
+          project.style.display = 'block'; // Or 'flex', etc. to show it
+        } else {
+          project.style.display = 'none'; // Hide it
+        }
+      });
+    });
+  });
+</script>
