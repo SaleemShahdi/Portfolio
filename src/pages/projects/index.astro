@@ -2,14 +2,10 @@
 import Pattern from "@/components/ui/pattern.astro";
 import PageLayout from "@/layouts/page-layout.astro";
 import Box from "@/components/box/index.astro";
-import BoxHeader from "@/components/box/header.astro";
-import BoxTitle from "@/components/box/title.astro";
 import { getCollection } from "astro:content";
 import ProjectItem from "@/components/sections/projects/project-item.astro";
 
 const projects = await getCollection("projects");
-const coreProjects = projects.filter(project => project.data.type === "core");
-const sideProjects = projects.filter(project => project.data.type === "side");
 ---
 
 <PageLayout
@@ -27,31 +23,10 @@ const sideProjects = projects.filter(project => project.data.type === "side");
 
   <Pattern />
   <Box>
-    <BoxHeader>
-      <BoxTitle> Built to Last </BoxTitle>
-    </BoxHeader>
-
-    <div id="core-projects-list">
-      {coreProjects.map(item => <ProjectItem project={item} />)}
+    <div id="projects-list">
+      {projects.map(item => <ProjectItem project={item} />)}
     </div>
   </Box>
-
-  {
-    sideProjects.length > 0 && (
-      <>
-        <Pattern />
-        <Box>
-          <BoxHeader>
-            <BoxTitle>Side Hustles</BoxTitle>
-          </BoxHeader>
-          <div id="side-projects-list">
-            {sideProjects.map(item => <ProjectItem project={item} />)}
-          </div>
-        </Box>
-      </>
-    )
-  }
-
   <Pattern />
 </PageLayout>
 
