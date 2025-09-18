@@ -1,7 +1,6 @@
 ---
 import Pattern from "@/components/ui/pattern.astro";
 import PageLayout from "@/layouts/page-layout.astro";
-
 import Box from "@/components/box/index.astro";
 import BoxHeader from "@/components/box/header.astro";
 import BoxTitle from "@/components/box/title.astro";
@@ -9,65 +8,73 @@ import { getCollection } from "astro:content";
 import ProjectItem from "@/components/sections/projects/project-item.astro";
 
 const projects = await getCollection("projects");
-
 const coreProjects = projects.filter(project => project.data.type === "core");
 const sideProjects = projects.filter(project => project.data.type === "side");
 ---
 
-<div class="mb-8 flex w-full justify-center">
-  <input
-    type="text"
-    id="project-search-bar"
-    placeholder="Search projects..."
-    class="w-full max-w-lg rounded-md border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
-  />
-</div>
 <PageLayout
   description="A collection of things I’ve built, full-stack apps, experiments, and side projects."
   title="My Projects"
 >
+  <div class="my-8 flex w-full justify-center px-4 md:border-x">
+    <input
+      type="text"
+      id="project-search-bar"
+      placeholder="Search projects by name, technology, etc..."
+      class="w-full max-w-lg rounded-md border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+    />
+  </div>
+
   <Pattern />
   <Box>
     <BoxHeader>
       <BoxTitle> Built to Last </BoxTitle>
     </BoxHeader>
 
-    {coreProjects.map(item => <ProjectItem project={item} />)}
+    <div id="core-projects-list">
+      {coreProjects.map(item => <ProjectItem project={item} />)}
+    </div>
   </Box>
 
   {
     sideProjects.length > 0 && (
-      <Pattern />
-      <Box>
-        <BoxHeader>
-          <BoxTitle>Side Hustles</BoxTitle>
-        </BoxHeader>
-        {sideProjects.map(item => <ProjectItem project={item} />)}
-      </Box>
+      <>
+        <Pattern />
+        <Box>
+          <BoxHeader>
+            <BoxTitle>Side Hustles</BoxTitle>
+          </BoxHeader>
+          <div id="side-projects-list">
+            {sideProjects.map(item => <ProjectItem project={item} />)}
+          </div>
+        </Box>
+      </>
     )
   }
- 
+
   <Pattern />
 </PageLayout>
+
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const searchBar = document.getElementById('project-search-bar');
-    // Assuming each project is wrapped in an element with the class 'project-item'
     const projects = document.querySelectorAll('.project-item');
 
-    searchBar.addEventListener('input', (e) => {
-      const searchTerm = e.target.value.toLowerCase();
+    if (searchBar) {
+      searchBar.addEventListener('input', (e) => {
+        const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
 
-      projects.forEach(project => {
-        // This will search the entire text content of the project card
-        const projectText = project.textContent.toLowerCase();
-        
-        if (projectText.includes(searchTerm)) {
-          project.style.display = 'block'; // Or 'flex', etc. to show it
-        } else {
-          project.style.display = 'none'; // Hide it
-        }
+        projects.forEach(project => {
+          const projectElement = project as HTMLElement;
+          const projectText = projectElement.textContent?.toLowerCase() || '';
+
+          if (projectText.includes(searchTerm)) {
+            projectElement.style.display = 'flex';
+          } else {
+            projectElement.style.display = 'none';
+          }
+        });
       });
-    });
+    }
   });
 </script>
