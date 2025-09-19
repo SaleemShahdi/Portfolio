@@ -5,18 +5,7 @@ import Box from "@/components/box/index.astro";
 import { getCollection } from "astro:content";
 import ProjectAccordionItem from "@/components/sections/projects/project-accordion-item.astro";
 
-const projectEntries = await getCollection("projects");
-
-// This new block of code renders the content for each project
-const projects = await Promise.all(
-  projectEntries.map(async (entry) => {
-    const { Content } = await entry.render();
-    return {
-      ...entry,
-      Content, // Attach the rendered content to each project object
-    };
-  })
-);
+const projects = await getCollection("projects");
 ---
 
 <PageLayout
