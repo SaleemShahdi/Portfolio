@@ -172,8 +172,3 @@ pre {
   @apply size-4;
 }
 
-::view-transition-old(*),
-::view-transition-new(*) {
-  animation-duration: 0.15s;
-}
-
