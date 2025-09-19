@@ -13,7 +13,7 @@ export const NAV_LINKS = [
   },
   {
     label: "Professional Experience",
-    href: "/Portfolio/#experience",
+    href: "/Portfolio/articles",
   },
 ] as const;
 
