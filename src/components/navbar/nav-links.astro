@@ -31,20 +31,12 @@ const isActive = (href: string) => {
       <a
         href={link.href}
         class={cn(
-          "group relative flex flex-col items-center justify-center text-xs font-medium duration-150 hover:text-primary lg:text-sm"
+          "group relative flex flex-col items-center justify-center text-xs font-medium text-foreground/70 duration-150 hover:text-primary lg:text-sm"
         )}
       >
-        <span class="mb text-primary">
+        <span class={cn("mb", isActive(link.href) && "text-primary")}>
           {link.label}
         </span>
-
-        <span
-          class={cn(
-            "absolute -bottom-px h-[1px] rounded-full bg-primary transition-all duration-150",
-            isActive(link.href) ? "w-full" : "w-0",
-            "group-hover:w-full"
-          )}
-        />
       </a>
     ))
   }
