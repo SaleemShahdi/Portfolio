@@ -4,10 +4,11 @@ import type { CollectionEntry } from "astro:content";
 import Badge from "@/components/ui/badge.astro";
 
 interface Props {
-  project: CollectionEntry<"projects">;
+  project: CollectionEntry<"projects"> & { Content: any };
 }
 
 const { project } = Astro.props;
+const { Content } = project;
 ---
 
 <div class="project-item group w-full cursor-pointer flex-col gap-y-3 p-4 not-last:border-b">
@@ -24,7 +25,7 @@ const { project } = Astro.props;
 
   <div class="description-content max-h-0 overflow-hidden transition-all duration-300">
     <div class="prose min-w-full pt-4">
-      <project.Content />
+      <Content />
     </div>
 
     <div class="mt-4 flex flex-wrap gap-1.5">
