@@ -23,7 +23,7 @@ const projects = await getCollection("projects");
 
   <Pattern />
   <Box>
-    <div id="projects-list">
+    <div id="projects-list" class="flex w-full flex-col">
       {projects.map(item => <ProjectItem project={item} />)}
     </div>
     <div id="no-results-message" class="hidden p-4 text-center text-muted-foreground">
