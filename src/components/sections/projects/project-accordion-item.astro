@@ -8,7 +8,6 @@ interface Props {
 }
 
 const { project } = Astro.props;
-// This is the correct place to render the content for each project.
 const { Content } = await project.render();
 ---
 
