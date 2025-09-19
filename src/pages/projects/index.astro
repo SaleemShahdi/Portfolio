@@ -3,7 +3,7 @@ import Pattern from "@/components/ui/pattern.astro";
 import PageLayout from "@/layouts/page-layout.astro";
 import Box from "@/components/box/index.astro";
 import { getCollection } from "astro:content";
-import ProjectItem from "@/components/sections/projects/project-item.astro";
+import ProjectAccordionItem from "@/components/sections/projects/project-accordion-item.astro";
 
 const projects = await getCollection("projects");
 ---
@@ -24,7 +24,7 @@ const projects = await getCollection("projects");
   <Pattern />
   <Box>
     <div id="projects-list" class="flex w-full flex-col">
-      {projects.map(item => <ProjectItem project={item} />)}
+      {projects.map(item => <ProjectAccordionItem project={item} />)}
     </div>
     <div id="no-results-message" class="hidden p-4 text-center text-muted-foreground">
       No Projects Found
