@@ -3,24 +3,26 @@ import { NAV_LINKS } from "@/lib/constants/index";
 import { cn } from "@/lib/utils";
 
 const pathname = Astro.url.pathname;
-// Remove trailing slash from current pathname if it exists
-const currentPath =
-  pathname.length > 1 && pathname.endsWith("/")
-    ? pathname.slice(0, -1)
+
+const isActive = (href: string) => {
+  // Normalize the current page's path by removing any trailing slash.
+  const cleanCurrentPath = pathname.endsWith('/') && pathname.length > 1 
+    ? pathname.slice(0, -1) 
     : pathname;
 
-const isActive = (path: string) => {
-  const cleanCurrentPath = currentPath.split('#')[0];
-  const cleanPath = path.split('#')[0].length > 1 && path.endsWith('/') ? path.slice(0,-1) : path.split('#')[0];
+  // Normalize the link's href for comparison.
+  const cleanHref = href.endsWith('/') && href.length > 1 
+    ? href.slice(0, -1) 
+    : href;
 
-  // Exact match for the homepage (and its anchor links)
-  const isHomepageLink = cleanPath === "/Portfolio" || cleanPath === "/Portfolio/";
-  if (isHomepageLink) {
-    return cleanCurrentPath === "/Portfolio" || cleanCurrentPath === "/Portfolio/";
+  // For the homepage, we need an exact match to prevent it from matching other pages.
+  if (cleanHref === '/Portfolio') {
+    return cleanCurrentPath === '/Portfolio';
   }
 
-  // For other pages, use startsWith to handle nested project/article pages
-  return cleanCurrentPath.startsWith(cleanPath);
+  // For all other pages (like /projects, /articles), we check if the current path starts with the link's href.
+  // This correctly highlights "Projects" when you are on "/projects/some-project-name".
+  return cleanCurrentPath.startsWith(cleanHref);
 };
 ---
 
