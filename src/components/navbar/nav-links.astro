@@ -3,16 +3,24 @@ import { NAV_LINKS } from "@/lib/constants/index";
 import { cn } from "@/lib/utils";
 
 const pathname = Astro.url.pathname;
-
-// Remove trailing slash from current pathname if exists
+// Remove trailing slash from current pathname if it exists
 const currentPath =
-  pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+  pathname.length > 1 && pathname.endsWith("/")
+    ? pathname.slice(0, -1)
+    : pathname;
 
 const isActive = (path: string) => {
-  const currentPathArray = currentPath.split("/").filter(p => p.trim());
-  const pathArray = path.split("/").filter(p => p.trim());
+  const cleanCurrentPath = currentPath.split('#')[0];
+  const cleanPath = path.split('#')[0].length > 1 && path.endsWith('/') ? path.slice(0,-1) : path.split('#')[0];
 
-  return currentPath === path || currentPathArray[0] === pathArray[0];
+  // Exact match for the homepage (and its anchor links)
+  const isHomepageLink = cleanPath === "/Portfolio" || cleanPath === "/Portfolio/";
+  if (isHomepageLink) {
+    return cleanCurrentPath === "/Portfolio" || cleanCurrentPath === "/Portfolio/";
+  }
+
+  // For other pages, use startsWith to handle nested project/article pages
+  return cleanCurrentPath.startsWith(cleanPath);
 };
 ---
 
