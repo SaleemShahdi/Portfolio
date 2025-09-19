@@ -26,6 +26,9 @@ const projects = await getCollection("projects");
     <div id="projects-list">
       {projects.map(item => <ProjectItem project={item} />)}
     </div>
+    <div id="no-results-message" class="hidden p-4 text-center text-muted-foreground">
+      No Projects Found
+    </div>
   </Box>
   <Pattern />
 </PageLayout>
@@ -34,10 +37,12 @@ const projects = await getCollection("projects");
   document.addEventListener('astro:page-load', () => {
     const searchBar = document.getElementById('project-search-bar');
     const projects = document.querySelectorAll('.project-item');
+    const noResultsMessage = document.getElementById('no-results-message');
 
-    if (searchBar) {
+    if (searchBar && projects.length > 0 && noResultsMessage) {
       searchBar.addEventListener('input', (e) => {
         const searchTerm = (e.target as HTMLInputElement).value.toLowerCase();
+        let visibleProjectsCount = 0;
 
         projects.forEach(project => {
           const projectElement = project as HTMLElement;
@@ -45,10 +50,17 @@ const projects = await getCollection("projects");
 
           if (projectText.includes(searchTerm)) {
             projectElement.style.display = 'flex';
+            visibleProjectsCount++;
           } else {
             projectElement.style.display = 'none';
           }
         });
+
+        if (visibleProjectsCount === 0) {
+          noResultsMessage.style.display = 'block';
+        } else {
+          noResultsMessage.style.display = 'none';
+        }
       });
     }
   });
