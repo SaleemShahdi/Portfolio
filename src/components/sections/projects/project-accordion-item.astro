@@ -71,15 +71,12 @@ const { project } = Astro.props;
       const iconUp = accordion.querySelector(".toggle-icon-up");
 
       if (button && content && toggleText && iconDown && iconUp) {
-        button.addEventListener("click", () => {
+        button.addEventListener("click", (event) => {
+          // This line prevents the browser's default scroll-on-click behavior
+          event.preventDefault();
+
           const isExpanded = !!content.style.maxHeight;
 
-          // If we are about to close an accordion that's scrolled off-screen,
-          // smoothly scroll it into view first.
-          if (isExpanded && accordion.getBoundingClientRect().top < 0) {
-            accordion.scrollIntoView({ behavior: "smooth", block: "start" });
-          }
-          
           if (isExpanded) {
             content.style.maxHeight = null;
           } else {
