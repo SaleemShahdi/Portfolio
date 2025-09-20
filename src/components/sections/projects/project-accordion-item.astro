@@ -70,12 +70,19 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", () => {
-          content.classList.toggle("expanded");
           const isExpanded = content.classList.contains("expanded");
 
-          toggleText.textContent = isExpanded ? "Show less" : "Show more";
-          iconDown.classList.toggle("hidden", isExpanded);
-          iconUp.classList.toggle("hidden", !isExpanded);
+          // If we are about to close the accordion and its top is off-screen
+          if (isExpanded && accordion.getBoundingClientRect().top < 0) {
+            accordion.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          
+          content.classList.toggle("expanded");
+          const nowExpanded = content.classList.contains("expanded");
+
+          toggleText.textContent = nowExpanded ? "Show less" : "Show more";
+          iconDown.classList.toggle("hidden", nowExpanded);
+          iconUp.classList.toggle("hidden", !nowExpanded);
         });
       }
     });
