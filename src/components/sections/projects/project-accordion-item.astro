@@ -23,7 +23,7 @@ const { project } = Astro.props;
     </div>
   </div>
 
-  <div class="description-content max-h-0 overflow-hidden transition-all duration-300">
+  <div class="description-content">
     <div class="prose min-w-full pt-4">
       <MarkdownRenderer content={project.body} />
     </div>
@@ -52,8 +52,10 @@ const { project } = Astro.props;
 </div>
 
 <style>
-  .description-content.expanded {
-    max-height: 2000px; /* Adjust as needed */
+  .description-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease-in-out;
   }
 </style>
 
@@ -70,12 +72,18 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", () => {
-          content.classList.toggle("expanded");
-          const isExpanded = content.classList.contains("expanded");
+          const isExpanded = content.style.maxHeight;
 
-          toggleText.textContent = isExpanded ? "Show less" : "Show more";
-          iconDown.classList.toggle("hidden", isExpanded);
-          iconUp.classList.toggle("hidden", !isExpanded);
+          if (isExpanded) {
+            content.style.maxHeight = null;
+          } else {
+            content.style.maxHeight = content.scrollHeight + "px";
+          }
+          
+          const nowExpanded = !!content.style.maxHeight;
+          toggleText.textContent = nowExpanded ? "Show less" : "Show more";
+          iconDown.classList.toggle("hidden", nowExpanded);
+          iconUp.classList.toggle("hidden", !nowExpanded);
         });
       }
     });
