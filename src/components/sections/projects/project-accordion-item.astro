@@ -72,8 +72,14 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", () => {
-          const isExpanded = content.style.maxHeight;
+          const isExpanded = !!content.style.maxHeight;
 
+          // If we are about to close an accordion that's scrolled off-screen,
+          // smoothly scroll it into view first.
+          if (isExpanded && accordion.getBoundingClientRect().top < 0) {
+            accordion.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+          
           if (isExpanded) {
             content.style.maxHeight = null;
           } else {
