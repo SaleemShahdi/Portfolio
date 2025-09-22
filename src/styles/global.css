@@ -174,5 +174,5 @@ pre {
 
 ::view-transition-old(*),
 ::view-transition-new(*) {
-  animation-timing-function: ease-out;
+  animation-timing-function: linear;
 }
