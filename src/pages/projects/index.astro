@@ -34,7 +34,7 @@ const projects = await getCollection("projects");
 </PageLayout>
 
 <script>
-  document.addEventListener('astro:page-load', () => {
+  document.addEventListener('DOMContentLoaded', () => {
     const searchBar = document.getElementById('project-search-bar');
     const projects = document.querySelectorAll('.project-item');
     const noResultsMessage = document.getElementById('no-results-message');

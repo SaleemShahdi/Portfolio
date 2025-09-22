@@ -60,7 +60,7 @@ const { project } = Astro.props;
 </style>
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
     const accordions = document.querySelectorAll(".project-item");
 
     accordions.forEach(accordion => {
