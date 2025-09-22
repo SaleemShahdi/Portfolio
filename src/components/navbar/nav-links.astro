@@ -31,8 +31,8 @@ const isActive = (href: string) => {
       <a
         href={link.href}
         class={cn(
-          "relative flex items-center justify-center px-3 py-1 text-xs font-medium text-foreground/70 transition-colors duration-150 hover:bg-secondary hover:text-primary lg:text-sm",
-          isActive(link.href) && "bg-secondary text-primary"
+          "relative flex items-center justify-center px-3 py-1 text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:text-sm",
+          isActive(link.href) && "bg-secondary"
         )}
       >
         {link.label}
