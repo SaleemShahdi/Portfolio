@@ -72,7 +72,7 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", (event) => {
-          // This line prevents the browser's default scroll-on-click behavior
+          // This line is the key fix: it stops the browser's default scroll-on-click behavior.
           event.preventDefault();
 
           const isExpanded = !!content.style.maxHeight;
