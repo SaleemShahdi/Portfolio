@@ -8,8 +8,6 @@ import "@fontsource/geist-sans/900.css";
 import "@fontsource/roboto-condensed/600.css";
 import "@fontsource/roboto-condensed/400.css";
 import "@fontsource/jetbrains-mono/400.css";
-
-import { ClientRouter } from "astro:transitions";
 import Analytics from "@vercel/analytics/astro";
 
 import { SITE } from "@/lib/config";
@@ -36,7 +34,6 @@ const {
   pageType = SITE.pageType,
   canonicalURL = new URL(Astro.url.pathname, Astro.url),
 } = Astro.props;
-
 const socialImageURL = new URL(ogImage ?? SITE.ogImage, Astro.site).toString();
 
 const structuredData = {
@@ -54,67 +51,55 @@ const structuredData = {
 };
 ---
 
-<script>
-  document.addEventListener("astro:after-swap", () => {
-    const getThemePreference = () => {
-      if (
-        typeof localStorage !== "undefined" &&
-        localStorage.getItem("theme")
-      ) {
-        return localStorage.getItem("theme");
-      }
-      return window.matchMedia("(prefers-color-scheme: dark)").matches
-        ? "dark"
-        : "light";
-    };
-
-    const isDark = getThemePreference() === "dark";
-    document.documentElement.classList[isDark ? "add" : "remove"]("dark");
-
-    if (typeof localStorage !== "undefined") {
-      const observer = new MutationObserver(() => {
-        const isDark = document.documentElement.classList.contains("dark");
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      });
-      observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-    }
-  });
-</script>
-
 <html lang="en" class="scroll-smooth">
   <head>
+    {/* This script runs immediately to set the theme before the page renders */}
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
+          return localStorage.getItem("theme");
+        }
+        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+          return "dark";
+        }
+        return "light";
+      })();
+
+      if (theme === "dark") {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL} />
     <meta name="generator" content={Astro.generator} />
 
-    <!-- General Meta Tags -->
+    {/* General Meta Tags */}
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="author" content={author} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Open Graph / Facebook -->
+    {/* Open Graph / Facebook */}
     <meta property="og:type" content={pageType} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={socialImageURL} />
     <meta property="og:url" content={canonicalURL} />
 
-    <!-- X / Twitter -->
+    {/* X / Twitter */}
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content={canonicalURL} />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
 
-
-    <!-- Google JSON-LD Structured data -->
+    {/* Google JSON-LD Structured data */}
     <script
       type="application/ld+json"
       is:inline
