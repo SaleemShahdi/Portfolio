@@ -53,23 +53,17 @@ const structuredData = {
 
 <html lang="en" class="scroll-smooth">
   <head>
-    {/* This script runs immediately to set the theme before the page renders */}
+    {/* This is the robust, cross-browser compatible theme detection script */}
     <script is:inline>
-      const theme = (() => {
-        if (typeof localStorage !== "undefined" && localStorage.getItem("theme")) {
-          return localStorage.getItem("theme");
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (theme === 'dark' || (!theme && prefersDark)) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
         }
-        if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-          return "dark";
-        }
-        return "light";
       })();
-
-      if (theme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
     </script>
 
     <meta charset="UTF-8" />
