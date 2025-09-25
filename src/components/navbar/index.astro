@@ -1,18 +1,15 @@
 ---
 import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
+import { cn } from "@/lib/utils";
 
-interface Props {
-  className?: string;
-}
-
-const { className } = Astro.props;
+const pathname = Astro.url.pathname;
+const isExperienceActive = pathname.startsWith('/Portfolio/articles');
 ---
 
 <nav
   class:list={[
     "screen-line-after sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
-    className,
   ]}
 >
   <div
@@ -20,7 +17,7 @@ const { className } = Astro.props;
   >
     <div class="flex items-stretch justify-center">
       <NavLinks />
-      <div class="flex items-center">
+      <div class={cn("flex items-center", isExperienceActive ? "pl-2" : "pl-4")}>
         <ModeToggle />
       </div>
     </div>
