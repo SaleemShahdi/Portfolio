@@ -16,11 +16,13 @@ const { className } = Astro.props;
   ]}
 >
   <div
-    class="mx-auto flex h-12 max-w-3xl items-stretch justify-end px-4 md:border-x"
+    class="mx-auto flex h-12 max-w-3xl items-center justify-end px-4 md:border-x"
   >
-    <div class="flex items-stretch justify-center">
+    <div class="flex h-full items-stretch justify-center">
       <NavLinks />
-      <ModeToggle />
+      <div class="flex items-center">
+        <ModeToggle />
+      </div>
     </div>
   </div>
 </nav>
