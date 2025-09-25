@@ -19,8 +19,8 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
       <NavLinks />
       <div
         class={cn(
-          "flex w-14 items-center",
-          isExperienceActive ? "justify-start" : "justify-center"
+          "flex w-12 items-center", // A slightly smaller fixed width
+          isExperienceActive ? "justify-end" : "justify-center" // Pushes to the right when active
         )}
       >
         <ModeToggle />
