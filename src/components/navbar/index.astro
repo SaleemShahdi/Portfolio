@@ -15,15 +15,12 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
   <div
     class="mx-auto flex h-12 max-w-3xl items-stretch justify-end px-4 md:border-x"
   >
-    <div class="flex items-stretch justify-center">
+    <div class="flex flex-1 items-stretch justify-end">
       <NavLinks />
-      <div
-        class={cn(
-          "flex w-12 items-center", // A slightly smaller fixed width
-          isExperienceActive ? "justify-end" : "justify-center" // Pushes to the right when active
-        )}
-      >
-        <ModeToggle />
+      <div class="flex flex-1 items-center justify-center">
+        <div class={cn(isExperienceActive && "relative left-1.5")}>
+          <ModeToggle />
+        </div>
       </div>
     </div>
   </div>
