@@ -25,13 +25,13 @@ const isActive = (href: string) => {
 };
 ---
 
-<div class="flex h-full items-center justify-center gap-x-2">
+<div class="flex h-full items-center justify-center gap-x-1">
   {
     NAV_LINKS.map(link => (
       <a
         href={link.href}
         class={cn(
-          "relative flex items-center justify-center rounded-md px-3 py-1.5 text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:text-sm",
+          "relative block rounded-md px-2 py-2 text-center text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:px-3 lg:text-sm",
           isActive(link.href) && "bg-secondary"
         )}
       >
