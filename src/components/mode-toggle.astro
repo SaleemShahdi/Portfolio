@@ -27,7 +27,9 @@ import { cn, buttonVariants } from "@/lib/utils";
 
     if (toggleButton) {
       toggleButton.addEventListener("click", () => {
+        // Toggle the 'dark' class on the root element
         const isDarkMode = document.documentElement.classList.toggle("dark");
+        // Save the new preference to localStorage
         localStorage.setItem("theme", isDarkMode ? "dark" : "light");
       });
     }
