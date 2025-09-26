@@ -171,3 +171,9 @@ pre {
 .copy-code svg {
   @apply size-4;
 }
+
+/* Custom Pace.js Progress Bar Color */
+.pace .pace-progress {
+  background: hsl(var(--primary));
+  height: 3px;
+}
