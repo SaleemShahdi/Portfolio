@@ -1,13 +1,12 @@
 ---
 import { Moon, Sun } from "lucide-react";
-import { cn, buttonVariants } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 ---
 
 <button
   id="theme-toggle"
   class={cn(
-    buttonVariants({ size: "icon", variant: "ghost" }),
-    "cursor-pointer rounded-full"
+    "flex h-10 w-10 cursor-pointer items-center justify-center rounded-full transition-colors duration-150 hover:bg-secondary"
   )}
 >
   <Sun
