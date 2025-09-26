@@ -8,12 +8,12 @@ import "@fontsource/geist-sans/900.css";
 import "@fontsource/roboto-condensed/600.css";
 import "@fontsource/roboto-condensed/400.css";
 import "@fontsource/jetbrains-mono/400.css";
+import { ClientRouter } from "astro:transitions"; // Re-enabled for progress bar
 import Analytics from "@vercel/analytics/astro";
-
 import { SITE } from "@/lib/config";
-
 import "@/styles/global.css";
 import BackToTop from "@/components/back-to-top.astro";
+import ProgressBar from "@/components/progress-bar.astro"; // Import the new component
 
 export interface Props {
   title?: string;
@@ -53,7 +53,7 @@ const structuredData = {
 
 <html lang="en" class="scroll-smooth">
   <head>
-    {/* This is the robust, cross-browser compatible theme detection script */}
+    {/* This script runs immediately to set the theme before the page renders */}
     <script is:inline>
       (function() {
         const theme = localStorage.getItem('theme');
@@ -93,6 +93,8 @@ const structuredData = {
     <meta property="twitter:description" content={description} />
     <meta property="twitter:image" content={socialImageURL} />
 
+    <ClientRouter /> {/* Re-enabled for progress bar */}
+
     {/* Google JSON-LD Structured data */}
     <script
       type="application/ld+json"
@@ -103,6 +105,7 @@ const structuredData = {
     <meta name="theme-color" content="" />
   </head>
   <body class="relative min-h-screen overflow-x-hidden">
+    <ProgressBar /> {/* Add the progress bar component */}
     <slot />
     <BackToTop />
     <Analytics />
