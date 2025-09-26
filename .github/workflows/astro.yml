@@ -27,7 +27,7 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile # This is the line that fixes the error
       - name: Build with Astro
         run: pnpm run build
       - name: Upload artifact
