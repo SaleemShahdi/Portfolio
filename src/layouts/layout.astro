@@ -66,7 +66,14 @@ const structuredData = {
       })();
     </script>
 
-    {/* Add Pace.js for the loading progress bar */}
+    {/* Configure Pace.js to be more accurate */}
+    <script is:inline>
+      window.paceOptions = {
+        restartOnRequestAfter: false,
+        ajax: false, // Stop watching for AJAX requests
+        eventLag: false, // Stop watching for event loop lag
+      };
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pace-js@latest/themes/blue/pace-theme-minimal.css">
 
