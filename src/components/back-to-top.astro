@@ -4,10 +4,11 @@ import { buttonVariants, cn } from "@/lib/utils";
 ---
 
 <script>
-  document.addEventListener("astro:page-load", () => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const button = document.querySelector("#back-to-top");
+    if (!button) return;
+
     function handleScroll() {
-      const button = document.querySelector("#back-to-top");
-      if (!button) return;
       if (window.scrollY < window.innerHeight) {
         button.classList.add("scale-0");
       } else {
@@ -15,41 +16,19 @@ import { buttonVariants, cn } from "@/lib/utils";
       }
     }
 
-    function backToTop() {
-      const button = document.querySelector("#back-to-top");
-      if (!button) return;
-
-      button.addEventListener("click", () => {
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE, and Opera
-      });
-
-      // Check scroll position on page load and scroll events
-      handleScroll();
-      window.addEventListener("scroll", handleScroll);
+    function smoothScrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Initialize the back to top functionality
-    backToTop();
-  });
+    // Add the click event listener for smooth scrolling
+    button.addEventListener("click", smoothScrollToTop);
 
-  /* Go to page start after page swap */
-  document.addEventListener("astro:after-swap", () => {
-    window.scrollTo({ left: 0, top: 0, behavior: "instant" });
-
-    // Need to wait a moment for the button to be available in the DOM after swap
-    setTimeout(() => {
-      const button = document.querySelector("#back-to-top");
-      if (!button) return;
-
-      if (window.scrollY < window.innerHeight) {
-        button.classList.add("scale-0");
-      } else {
-        button.classList.remove("scale-0");
-      }
-    }, 10);
+    // Handle showing/hiding the button
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
   });
 </script>
+
 <button
   id="back-to-top"
   aria-label="back-to-top-button"
