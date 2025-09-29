@@ -55,7 +55,8 @@ const { project } = Astro.props;
   .description-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.5s ease-in-out; /* This creates the smooth, medium-speed animation */
+    /* Symmetrical timing for a smooth open and close */
+    transition: max-height 0.4s ease-in-out; 
   }
 </style>
 
@@ -72,7 +73,6 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", (event) => {
-          // This prevents any default browser behavior, including auto-scrolling
           event.preventDefault();
 
           const isExpanded = !!content.style.maxHeight;
