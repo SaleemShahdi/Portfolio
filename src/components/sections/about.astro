@@ -1,21 +1,20 @@
 ---
-import { PROFILE_INFO } from "@/lib/constants/profile";
-import MarkdownRenderer from "@/components/ui/markdown-renderer.astro";
-
 import Box from "@/components/box/index.astro";
 import BoxHeader from "@/components/box/header.astro";
 import BoxTitle from "@/components/box/title.astro";
 import BoxContent from "@/components/box/content.astro";
+import { PROFILE_INFO } from "@/lib/constants/profile";
+import { Marked } from 'marked';
+
+// We will parse the markdown content here directly
+const renderedAboutContent = new Marked().parse(PROFILE_INFO.about);
 ---
 
 <Box>
   <BoxHeader>
-    <BoxTitle> About </BoxTitle>
+    <BoxTitle>About</BoxTitle>
   </BoxHeader>
   <BoxContent>
-    <MarkdownRenderer
-      className="text-sm leading-7 font-medium"
-      content={PROFILE_INFO.about}
-    />
+    <div class="prose" set:html={renderedAboutContent} />
   </BoxContent>
 </Box>
