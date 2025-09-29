@@ -23,7 +23,7 @@ const { project } = Astro.props;
     </div>
   </summary>
 
-  <div class="content-wrapper transition-all duration-500 ease-in-out">
+  <div class="content-wrapper">
     <div class="px-4 pb-4">
       <div class="prose min-w-full">
         <MarkdownRenderer content={project.body} />
@@ -54,11 +54,16 @@ const { project } = Astro.props;
 </details>
 
 <style>
-  details .content-wrapper {
-    max-height: 0;
+  .content-wrapper {
+    transition: grid-template-rows 0.4s ease-in-out;
+    display: grid;
+    grid-template-rows: 0fr;
   }
-  details[open] .content-wrapper {
-    max-height: 1000px; /* A large enough value to accommodate content */
+  details[open] > .content-wrapper {
+    grid-template-rows: 1fr;
+  }
+  .content-wrapper > div {
+    overflow: hidden;
   }
 </style>
 
@@ -66,45 +71,15 @@ const { project } = Astro.props;
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('details.project-item').forEach((detail) => {
       const summary = detail.querySelector('summary');
-      const contentWrapper = detail.querySelector('.content-wrapper');
       const showMoreText = detail.querySelector('.show-more-text');
       const showLessText = detail.querySelector('.show-less-text');
 
-      if (summary && contentWrapper && showMoreText && showLessText) {
-        summary.addEventListener('click', (event) => {
-          // Prevent the default instant toggle
-          event.preventDefault();
-          
+      if (summary && showMoreText && showLessText) {
+        // We use a mousedown event to check the state *before* the click event fires
+        summary.addEventListener('mousedown', (event) => {
           const isOpening = !detail.hasAttribute('open');
-
-          // Manually toggle the 'open' attribute
-          if (isOpening) {
-            detail.setAttribute('open', '');
-          } else {
-            detail.removeAttribute('open');
-          }
-          
-          // Update the text
           showMoreText.classList.toggle('hidden', isOpening);
           showLessText.classList.toggle('hidden', !isOpening);
-
-          // This is the key: we dynamically set the height for the animation
-          if (isOpening) {
-            contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
-          } else {
-            // We need to set it to scrollHeight before setting it to 0 to make the closing animation work
-            contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
-            requestAnimationFrame(() => {
-              contentWrapper.style.maxHeight = '0px';
-            });
-          }
-        });
-
-        // Reset max-height when the transition ends to allow for resizing
-        contentWrapper.addEventListener('transitionend', () => {
-          if (detail.hasAttribute('open')) {
-            contentWrapper.style.maxHeight = 'none';
-          }
         });
       }
     });
