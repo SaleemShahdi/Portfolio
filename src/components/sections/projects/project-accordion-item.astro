@@ -75,15 +75,16 @@ const { project } = Astro.props;
         button.addEventListener("click", (event) => {
           event.preventDefault();
 
-          const isExpanded = !!content.style.maxHeight;
+          const isExpanded = content.style.maxHeight && content.style.maxHeight !== "0px";
 
           if (isExpanded) {
-            content.style.maxHeight = null;
+            // This is the key change: a direct command to close.
+            content.style.maxHeight = "0px";
           } else {
             content.style.maxHeight = content.scrollHeight + "px";
           }
           
-          const nowExpanded = !!content.style.maxHeight;
+          const nowExpanded = !isExpanded;
           toggleText.textContent = nowExpanded ? "Show less" : "Show more";
           iconDown.classList.toggle("hidden", nowExpanded);
           iconUp.classList.toggle("hidden", !nowExpanded);
