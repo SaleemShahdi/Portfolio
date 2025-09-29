@@ -1,20 +1,20 @@
-import { clsx, type ClassValue } from "clsx";
+import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { cva } from "class-variance-authority";
-import calculateReadingTime from 'reading-time';
-import { fromMarkdown } from 'mdast-util-from-markdown';
-import { toString } from 'mdast-util-to-string';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function capitalizeFirstLetter(sentence: string): string {
-  return `${sentence.charAt(0).toUpperCase()}${sentence.slice(1)}`;
+export function getFormattedDate(date: string) {
+  return new Date(date).toLocaleDateString("en-us", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 export const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -23,8 +23,7 @@ export const buttonVariants = cva(
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
-        secondary:
-          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
@@ -41,17 +40,3 @@ export const buttonVariants = cva(
     },
   }
 );
-
-
-export const getReadingTime = (text: string): string | undefined => {
-  if (!text || !text.length) return undefined;
-  try {
-    const { minutes } = calculateReadingTime(toString(fromMarkdown(text)));
-    if (minutes && minutes > 0) {
-      return `${Math.ceil(minutes)} min read`;
-    }
-    return undefined;
-  } catch (e) {
-    return undefined;
-  }
-};
