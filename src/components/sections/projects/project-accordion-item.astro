@@ -55,7 +55,7 @@ const { project } = Astro.props;
   .description-content {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease-out;
+    transition: max-height 0.5s ease-in-out; /* This creates the smooth, medium-speed animation */
   }
 </style>
 
@@ -72,7 +72,7 @@ const { project } = Astro.props;
 
       if (button && content && toggleText && iconDown && iconUp) {
         button.addEventListener("click", (event) => {
-          // This line is the key fix: it stops the browser's default scroll-on-click behavior.
+          // This prevents any default browser behavior, including auto-scrolling
           event.preventDefault();
 
           const isExpanded = !!content.style.maxHeight;
