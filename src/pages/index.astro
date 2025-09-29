@@ -31,16 +31,10 @@ import ExperienceView from "@/components/views/experience.astro";
     };
 
     const navLinks = document.querySelectorAll('.nav-link');
-    const htmlElement = document.documentElement;
 
     const handleRouteChange = () => {
-      // Temporarily disable smooth scrolling for an instant jump
-      htmlElement.style.scrollBehavior = 'auto';
+      // This will now be an instant jump by default
       window.scrollTo(0, 0);
-      // Re-enable smooth scrolling after the jump
-      setTimeout(() => {
-        htmlElement.style.scrollBehavior = 'smooth';
-      }, 0);
 
       const hash = window.location.hash || '#about-me';
       
