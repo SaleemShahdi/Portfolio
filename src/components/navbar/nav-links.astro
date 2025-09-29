@@ -1,28 +1,6 @@
 ---
 import { NAV_LINKS } from "@/lib/constants/index";
 import { cn } from "@/lib/utils";
-
-const pathname = Astro.url.pathname;
-
-const isActive = (href: string) => {
-  // Normalize the current page's path by removing any trailing slash.
-  const cleanCurrentPath = pathname.endsWith('/') && pathname.length > 1 
-    ? pathname.slice(0, -1) 
-    : pathname;
-
-  // Normalize the link's href for comparison.
-  const cleanHref = href.endsWith('/') && href.length > 1 
-    ? href.slice(0, -1) 
-    : href;
-
-  // For the homepage, we need an exact match to prevent it from matching other pages.
-  if (cleanHref === '/Portfolio') {
-    return cleanCurrentPath === '/Portfolio';
-  }
-
-  // For all other pages (like /projects, /articles), we check if the current path starts with the link's href.
-  return cleanCurrentPath.startsWith(cleanHref);
-};
 ---
 
 <div class="flex h-full items-stretch justify-center">
@@ -30,9 +8,9 @@ const isActive = (href: string) => {
     NAV_LINKS.map(link => (
       <a
         href={link.href}
+        data-nav-link={link.href}
         class={cn(
-          "relative flex items-center justify-center px-3 py-1.5 text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:text-sm",
-          isActive(link.href) && "bg-secondary"
+          "nav-link relative flex items-center justify-center rounded-md px-3 py-1.5 text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:text-sm"
         )}
       >
         {link.label}

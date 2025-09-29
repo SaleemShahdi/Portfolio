@@ -30,21 +30,27 @@ import ExperienceView from "@/components/views/experience.astro";
       '#experience': document.getElementById('experience-view')
     };
 
-    const navLinks = document.querySelectorAll('nav a');
+    const navLinks = document.querySelectorAll('.nav-link');
 
     const handleRouteChange = () => {
-      // Default to #about-me if no hash is present
       const hash = window.location.hash || '#about-me';
       
-      // Hide all views
+      // Handle view visibility
       Object.values(views).forEach(view => {
         if (view) view.style.display = 'none';
       });
-
-      // Show the active view
       if (views[hash]) {
         views[hash].style.display = 'block';
       }
+
+      // Handle nav link highlighting
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === hash) {
+          link.classList.add('bg-secondary');
+        } else {
+          link.classList.remove('bg-secondary');
+        }
+      });
     };
 
     // Handle initial page load
