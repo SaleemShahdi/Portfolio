@@ -11,8 +11,8 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<details class="project-item group w-full p-4 not-last:border-b">
-  <summary class="flex cursor-pointer list-none items-center justify-between text-left">
+<details class="project-item group w-full overflow-hidden not-last:border-b">
+  <summary class="flex cursor-pointer list-none items-center justify-between p-4 text-left">
     <h3 class="text-lg font-semibold underline-offset-6 group-hover:underline">
       {project.data.name}
     </h3>
@@ -23,47 +23,88 @@ const { project } = Astro.props;
     </div>
   </summary>
 
-  <div class="prose min-w-full pt-4">
-    <MarkdownRenderer content={project.body} />
-  </div>
+  <div class="content-wrapper transition-all duration-500 ease-in-out">
+    <div class="px-4 pb-4">
+      <div class="prose min-w-full">
+        <MarkdownRenderer content={project.body} />
+      </div>
 
-  <div class="mt-4 flex flex-wrap gap-1.5">
-    {project.data.technologies.map(technology => (
-      <Badge>{technology}</Badge>
-    ))}
-  </div>
+      <div class="mt-4 flex flex-wrap gap-1.5">
+        {project.data.technologies.map(technology => (
+          <Badge>{technology}</Badge>
+        ))}
+      </div>
 
-  <div class="mt-4 flex gap-2">
-    {project.data.sourceCode && (
-      <a href={project.data.sourceCode} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-        <Github class="size-4" />
-        Source Code
-      </a>
-    )}
-    {project.data.preview && (
-      <a href={project.data.preview} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-        <ExternalLink class="size-4" />
-        Live Demo
-      </a>
-    )}
+      <div class="mt-4 flex gap-2">
+        {project.data.sourceCode && (
+          <a href={project.data.sourceCode} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            <Github class="size-4" />
+            Source Code
+          </a>
+        )}
+        {project.data.preview && (
+          <a href={project.data.preview} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            <ExternalLink class="size-4" />
+            Live Demo
+          </a>
+        )}
+      </div>
+    </div>
   </div>
 </details>
+
+<style>
+  details .content-wrapper {
+    max-height: 0;
+  }
+  details[open] .content-wrapper {
+    max-height: 1000px; /* A large enough value to accommodate content */
+  }
+</style>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('details.project-item').forEach((detail) => {
       const summary = detail.querySelector('summary');
+      const contentWrapper = detail.querySelector('.content-wrapper');
       const showMoreText = detail.querySelector('.show-more-text');
       const showLessText = detail.querySelector('.show-less-text');
 
-      if (summary && showMoreText && showLessText) {
-        // We prevent the default summary click to handle text change
+      if (summary && contentWrapper && showMoreText && showLessText) {
         summary.addEventListener('click', (event) => {
-          // Check the state *before* the browser toggles it
-          const isOpening = !detail.hasAttribute('open');
+          // Prevent the default instant toggle
+          event.preventDefault();
           
+          const isOpening = !detail.hasAttribute('open');
+
+          // Manually toggle the 'open' attribute
+          if (isOpening) {
+            detail.setAttribute('open', '');
+          } else {
+            detail.removeAttribute('open');
+          }
+          
+          // Update the text
           showMoreText.classList.toggle('hidden', isOpening);
           showLessText.classList.toggle('hidden', !isOpening);
+
+          // This is the key: we dynamically set the height for the animation
+          if (isOpening) {
+            contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+          } else {
+            // We need to set it to scrollHeight before setting it to 0 to make the closing animation work
+            contentWrapper.style.maxHeight = contentWrapper.scrollHeight + 'px';
+            requestAnimationFrame(() => {
+              contentWrapper.style.maxHeight = '0px';
+            });
+          }
+        });
+
+        // Reset max-height when the transition ends to allow for resizing
+        contentWrapper.addEventListener('transitionend', () => {
+          if (detail.hasAttribute('open')) {
+            contentWrapper.style.maxHeight = 'none';
+          }
         });
       }
     });
