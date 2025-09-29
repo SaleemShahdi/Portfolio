@@ -1,87 +1,16 @@
 ---
-import { ChevronDown, Github, ExternalLink } from "lucide-react";
 import type { CollectionEntry } from "astro:content";
-import Badge from "@/components/ui/badge.astro";
-import MarkdownRenderer from "@/components/ui/markdown-renderer.astro";
+import { ProjectAccordion } from "./ProjectAccordion";
+import { Marked } from 'marked';
 
 interface Props {
   project: CollectionEntry<"projects">;
 }
 
 const { project } = Astro.props;
+
+// We need to render the markdown body to HTML here
+const renderedContent = await new Marked().parse(project.body);
 ---
 
-<details class="project-item group w-full overflow-hidden not-last:border-b">
-  <summary class="flex cursor-pointer list-none items-center justify-between p-4 text-left">
-    <h3 class="text-lg font-semibold underline-offset-6 group-hover:underline">
-      {project.data.name}
-    </h3>
-    <div class="flex items-center">
-      <span class="show-more-text text-xs font-medium text-primary mr-2">Show more</span>
-      <span class="show-less-text hidden text-xs font-medium text-primary mr-2">Show less</span>
-      <ChevronDown class="chevron-down size-4 transition-transform duration-300 group-open:rotate-180" />
-    </div>
-  </summary>
-
-  <div class="content-wrapper">
-    <div class="px-4 pb-4">
-      <div class="prose min-w-full">
-        <MarkdownRenderer content={project.body} />
-      </div>
-
-      <div class="mt-4 flex flex-wrap gap-1.5">
-        {project.data.technologies.map(technology => (
-          <Badge>{technology}</Badge>
-        ))}
-      </div>
-
-      <div class="mt-4 flex gap-2">
-        {project.data.sourceCode && (
-          <a href={project.data.sourceCode} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-            <Github class="size-4" />
-            Source Code
-          </a>
-        )}
-        {project.data.preview && (
-          <a href={project.data.preview} target="_blank" class="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-            <ExternalLink class="size-4" />
-            Live Demo
-          </a>
-        )}
-      </div>
-    </div>
-  </div>
-</details>
-
-<style>
-  .content-wrapper {
-    transition: grid-template-rows 0.4s ease-in-out;
-    display: grid;
-    grid-template-rows: 0fr;
-  }
-  details[open] > .content-wrapper {
-    grid-template-rows: 1fr;
-  }
-  .content-wrapper > div {
-    overflow: hidden;
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    document.querySelectorAll('details.project-item').forEach((detail) => {
-      const summary = detail.querySelector('summary');
-      const showMoreText = detail.querySelector('.show-more-text');
-      const showLessText = detail.querySelector('.show-less-text');
-
-      if (summary && showMoreText && showLessText) {
-        // We use a mousedown event to check the state *before* the click event fires
-        summary.addEventListener('mousedown', (event) => {
-          const isOpening = !detail.hasAttribute('open');
-          showMoreText.classList.toggle('hidden', isOpening);
-          showLessText.classList.toggle('hidden', !isOpening);
-        });
-      }
-    });
-  });
-</script>
+<ProjectAccordion client:load project={project} renderedContent={renderedContent} />
