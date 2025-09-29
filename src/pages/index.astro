@@ -33,9 +33,6 @@ import ExperienceView from "@/components/views/experience.astro";
     const navLinks = document.querySelectorAll('.nav-link');
 
     const handleRouteChange = () => {
-      // This is the new line that instantly scrolls to the top
-      window.scrollTo(0, 0);
-
       const hash = window.location.hash || '#about-me';
       
       // Handle view visibility
@@ -54,6 +51,9 @@ import ExperienceView from "@/components/views/experience.astro";
           link.classList.remove('bg-secondary');
         }
       });
+
+      // This is the new line: dispatch a custom event to notify other components
+      document.dispatchEvent(new CustomEvent('viewchange'));
     };
 
     // Handle initial page load
