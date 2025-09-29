@@ -1,10 +1,6 @@
 ---
 import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
-import { cn } from "@/lib/utils";
-
-const pathname = Astro.url.pathname;
-const isExperienceActive = pathname.startsWith('/Portfolio/articles');
 ---
 
 <nav
@@ -18,10 +14,33 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
     <div class="flex items-stretch justify-center">
       <NavLinks />
       <div class="flex w-12 items-center justify-center">
-        <div class={cn(isExperienceActive && "relative left-[0.4375rem]")}>
+        <div id="theme-toggle-nudge-wrapper">
           <ModeToggle />
         </div>
       </div>
     </div>
   </div>
 </nav>
+
+<script>
+  function handleNudge() {
+    const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
+    if (!wrapper) return;
+
+    // Check if the "Professional Experience" view is active
+    if (window.location.hash === '#experience') {
+      wrapper.classList.add('relative', 'left-[0.4375rem]');
+    } else {
+      wrapper.classList.remove('relative', 'left-[0.4375rem]');
+    }
+  }
+
+  // Run on initial page load
+  document.addEventListener('DOMContentLoaded', handleNudge);
+
+  // Run whenever a nav link is clicked (from the main page router)
+  document.addEventListener('astro:page-load', handleNudge);
+  
+  // Run when the browser's back/forward buttons are used
+  window.addEventListener('popstate', handleNudge);
+</script>
