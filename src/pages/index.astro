@@ -33,12 +33,10 @@ import ExperienceView from "@/components/views/experience.astro";
     const navLinks = document.querySelectorAll('.nav-link');
 
     const handleRouteChange = () => {
-      // This will now be an instant jump by default
       window.scrollTo(0, 0);
 
       const hash = window.location.hash || '#about-me';
       
-      // Handle view visibility
       Object.values(views).forEach(view => {
         if (view) view.style.display = 'none';
       });
@@ -46,7 +44,6 @@ import ExperienceView from "@/components/views/experience.astro";
         views[hash].style.display = 'block';
       }
 
-      // Handle nav link highlighting
       navLinks.forEach(link => {
         if (link.getAttribute('href') === hash) {
           link.classList.add('bg-secondary');
@@ -54,12 +51,13 @@ import ExperienceView from "@/components/views/experience.astro";
           link.classList.remove('bg-secondary');
         }
       });
+
+      // Dispatch a custom event to notify other components of the view change
+      document.dispatchEvent(new CustomEvent('viewchange'));
     };
 
-    // Handle initial page load
     handleRouteChange();
 
-    // Handle clicks on nav links
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         const targetHash = new URL(link.href).hash;
@@ -71,7 +69,6 @@ import ExperienceView from "@/components/views/experience.astro";
       });
     });
 
-    // Handle browser back/forward buttons
     window.addEventListener('popstate', handleRouteChange);
   });
 </script>
