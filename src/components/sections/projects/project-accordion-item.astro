@@ -78,8 +78,13 @@ const { project } = Astro.props;
           const isExpanded = content.style.maxHeight && content.style.maxHeight !== "0px";
 
           if (isExpanded) {
-            // This is the key change: a direct command to close.
-            content.style.maxHeight = "0px";
+            // This is the key change: a more robust way to trigger the closing animation.
+            // We set the height to its current value, then immediately set it to 0
+            // in the next animation frame, which forces the transition to start.
+            content.style.maxHeight = content.scrollHeight + "px";
+            requestAnimationFrame(() => {
+              content.style.maxHeight = "0px";
+            });
           } else {
             content.style.maxHeight = content.scrollHeight + "px";
           }
