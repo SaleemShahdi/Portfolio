@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar/index.astro";
 import Footer from "@/components/footer.astro";
 import AboutMeView from "@/components/views/about-me.astro";
 import ProjectsView from "@/components/views/projects.astro";
+import ExperienceView from "@/components/views/experience.astro";
 ---
 
 <Layout title="Shahrez Ahmad">
@@ -15,7 +16,8 @@ import ProjectsView from "@/components/views/projects.astro";
   >
     <AboutMeView />
     <ProjectsView />
-    </main>
+    <ExperienceView />
+  </main>
 
   <Footer />
 </Layout>
@@ -25,19 +27,24 @@ import ProjectsView from "@/components/views/projects.astro";
     const views = {
       '#about-me': document.getElementById('about-me-view'),
       '#projects': document.getElementById('projects-view'),
-      //'#experience': document.getElementById('experience-view')
+      '#experience': document.getElementById('experience-view')
     };
 
     const navLinks = document.querySelectorAll('nav a');
 
     const handleRouteChange = () => {
+      // Default to #about-me if no hash is present
       const hash = window.location.hash || '#about-me';
       
       // Hide all views
-      Object.values(views).forEach(view => view?.classList.add('hidden'));
+      Object.values(views).forEach(view => {
+        if (view) view.style.display = 'none';
+      });
 
       // Show the active view
-      views[hash]?.classList.remove('hidden');
+      if (views[hash]) {
+        views[hash].style.display = 'block';
+      }
     };
 
     // Handle initial page load
