@@ -51,6 +51,9 @@ import ExperienceView from "@/components/views/experience.astro";
           link.classList.remove('bg-secondary');
         }
       });
+
+      // This is the new line: dispatch a custom event to notify other components
+      document.dispatchEvent(new CustomEvent('viewchange'));
     };
 
     // Handle initial page load

@@ -1,6 +1,7 @@
 ---
 import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
+import { cn } from "@/lib/utils";
 ---
 
 <nav
@@ -27,7 +28,7 @@ import NavLinks from "./nav-links.astro";
     const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
     if (!wrapper) return;
 
-    // Check if the "Professional Experience" view is active
+    // Check if the "Professional Experience" view is active by looking at the URL hash
     if (window.location.hash === '#experience') {
       wrapper.classList.add('relative', 'left-[0.4375rem]');
     } else {
@@ -38,9 +39,6 @@ import NavLinks from "./nav-links.astro";
   // Run on initial page load
   document.addEventListener('DOMContentLoaded', handleNudge);
 
-  // Run whenever a nav link is clicked (from the main page router)
-  document.addEventListener('astro:page-load', handleNudge);
-  
-  // Run when the browser's back/forward buttons are used
-  window.addEventListener('popstate', handleNudge);
+  // Run whenever the view changes
+  document.addEventListener('viewchange', handleNudge);
 </script>
