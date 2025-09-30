@@ -44,7 +44,7 @@ export function ProjectAccordion({ project, renderedContent }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4">
