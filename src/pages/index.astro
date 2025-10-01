@@ -30,13 +30,11 @@ import ExperienceView from "@/components/views/experience.astro";
       '#experience': document.getElementById('experience-view')
     };
     const navLinks = document.querySelectorAll('.nav-link');
-    const nudgeWrapper = document.getElementById('theme-toggle-nudge-wrapper');
 
     const handleRouteChange = () => {
       window.scrollTo(0, 0);
       const hash = window.location.hash || '#about-me';
       
-      // Handle view visibility
       Object.values(views).forEach(view => {
         if (view) view.style.display = 'none';
       });
@@ -44,7 +42,6 @@ import ExperienceView from "@/components/views/experience.astro";
         views[hash].style.display = 'block';
       }
 
-      // Handle nav link highlighting
       navLinks.forEach(link => {
         if (link.getAttribute('href') === hash) {
           link.classList.add('bg-secondary');
@@ -53,14 +50,8 @@ import ExperienceView from "@/components/views/experience.astro";
         }
       });
 
-      // Handle the theme toggle nudge
-      if (nudgeWrapper) {
-        if (hash === '#experience') {
-          nudgeWrapper.classList.add('relative', 'left-[0.4375rem]');
-        } else {
-          nudgeWrapper.classList.remove('relative', 'left-[0.4375rem]');
-        }
-      }
+      // Dispatch the custom event to notify other components of the view change
+      document.dispatchEvent(new CustomEvent('viewchange'));
     };
 
     handleRouteChange();

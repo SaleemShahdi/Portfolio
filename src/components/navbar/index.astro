@@ -1,6 +1,7 @@
 ---
 import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
+import { cn } from "@/lib/utils";
 ---
 
 <nav
@@ -13,7 +14,8 @@ import NavLinks from "./nav-links.astro";
   >
     <div class="flex items-stretch justify-center">
       <NavLinks />
-      <div class="flex items-center pl-2"> {/* Use items-center to stop stretching */}
+      {/* This wrapper div fixes the sizing and alignment issues */}
+      <div class="flex self-center w-12 items-center justify-center">
         <div id="theme-toggle-nudge-wrapper">
           <ModeToggle />
         </div>
@@ -21,3 +23,20 @@ import NavLinks from "./nav-links.astro";
     </div>
   </div>
 </nav>
+
+<script>
+  function handleNudge() {
+    const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
+    if (!wrapper) return;
+
+    if (window.location.hash === '#experience') {
+      wrapper.classList.add('relative', 'left-1.5');
+    } else {
+      wrapper.classList.remove('relative', 'left-1.5');
+    }
+  }
+
+  // Run on initial page load and when the view changes
+  document.addEventListener('DOMContentLoaded', handleNudge);
+  document.addEventListener('viewchange', handleNudge);
+</script>
