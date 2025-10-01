@@ -121,7 +121,9 @@
 }
 
 html {
+  @apply scroll-smooth;
   font-family: Geist Sans;
+  overflow-y: scroll; /* This line fixes the layout shift */
 }
 
 body {
