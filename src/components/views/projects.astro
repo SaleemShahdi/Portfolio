@@ -1,8 +1,6 @@
 ---
 import Pattern from "@/components/ui/pattern.astro";
 import Box from "@/components/box/index.astro";
-import BoxHeader from "@/components/box/header.astro";
-import BoxTitle from "@/components/box/title.astro";
 import BoxContent from "@/components/box/content.astro";
 import { getCollection } from "astro:content";
 import ProjectAccordionItem from "@/components/sections/projects/project-accordion-item.astro";
@@ -15,9 +13,6 @@ const projects = await getCollection("projects");
 
   {/* Introduction Section */}
   <Box>
-    <BoxHeader>
-      <BoxTitle>My Approach to Projects</BoxTitle>
-    </BoxHeader>
     <BoxContent>
       <div class="prose">
         <p>
