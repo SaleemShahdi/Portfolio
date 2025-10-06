@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Github } from 'lucide-react';
+import { Marked } from 'marked';
 
 const SubAccordion = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const htmlContent = new Marked().parse(content);
 
   return (
     <div className="not-last:border-b">
@@ -34,7 +36,7 @@ const SubAccordion = ({ title, content }) => {
                     transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                     className="overflow-hidden"
                 >
-                    <div className="prose pb-4 text-sm" dangerouslySetInnerHTML={{ __html: content }} />
+                    <div className="prose pb-4 text-sm" dangerouslySetInnerHTML={{ __html: htmlContent }} />
                 </motion.div>
             )}
         </AnimatePresence>
@@ -42,15 +44,20 @@ const SubAccordion = ({ title, content }) => {
   );
 };
 
-
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Simple parser for the sub-projects
-  const subProjects = project.body.split('---').map(part => {
-    const [title, ...content] = part.trim().split('\n');
-    return { title: title.replace(/-\s\*\*(.*?):\*\*/, '$1').trim(), content: content.join('\n').trim() };
-  }).filter(p => p.title);
+  const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
+  const intro = parts[0] ? new Marked().parse(parts[0]) : '';
+  const outro = parts.length > 1 && !parts[parts.length - 1].startsWith('- **') ? new Marked().parse(parts[parts.length - 1]) : '';
+  
+  const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
+    const lines = part.trim().split('\n');
+    const titleLine = lines[0];
+    const title = titleLine ? titleLine.replace(/-\s\*\*(.*?):\*\*/, '$1').trim() : 'Unnamed';
+    const content = lines.slice(1).join('\n').trim();
+    return { title, content };
+  }).filter(p => p.title && p.content);
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -100,7 +107,13 @@ export function NestedProjectAccordion({ project }) {
             className="overflow-hidden"
           >
             <div className="pt-4">
-              {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
+              <div className="prose text-sm" dangerouslySetInnerHTML={{ __html: intro }} />
+              
+              <div className="mt-4 border-t">
+                {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
+              </div>
+
+              {outro && <div className="prose mt-4 pt-4 border-t text-sm" dangerouslySetInnerHTML={{ __html: outro }} />}
             </div>
 
             <div className="mt-4 flex gap-4">
