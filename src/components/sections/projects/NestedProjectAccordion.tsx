@@ -1,18 +1,60 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Github, ExternalLink } from 'lucide-react';
+import { ChevronDown, Github } from 'lucide-react';
 
-// This is a helper component to render the markdown content
-const MarkdownContent = ({ htmlContent }) => {
-  return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
-};
-
-export function ProjectAccordion({ project, renderedContent }) {
+const SubAccordion = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
+    <div className="not-last:border-b">
+        <motion.header
+            initial={false}
+            onClick={() => setIsOpen(!isOpen)}
+            className="flex cursor-pointer items-center justify-between py-3"
+        >
+            <h4 className="font-semibold text-primary">{title}</h4>
+            <motion.div
+                animate={{ rotate: isOpen ? 180 : 0 }}
+                transition={{ duration: 0.2 }}
+            >
+                <ChevronDown className="size-4" />
+            </motion.div>
+        </motion.header>
+        <AnimatePresence initial={false}>
+            {isOpen && (
+                <motion.div
+                    key="content"
+                    initial="collapsed"
+                    animate="open"
+                    exit="collapsed"
+                    variants={{
+                        open: { opacity: 1, height: 'auto' },
+                        collapsed: { opacity: 0, height: 0 },
+                    }}
+                    transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+                    className="overflow-hidden"
+                >
+                    <div className="prose pb-4 text-sm" dangerouslySetInnerHTML={{ __html: content }} />
+                </motion.div>
+            )}
+        </AnimatePresence>
+    </div>
+  );
+};
+
+
+export function NestedProjectAccordion({ project }) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Simple parser for the sub-projects
+  const subProjects = project.body.split('---').map(part => {
+    const [title, ...content] = part.trim().split('\n');
+    return { title: title.replace(/-\s\*\*(.*?):\*\*/, '$1').trim(), content: content.join('\n').trim() };
+  }).filter(p => p.title);
+
+  return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
-      <motion.header
+       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
@@ -34,7 +76,6 @@ export function ProjectAccordion({ project, renderedContent }) {
           </div>
         </div>
         
-        {/* Technologies are now always visible */}
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -58,8 +99,8 @@ export function ProjectAccordion({ project, renderedContent }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4">
-              <MarkdownContent htmlContent={renderedContent} />
+            <div className="pt-4">
+              {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
             </div>
 
             <div className="mt-4 flex gap-4">
@@ -69,13 +110,8 @@ export function ProjectAccordion({ project, renderedContent }) {
                   Source Code
                 </a>
               )}
-              {project.data.preview && (
-                <a href={project.data.preview} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-                  <ExternalLink className="size-4" />
-                  Live Demo
-                </a>
-              )}
             </div>
+
           </motion.section>
         )}
       </AnimatePresence>

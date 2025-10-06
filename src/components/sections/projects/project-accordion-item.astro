@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { ProjectAccordion } from "./ProjectAccordion";
+import { NestedProjectAccordion } from "./NestedProjectAccordion";
 import { Marked } from 'marked';
 
 interface Props {
@@ -9,8 +10,11 @@ interface Props {
 
 const { project } = Astro.props;
 
-// We need to render the markdown body to HTML here
-const renderedContent = await new Marked().parse(project.body);
+const renderedContent = new Marked().parse(project.body);
 ---
 
-<ProjectAccordion client:load project={project} renderedContent={renderedContent} />
+{project.data.name === "Introduction to C" ? (
+  <NestedProjectAccordion client:load project={project} />
+) : (
+  <ProjectAccordion client:load project={project} renderedContent={renderedContent} />
+)}
