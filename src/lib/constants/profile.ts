@@ -1,7 +1,7 @@
 export const PROFILE_INFO = {
   role: 'Software Engineer, Data & Analytics',
   logo: 'Shahrez Ahmad',
-  slogan: 'Changing the world, one line of code at a time',
+  slogan: '',
   displayName: "Shahrez Ahmad",
   email: "shahrez.ahmad@rutgers.edu",
   about: `
