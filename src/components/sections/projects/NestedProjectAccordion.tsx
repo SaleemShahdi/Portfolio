@@ -5,7 +5,7 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // The content now includes the colon and first line, so we parse it here.
+  // The content is now a valid markdown list, so we parse it here.
   const htmlContent = new Marked().parse(content);
 
   return (
@@ -15,7 +15,8 @@ const SubAccordion = ({ title, content }) => {
             onClick={() => setIsOpen(!isOpen)}
             className="flex cursor-pointer items-center justify-between py-3"
         >
-            <h4 className="font-semibold text-primary">{title}</h4>
+            {/* The colon is now added here */}
+            <h4 className="font-semibold text-primary">{title}:</h4>
             <motion.div
                 animate={{ rotate: isOpen ? 180 : 0 }}
                 transition={{ duration: 0.2 }}
@@ -49,22 +50,18 @@ const SubAccordion = ({ title, content }) => {
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // This is the updated, more robust parser for the sub-projects
-  const subProjects = project.body.split('---').map(part => {
-    const lines = part.trim().split('\n');
-    const titleLine = lines[0] || '';
-    const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
+  // This is the updated, more robust parser.
+  const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
+  const intro = parts[0] && !parts[0].startsWith('- **') ? new Marked().parse(parts[0]) : '';
+  const outro = parts.length > 1 && !parts[parts.length - 1].startsWith('- **') ? new Marked().parse(parts[parts.length - 1]) : '';
+
+  const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
+    const titleMatch = part.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-    
-    // This now correctly includes the rest of the first line
-    const firstLineContent = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    const restOfContent = lines.slice(1).join('\n').trim();
-    
-    const content = firstLineContent ? `${firstLineContent}\n${restOfContent}` : restOfContent;
-
+    // We pass the entire original markdown part as the content to be rendered.
+    const content = part;
     return { title, content };
-  }).filter(p => p.title && p.content.trim());
-
+  }).filter(p => p.title);
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -114,7 +111,13 @@ export function NestedProjectAccordion({ project }) {
             className="overflow-hidden"
           >
             <div className="pt-4">
-              {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
+              {intro && <div className="prose text-sm mb-4" dangerouslySetInnerHTML={{ __html: intro }} />}
+              
+              <div className="border-t">
+                {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
+              </div>
+
+              {outro && <div className="prose mt-4 pt-4 border-t text-sm" dangerouslySetInnerHTML={{ __html: outro }} />}
             </div>
 
             <div className="mt-4 flex gap-4">
