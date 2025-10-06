@@ -3,65 +3,68 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Github } from 'lucide-react';
 import { Marked } from 'marked';
 
-const SubAccordion = ({ title, content }) => {
+const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // The content is now a valid markdown list, so we parse it here.
   const htmlContent = new Marked().parse(content);
 
   return (
-    <div className="not-last:border-b">
-        <motion.header
-            initial={false}
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex cursor-pointer items-center justify-between py-3"
+    <li className="list-none not-last:border-b">
+      <motion.header
+        initial={false}
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex cursor-pointer items-center justify-between py-3"
+      >
+        <div className="text-sm">
+          <strong>{title}:</strong> {description}
+        </div>
+        <motion.div
+          animate={{ rotate: isOpen ? 180 : 0 }}
+          transition={{ duration: 0.2 }}
         >
-            {/* The colon is now added here */}
-            <h4 className="font-semibold text-primary">{title}:</h4>
-            <motion.div
-                animate={{ rotate: isOpen ? 180 : 0 }}
-                transition={{ duration: 0.2 }}
-            >
-                <ChevronDown className="size-4" />
-            </motion.div>
-        </motion.header>
-        <AnimatePresence initial={false}>
-            {isOpen && (
-                <motion.div
-                    key="content"
-                    initial="collapsed"
-                    animate="open"
-                    exit="collapsed"
-                    variants={{
-                        open: { opacity: 1, height: 'auto' },
-                        collapsed: { opacity: 0, height: 0 },
-                    }}
-                    transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
-                    className="overflow-hidden"
-                >
-                    <div className="prose pb-4 text-sm" dangerouslySetInnerHTML={{ __html: htmlContent }} />
-                </motion.div>
-            )}
-        </AnimatePresence>
-    </div>
+          <ChevronDown className="size-4" />
+        </motion.div>
+      </motion.header>
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: 'auto' },
+              collapsed: { opacity: 0, height: 0 },
+            }}
+            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            className="overflow-hidden"
+          >
+            <div className="prose prose-sm pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </li>
   );
 };
-
 
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
 
-  // This is the updated, more robust parser.
   const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
-  const intro = parts[0] && !parts[0].startsWith('- **') ? new Marked().parse(parts[0]) : '';
-  const outro = parts.length > 1 && !parts[parts.length - 1].startsWith('- **') ? new Marked().parse(parts[parts.length - 1]) : '';
+  const intro = parts[0] ? new Marked().parse(parts[0]) : '';
+  const outro = parts[parts.length - 1] && !parts[parts.length - 1].startsWith('- **') ? new Marked().parse(parts[parts.length - 1]) : '';
 
   const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
-    const titleMatch = part.match(/-\s\*\*(.*?):\*\*/);
+    const lines = part.trim().split('\n');
+    const titleLine = lines[0] || '';
+    
+    const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-    // We pass the entire original markdown part as the content to be rendered.
-    const content = part;
-    return { title, content };
-  }).filter(p => p.title);
+    
+    const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
+    const content = lines.slice(1).join('\n').trim();
+
+    return { title, description, content };
+  });
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -110,14 +113,14 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="pt-4">
-              {intro && <div className="prose text-sm mb-4" dangerouslySetInnerHTML={{ __html: intro }} />}
-              
-              <div className="border-t">
-                {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} content={sub.content} />)}
-              </div>
-
-              {outro && <div className="prose mt-4 pt-4 border-t text-sm" dangerouslySetInnerHTML={{ __html: outro }} />}
+            <div className="prose min-w-full pt-4 text-sm">
+              <ul>
+                <li dangerouslySetInnerHTML={{ __html: intro }} />
+                <ul>
+                  {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />)}
+                </ul>
+                <li dangerouslySetInnerHTML={{ __html: outro }} />
+              </ul>
             </div>
 
             <div className="mt-4 flex gap-4">
@@ -128,7 +131,6 @@ export function NestedProjectAccordion({ project }) {
                 </a>
               )}
             </div>
-
           </motion.section>
         )}
       </AnimatePresence>

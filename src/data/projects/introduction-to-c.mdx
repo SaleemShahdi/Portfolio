@@ -11,37 +11,37 @@ technologies:
 sourceCode: "https://github.com/SaleemShahdi/CompArch_PA1"
 description: ""
 ---
-- Wrote the following 6 small programs to gain initial experience programming in C, as well as compiling, debugging and running C programs:
+Wrote the following 6 small programs to gain initial experience programming in C, as well as compiling, debugging and running C programs:
 ---
-- **Rot13:** A lightweight command-line utility developed in C that performs a Rot-13 substitution cipher on a string argument, demonstrating foundational C programming and character manipulation.
+- **Rot13:** A lightweight command-line utility that performs a Rot-13 substitution cipher on a string, demonstrating foundational C programming and character manipulation.
   - Processed command-line arguments by iterating through the input string (`argv[1]`) using direct array indexing to access and transform each character until reaching the null terminator.
   - Implemented case-sensitive cipher logic by evaluating specific ASCII ranges to correctly apply a forward (+13) or backward (-13) rotational shift, ensuring the original case of each letter was preserved.
   - Leveraged the C standard library function `isalpha` from `ctype.h` to selectively apply the cipher, ensuring all non-alphabetic characters were passed to the output unmodified.
 ---
-- **sorta:** A command-line utility built in C that sorts string arguments by implementing an efficient, in-place Insertion Sort algorithm and demonstrating robust handling of command-line data.
+- **sorta:** A command-line utility that sorts string arguments using an efficient, in-place Insertion Sort algorithm.
   - Implemented an Insertion Sort algorithm to sort the `argv` array directly, efficiently reordering the character pointers in-place to avoid the overhead and risk of dynamic memory allocation.
   - Utilized the `string.h` library function `strcmp()` as the core comparison logic within the sorting loop, ensuring accurate, case-sensitive lexicographical ordering of the input strings.
   - Engineered the program to robustly handle a variable number of command-line arguments, including the required edge case of zero inputs where the program exits cleanly without any output.
 ---
-- **balance:** A command-line tool built in C that validates the correct nesting and balance of delimiters (parentheses, brackets, and braces) within a string, utilizing a custom-implemented stack and manual memory management.
+- **balance:** A command-line tool that validates the correct nesting of delimiters using a custom-implemented stack and manual memory management.
   - Implemented a stack data structure from scratch using a dynamically allocated C array, with custom-built `push` and `pop` functions to manage the LIFO (Last-In, First-Out) data flow.
   - Engineered comprehensive error-handling routines to identify and report multiple classes of syntax failures, including mismatched delimiters, unexpected closing delimiters, and unclosed delimiters.
   - Demonstrated meticulous memory management by using `malloc` to allocate all necessary data structures on the heap and ensuring `free` was called on every possible execution path to prevent memory leaks.
 ---
-- **list:** An interactive C program that implements a sorted doubly linked list to dynamically manage integers based on user commands, showcasing advanced pointer manipulation and memory management.
+- **list:** An interactive C program that implements a sorted doubly linked list to dynamically manage integers, showcasing advanced pointer manipulation.
   - Constructed a doubly linked list data structure from scratch in C, using pointers-to-pointers (`struct node **`) in function arguments to allow for efficient and safe modification of the list's head.
   - Engineered insertion and deletion logic that traverses the list to maintain strict numerical order and prevent duplicates, correctly re-wiring both `next` and `prev` pointers for all edge cases.
   - Parsed a continuous stream of commands from standard input (stdin) until EOF, demonstrating robust memory management by pairing `malloc` and `free` to dynamically allocate and deallocate nodes.
   - Authored a modular `freeAll` function to deallocate the entire list at once, implementing a recursive strategy that traverses to the tail of the list before freeing each node on the return path.
 ---
-- **mexp:** A command-line utility in C that calculates matrix exponentiation (M^n) by implementing a recursive algorithm coupled with a sophisticated memory management strategy.
+- **mexp:** A command-line utility that calculates matrix exponentiation (M^n) by implementing a recursive algorithm.
   - Designed a recursive function that implements the formula $M^n = M * M^{(n-1)}$ with a base case that correctly generates an identity matrix for the n=0 exponent.
   - To prevent memory leaks, devised a tracking system (`int ***`) to store pointers to all intermediate matrices created on the heap, allowing for a comprehensive deallocation of all memory upon completion.
   - Managed the complete file I/O lifecycle: opened a file stream with `fopen`, parsed matrix dimensions and data with `fscanf`, and ensured the stream was properly closed with `fclose`.
 ---
-- **bst:** A comprehensive C program that implements a complete Binary Search Tree from scratch, supporting a full suite of CRUD operations driven by recursive functions and commands from standard input.
+- **bst:** A comprehensive program that implements a complete Binary Search Tree from scratch, supporting full CRUD operations.
   - Implemented a Binary Search Tree data structure from the ground up, utilizing recursive functions for core operations like insertion and search.
   - Engineered a complex delete function to handle all three node-removal scenarios: nodes with zero, one, or two children, correctly implementing the two-child case by replacing the node's value with its inorder predecessor.
-  - Demonstrated meticulous memory management by authoring a `freeAll` function that uses a recursive post-order traversal to deallocate every node, and leveraging pointers-to-pointers (`node **`) to safely handle modifications to the tree's root.
+  - Demonstrated meticulous memory management by authoring a `freeAll` function that uses a recursive post-order traversal to deallocate every node.
 ---
-- Introduced myself to gcc (GNU Code Compiler) to compile programs as well as makefiles to streamline and automate compilation.
+Introduced myself to gcc (GNU Code Compiler) to compile programs as well as makefiles to streamline and automate compilation.
