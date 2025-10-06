@@ -5,8 +5,8 @@ export const PROFILE_INFO = {
   displayName: "Shahrez Ahmad",
   email: "shahrez.ahmad@rutgers.edu",
   about: `
-I'm a **software engineer** passionate about crafting high-quality digital experiences. With expertise in **full-stack** development and a strong eye for **UI/UX**, I build **performant, pixel-perfect** applications that are both functional and visually appealing.  
-Always **learning**, always **iterating**, always pushing boundaries.  
+I'm driven by the fundamental belief that computing is the most powerful tool for transformative change. From medicine to engineering, the most interesting challenges are being solved with code, and my passion lies in being part of that solution. I thrive on deconstructing complex problems and building elegant, effective software to solve them.
+
+Feel free to explore my projects to see my work in action, or check out my professional experience.
 `,
 } as const;
-
