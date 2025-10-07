@@ -5,7 +5,8 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const htmlContent = new Marked().parse(content);
+  // This function now correctly parses the markdown content as a flat list
+  const htmlContent = new Marked().parse(content.split('\n').map(line => line.trim()).join('\n'));
 
   return (
     <li className="list-none not-last:border-b">
@@ -14,8 +15,9 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        <div className="text-sm">
-          <strong>{title}:</strong> {description}
+        {/* The font size is now consistent */}
+        <div className="text-base">
+          <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -113,7 +115,7 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4 text-sm">
+            <div className="prose min-w-full pt-4 text-base">
               <ul>
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
                 <ul>
