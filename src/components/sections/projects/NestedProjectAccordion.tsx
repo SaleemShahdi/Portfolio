@@ -14,7 +14,7 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        <div className="text-sm">
+        <div className="text-sm font-medium">
           <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
@@ -38,8 +38,10 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* This div now has specific, consistent styling and no 'prose' class */}
-            <div className="pb-4 text-sm leading-7" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            <div 
+              className="pl-4 pb-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5"
+              dangerouslySetInnerHTML={{ __html: htmlContent }} 
+            />
           </motion.div>
         )}
       </AnimatePresence>
@@ -62,8 +64,7 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    // This now correctly formats the content as a proper markdown list
-    const content = lines.slice(1).join('\n');
+    const content = lines.slice(1).join('\n').trim();
 
     return { title, description, content };
   });
@@ -115,8 +116,7 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* The main content now uses specific styling for consistency */}
-            <div className="pt-4 text-sm leading-7">
+            <div className="prose min-w-full pt-4 text-sm">
               <ul>
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
                   {subProjects.map(sub => (
