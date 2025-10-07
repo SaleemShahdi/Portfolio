@@ -5,8 +5,7 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // This function now correctly parses the markdown content as a flat list
-  const htmlContent = new Marked().parse(content.split('\n').map(line => line.trim()).join('\n'));
+  const htmlContent = new Marked().parse(content);
 
   return (
     <li className="list-none not-last:border-b">
@@ -15,7 +14,6 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* The font size is now consistent */}
         <div className="text-base">
           <strong className="font-semibold">{title}:</strong> {description}
         </div>
@@ -40,7 +38,7 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            <div className="prose prose-sm pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            <div className="prose pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </motion.div>
         )}
       </AnimatePresence>
