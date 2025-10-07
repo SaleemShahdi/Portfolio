@@ -5,6 +5,7 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
+  // This now correctly parses the multi-line markdown content
   const htmlContent = new Marked().parse(content);
 
   return (
@@ -38,6 +39,7 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
+            {/* I've removed the `prose-sm` class to ensure consistent typography */}
             <div className="prose pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </motion.div>
         )}
