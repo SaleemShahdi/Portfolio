@@ -5,17 +5,15 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // This function now correctly parses the multi-line markdown content
   const htmlContent = new Marked().parse(content);
 
   return (
-    <div className="w-full not-last:border-b">
+    <li className="list-none not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* The font size is now consistent */}
         <div className="text-sm">
           <strong className="font-semibold">{title}:</strong> {description}
         </div>
@@ -40,12 +38,12 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* I've removed the `prose-sm` and added `pl-4` to align it correctly */}
-            <div className="prose pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
+            {/* The content is now wrapped in a div with specific, consistent styling */}
+            <div className="pb-4 text-sm leading-7" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+    </li>
   );
 };
 
@@ -64,8 +62,7 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    // This now correctly formats the content as a proper markdown list
-    const content = lines.slice(1).map(line => line.trim()).join('\n');
+    const content = lines.slice(1).join('\n').trim();
 
     return { title, description, content };
   });
@@ -120,7 +117,6 @@ export function NestedProjectAccordion({ project }) {
             <div className="prose min-w-full pt-4 text-sm">
               <ul>
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
-                  {/* This is the key change to fix the nesting issue */}
                   {subProjects.map(sub => (
                     <li className="list-none p-0 my-2">
                       <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
