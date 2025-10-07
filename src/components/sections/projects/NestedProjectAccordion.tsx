@@ -38,7 +38,7 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* The content is now wrapped in a div with specific, consistent styling */}
+            {/* This div now has specific, consistent styling and no 'prose' class */}
             <div className="pb-4 text-sm leading-7" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </motion.div>
         )}
@@ -62,7 +62,8 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    const content = lines.slice(1).join('\n').trim();
+    // This now correctly formats the content as a proper markdown list
+    const content = lines.slice(1).join('\n');
 
     return { title, description, content };
   });
@@ -114,7 +115,8 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4 text-sm">
+            {/* The main content now uses specific styling for consistency */}
+            <div className="pt-4 text-sm leading-7">
               <ul>
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
                   {subProjects.map(sub => (
