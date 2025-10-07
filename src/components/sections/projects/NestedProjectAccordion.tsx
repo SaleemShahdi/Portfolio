@@ -5,17 +5,18 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // This now correctly parses the multi-line markdown content
+  // This function now correctly parses the multi-line markdown content
   const htmlContent = new Marked().parse(content);
 
   return (
-    <li className="list-none not-last:border-b">
+    <div className="w-full not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        <div className="text-base">
+        {/* The font size is now consistent */}
+        <div className="text-sm">
           <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
@@ -39,12 +40,12 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* I've removed the `prose-sm` class to ensure consistent typography */}
+            {/* I've removed the `prose-sm` and added `pl-4` to align it correctly */}
             <div className="prose pb-4 pl-4" dangerouslySetInnerHTML={{ __html: htmlContent }} />
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </div>
   );
 };
 
@@ -63,7 +64,8 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    const content = lines.slice(1).join('\n').trim();
+    // This now correctly formats the content as a proper markdown list
+    const content = lines.slice(1).map(line => line.trim()).join('\n');
 
     return { title, description, content };
   });
@@ -115,12 +117,15 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4 text-base">
+            <div className="prose min-w-full pt-4 text-sm">
               <ul>
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
-                <ul>
-                  {subProjects.map(sub => <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />)}
-                </ul>
+                  {/* This is the key change to fix the nesting issue */}
+                  {subProjects.map(sub => (
+                    <li className="list-none p-0 my-2">
+                      <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
+                    </li>
+                  ))}
                 <li dangerouslySetInnerHTML={{ __html: outro }} />
               </ul>
             </div>
