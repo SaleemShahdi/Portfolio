@@ -14,7 +14,8 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        <div className="text-sm font-medium">
+        {/* The font size is now explicitly set to be consistent */}
+        <div className="text-sm">
           <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
@@ -38,8 +39,9 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
+            {/* This div now has specific, consistent styling for lists and typography */}
             <div 
-              className="pl-4 pb-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5"
+              className="pb-4 pl-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5"
               dangerouslySetInnerHTML={{ __html: htmlContent }} 
             />
           </motion.div>
@@ -116,8 +118,9 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4 text-sm">
-              <ul>
+            {/* The main content now also uses specific, consistent styling */}
+            <div className="pt-4 text-sm leading-7">
+              <ul className="list-disc pl-5">
                 <li dangerouslySetInnerHTML={{ __html: intro }} />
                   {subProjects.map(sub => (
                     <li className="list-none p-0 my-2">
