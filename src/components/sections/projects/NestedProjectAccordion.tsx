@@ -14,10 +14,9 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* CORRECTED: Font size is now text-lg to match the parent accordions */}
-        <div className="text-lg">
-          <strong className="font-semibold">{title}:</strong>
-          <span className="text-sm font-normal"> {description}</span>
+        {/* CORRECTED: Font size now matches the main body text (text-sm) for consistency. */}
+        <div className="text-sm">
+          <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -40,8 +39,9 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
+            {/* CORRECTED: Explicitly controlling list style to prevent unwanted nesting from prose styles. */}
             <div
-              className="prose prose-sm max-w-none pb-4 pl-4"
+              className="pb-4 pl-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
