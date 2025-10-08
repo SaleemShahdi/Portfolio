@@ -5,19 +5,19 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const htmlContent = new Marked().parse(content.trim());
+  const htmlContent = new Marked().parse(content);
 
   return (
+    // Each SubAccordion is a list item
     <li className="list-none not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* CORRECTED: Font size is now text-lg to match the parent accordions */}
-        <div className="text-lg">
-          <strong className="font-semibold">{title}:</strong>
-          <span className="text-sm font-normal"> {description}</span>
+        {/* CORRECTED: No explicit font-size class. It will now inherit the correct size. */}
+        <div>
+          <strong className="font-semibold">{title}:</strong> {description}
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -40,8 +40,9 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
+            {/* CORRECTED: Overrides prose list styles to ensure flat lists */}
             <div
-              className="prose prose-sm max-w-none pb-4 pl-4"
+              className="prose min-w-full pb-4 pl-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
@@ -61,10 +62,10 @@ export function NestedProjectAccordion({ project }) {
   const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
     const lines = part.trim().split('\n');
     const titleLine = lines[0] || '';
-
+    
     const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-
+    
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
     const content = lines.slice(1).join('\n').trim();
 
@@ -94,7 +95,7 @@ export function NestedProjectAccordion({ project }) {
             </motion.div>
           </div>
         </div>
-
+        
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -118,19 +119,16 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose prose-sm max-w-none pt-4">
-              <div dangerouslySetInnerHTML={{ __html: intro }} />
-            </div>
-
+            {/* CORRECTED: Proper structure using divs for text and ul for the list of accordions */}
+            <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
+            
             <ul className="list-none p-0 pt-4">
               {subProjects.map(sub => (
-                  <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
+                <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
               ))}
             </ul>
 
-            <div className="prose prose-sm max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: outro }} />
-            </div>
+            <div className="prose min-w-full" dangerouslySetInnerHTML={{ __html: outro }} />
 
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
