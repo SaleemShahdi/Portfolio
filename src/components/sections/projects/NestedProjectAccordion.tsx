@@ -5,7 +5,7 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const htmlContent = new Marked().parse(content);
+  const htmlContent = new Marked().parse(content.trim());
 
   return (
     <li className="list-none not-last:border-b">
@@ -14,9 +14,10 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* The font size is now explicitly set to be consistent */}
-        <div className="text-sm">
-          <strong className="font-semibold">{title}:</strong> {description}
+        {/* CORRECTED: Font size is now text-lg to match the parent accordions */}
+        <div className="text-lg">
+          <strong className="font-semibold">{title}:</strong>
+          <span className="text-sm font-normal"> {description}</span>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -39,10 +40,9 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* This div now has specific, consistent styling for lists and typography */}
-            <div 
-              className="pb-4 pl-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5"
-              dangerouslySetInnerHTML={{ __html: htmlContent }} 
+            <div
+              className="prose prose-sm max-w-none pb-4 pl-4"
+              dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
@@ -61,10 +61,10 @@ export function NestedProjectAccordion({ project }) {
   const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
     const lines = part.trim().split('\n');
     const titleLine = lines[0] || '';
-    
+
     const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-    
+
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
     const content = lines.slice(1).join('\n').trim();
 
@@ -72,7 +72,7 @@ export function NestedProjectAccordion({ project }) {
   });
 
   return (
-    <div className="project-item group w-full flex-col p-4 not-last:border-b">
+    <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
        <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
@@ -83,7 +83,7 @@ export function NestedProjectAccordion({ project }) {
             {project.data.name}
           </h3>
           <div className="flex items-center">
-            <span className="text-xs font-medium text-primary mr-2">
+            <span className="mr-2 text-xs font-medium text-primary">
               {isOpen ? "Show less" : "Show more"}
             </span>
             <motion.div
@@ -94,7 +94,7 @@ export function NestedProjectAccordion({ project }) {
             </motion.div>
           </div>
         </div>
-        
+
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -118,17 +118,18 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* The main content now also uses specific, consistent styling */}
-            <div className="pt-4 text-sm leading-7">
-              <ul className="list-disc pl-5">
-                <li dangerouslySetInnerHTML={{ __html: intro }} />
-                  {subProjects.map(sub => (
-                    <li className="list-none p-0 my-2">
-                      <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
-                    </li>
-                  ))}
-                <li dangerouslySetInnerHTML={{ __html: outro }} />
-              </ul>
+            <div className="prose prose-sm max-w-none pt-4">
+              <div dangerouslySetInnerHTML={{ __html: intro }} />
+            </div>
+
+            <ul className="list-none p-0 pt-4">
+              {subProjects.map(sub => (
+                  <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
+              ))}
+            </ul>
+
+            <div className="prose prose-sm max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: outro }} />
             </div>
 
             <div className="mt-4 flex gap-4">
