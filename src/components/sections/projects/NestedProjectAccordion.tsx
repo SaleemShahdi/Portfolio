@@ -8,7 +8,6 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content.trim());
 
   return (
-    // This is now a fragment, as it will be wrapped in an <li> by the parent
     <>
       <motion.header
         initial={false}
@@ -119,10 +118,10 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: Reinstated the proper Paragraph > List > Paragraph structure */}
             <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
             
-            <ul className="prose min-w-full list-none p-0 pt-4">
+            {/* CORRECTED: Removed list-none and p-0, added list-disc and pl-5 for proper bullet points */}
+            <ul className="prose min-w-full list-disc pl-5 pt-4">
               {subProjects.map(sub => (
                 <li className="not-first:border-t" key={sub.title}>
                   <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
