@@ -16,7 +16,9 @@ const SubAccordion = ({ title, description, content }) => {
       >
         {/* CORRECTED: Removed all classes. It will inherit from the parent prose class. */}
         <div>
-          <strong className="font-semibold">{title}:</strong> {description}
+          <p className="m-0">
+            <strong className="font-semibold">{title}:</strong> {description}
+          </p>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
