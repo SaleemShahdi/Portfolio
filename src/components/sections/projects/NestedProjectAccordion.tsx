@@ -5,19 +5,19 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const htmlContent = new Marked().parse(content.trim());
+  const htmlContent = new Marked().parse(content);
 
   return (
-    <>
+    <li className="list-none not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
         <div className="prose">
-            <p className="m-0">
-                <strong className="font-semibold">{title}:</strong> {description}
-            </p>
+          <p className="m-0">
+            <strong className="font-semibold">{title}:</strong> {description}
+          </p>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -40,6 +40,7 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
+            {/* CORRECTED: Applied consistent prose classes for proper styling */}
             <div
               className="prose min-w-full pb-4 pl-4"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
@@ -47,7 +48,7 @@ const SubAccordion = ({ title, description, content }) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </li>
   );
 };
 
@@ -120,7 +121,6 @@ export function NestedProjectAccordion({ project }) {
           >
             <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
             
-            {/* CORRECTED: Removed list-none and p-0, added list-disc and pl-5 for proper bullet points */}
             <ul className="prose min-w-full list-disc pl-5 pt-4">
               {subProjects.map(sub => (
                 <li className="not-first:border-t" key={sub.title}>
