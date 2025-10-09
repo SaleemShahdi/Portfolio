@@ -5,19 +5,20 @@ import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const htmlContent = new Marked().parse(content);
+  const htmlContent = new Marked().parse(content.trim());
 
   return (
-    // Each SubAccordion is a list item
-    <li className="list-none not-last:border-b">
+    // This is now a fragment, as it will be wrapped in an <li> by the parent
+    <>
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* CORRECTED: No explicit font-size class. It will now inherit the correct size. */}
-        <div>
-          <strong className="font-semibold">{title}:</strong> {description}
+        <div className="prose">
+            <p className="m-0">
+                <strong className="font-semibold">{title}:</strong> {description}
+            </p>
         </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
@@ -40,15 +41,14 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: Overrides prose list styles to ensure flat lists */}
             <div
-              className="prose min-w-full pb-4 pl-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2"
+              className="prose min-w-full pb-4 pl-4"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </>
   );
 };
 
@@ -119,12 +119,14 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: Proper structure using divs for text and ul for the list of accordions */}
+            {/* CORRECTED: Reinstated the proper Paragraph > List > Paragraph structure */}
             <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
             
-            <ul className="list-none p-0 pt-4">
+            <ul className="prose min-w-full list-none p-0 pt-4">
               {subProjects.map(sub => (
-                <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
+                <li className="not-first:border-t" key={sub.title}>
+                  <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
+                </li>
               ))}
             </ul>
 
