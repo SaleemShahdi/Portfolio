@@ -43,7 +43,7 @@ const SubAccordion = ({ title, description, content }) => {
           >
             {/* CORRECTED: Removed all classes to let it inherit styles correctly. */}
             <div
-              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_ul_li+li]:!pl-0"
+              className="pb-4 pl-4 text-sm leading-7 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
