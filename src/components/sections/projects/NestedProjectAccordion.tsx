@@ -14,6 +14,7 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
+        {/* This is now clean, without extra classes */}
         <div>
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
@@ -40,9 +41,8 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* FINAL FIX: This removes the nested prose class and applies specific, targeted overrides */}
+            {/* This is now clean. The new mdx.css rules will style it. */}
             <div
-              className="min-w-full pb-4 pl-4 [&_p]:leading-8 [&_ul]:!m-0 [&_ul]:!p-0 [&_li]:!pl-5"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
