@@ -35,22 +35,4 @@
   pre > code {
     white-space: pre;
   }
-
-/* ===== FIX FOR NESTED ACCORDION ===== */
-/* Target the list items that wrap each sub-accordion and remove the extra vertical space */
-.prose ul>li.not-first\\:border-t {
-  @apply my-0;
-}
-
-/* Target the nested list rendered from markdown inside the sub-accordion body */
-.prose li>div>ul {
-  /* Remove the top margin that creates a gap */
-  @apply mt-0;
-}
-
-/* Target any list item that follows another one inside that nested list */
-.prose li>div>ul>li+li {
-  /* Forcefully remove the extra indentation and top margin that prose adds */
-  @apply !mt-0 !pl-0;
-}
 }
