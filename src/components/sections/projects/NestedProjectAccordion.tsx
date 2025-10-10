@@ -14,7 +14,6 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
-        {/* CORRECTED: Removed all classes. It will inherit from the parent prose class. */}
         <div>
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
@@ -41,9 +40,9 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: Removed all classes to let it inherit styles correctly. */}
+            {/* FINAL FIX: This removes the nested prose class and applies specific, targeted overrides */}
             <div
-              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_ul_li+li]:!pl-0"
+              className="min-w-full pb-4 pl-4 [&_p]:leading-8 [&_ul]:!m-0 [&_ul]:!p-0 [&_li]:!pl-5"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
