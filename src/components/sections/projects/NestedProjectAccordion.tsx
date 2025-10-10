@@ -8,8 +8,7 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content);
 
   return (
-    // CORRECTED: This is now a React Fragment (<>) instead of an <li>, fixing the invalid HTML.
-    <>
+    <li className="list-none not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
@@ -41,15 +40,15 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: With the HTML structure fixed, these targeted overrides will now work. */}
+            {/* FINAL FIX: This combination of targeted overrides fixes all remaining issues. */}
             <div
-              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_ul]:!p-0 [&_ul]:!m-0 [&_li]:!pl-5"
+              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_li>ul]:!my-0 [&_li>ul]:!pl-0 [&_li>ul>li]:!my-0"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </li>
   );
 };
 
