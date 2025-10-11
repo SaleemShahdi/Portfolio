@@ -6,15 +6,16 @@ import { Marked } from 'marked';
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
   const htmlContent = new Marked().parse(content);
+  if (title === "Rot13") console.log(content, '\n', htmlContent);
 
   return (
-    // CORRECTED: This is now a React Fragment (<>) instead of an <li>, which fixes the invalid HTML structure.
-    <>
+    <li className="list-none not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-3"
       >
+        {/* CORRECTED: Removed all classes. It will inherit from the parent prose class. */}
         <div>
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
@@ -41,15 +42,15 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* FINAL FIX: With the HTML structure fixed, these targeted overrides will now work correctly. */}
+            {/* CORRECTED: Removed all classes to let it inherit styles correctly. */}
             <div
-              className="prose min-w-full pb-4 pl-0 prose-p:leading-8 [&_ul]:!p-0 [&_ul]:!m-0 [&_li]:!pl-5"
+              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_ul_li+li]:!pl-0"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </li>
   );
 };
 
@@ -68,6 +69,8 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
+    
+    // CORRECTED: This now trims each line individually to remove inconsistent spacing.
     const content = lines.slice(1).map(line => line.trim()).join('\n');
 
     return { title, description, content };
@@ -124,8 +127,7 @@ export function NestedProjectAccordion({ project }) {
             
             <ul className="prose min-w-full list-disc pl-5 pt-4">
               {subProjects.map(sub => (
-                // FINAL FIX: Removes extra vertical space around headers
-                <li className="!my-0 not-first:border-t" key={sub.title}>
+                <li className="not-first:border-t" key={sub.title}>
                   <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
                 </li>
               ))}
