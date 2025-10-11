@@ -13,7 +13,7 @@ const SubAccordion = ({ title, description, content }) => {
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex cursor-pointer items-center justify-between py-3"
+        className="flex cursor-pointer items-center justify-between py-2"
       >
         {/* CORRECTED: Removed all classes. It will inherit from the parent prose class. */}
         <div>
@@ -44,7 +44,7 @@ const SubAccordion = ({ title, description, content }) => {
           >
             {/* CORRECTED: Removed all classes to let it inherit styles correctly. */}
             <div
-              className="prose min-w-full pb-4 pl-4 prose-p:leading-8 [&_ul_li+li]:!pl-0"
+              className="prose min-w-full pb-2 pl-4 prose-p:leading-8 prose-li:leading-8 [&_ul_li+li]:!pl-0"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
@@ -125,7 +125,7 @@ export function NestedProjectAccordion({ project }) {
           >
             <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
             
-            <ul className="prose min-w-full list-disc pl-5 pt-4">
+            <ul className="prose min-w-full list-disc pl-5 pt-2">
               {subProjects.map(sub => (
                 <li className="not-first:border-t" key={sub.title}>
                   <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
