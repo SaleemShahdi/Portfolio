@@ -69,7 +69,9 @@ export function NestedProjectAccordion({ project }) {
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    const content = lines.slice(1).join('\n').trim();
+    
+    // CORRECTED: This now trims each line individually to remove inconsistent spacing.
+    const content = lines.slice(1).map(line => line.trim()).join('\n');
 
     return { title, description, content };
   });
