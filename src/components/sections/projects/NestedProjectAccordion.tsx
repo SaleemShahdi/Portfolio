@@ -6,7 +6,7 @@ import { Marked } from 'marked';
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
   const htmlContent = new Marked().parse(content);
-  if (title === "Rot13") console.log(htmlContent);
+  if (title === "Rot13") console.log(content, '\n', htmlContent);
 
   return (
     <li className="list-none not-last:border-b">
