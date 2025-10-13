@@ -129,7 +129,7 @@ export function NestedProjectAccordion({ project }) {
             </ul>
 
             <div className="prose min-w-full pt-1" dangerouslySetInnerHTML={{ __html: outro }} />
-a
+
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
                 <a href={project.data.sourceCode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
