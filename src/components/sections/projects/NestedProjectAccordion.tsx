@@ -8,17 +8,17 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content);
 
   return (
-    <>
+    <li className="py-2 not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between"
       >
-        <div>
+        <div className="prose">
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
           </p>
-        </div>
+          </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
@@ -41,13 +41,13 @@ const SubAccordion = ({ title, description, content }) => {
             className="overflow-hidden"
           >
             <div
-              className="prose min-w-full pt-1.5 prose-p:leading-8 prose-li:leading-8"
+              className="prose min-w-full prose-li:leading-8"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </li>
   );
 };
 
@@ -119,18 +119,17 @@ export function NestedProjectAccordion({ project }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            <div className="prose min-w-full pt-4" dangerouslySetInnerHTML={{ __html: intro }} />
+            <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
             
-            <ul className="prose min-w-full list-disc pl-5 pt-2">
+            {/* THE CHANGE IS HERE: Removed 'prose' and 'pt-2' from this <ul> */}
+            <ul className="prose min-w-full list-disc pl-5">
               {subProjects.map(sub => (
-                <li className="py-1.5 not-last:border-b" key={sub.title}>
-                  <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
-                </li>
+                <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
               ))}
             </ul>
 
-            <div className="prose min-w-full" dangerouslySetInnerHTML={{ __html: outro }} />
-
+            <div className="prose min-w-full pt-1" dangerouslySetInnerHTML={{ __html: outro }} />
+a
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
                 <a href={project.data.sourceCode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
