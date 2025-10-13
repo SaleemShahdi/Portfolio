@@ -42,7 +42,7 @@ const SubAccordion = ({ title, description, content }) => {
             className="overflow-hidden"
           >
             <div
-              className="prose min-w-full pb-2 pl-4 prose-p:leading-8 prose-li:leading-8"
+              className="prose min-w-full pb-2 prose-p:leading-8 prose-li:leading-8"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
