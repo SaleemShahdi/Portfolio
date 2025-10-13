@@ -8,11 +8,11 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content);
 
   return (
-    <li className="list-none py-1.5 not-last:border-b">
+    <li className="list-none not-first:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex cursor-pointer items-center justify-between"
+        className="flex cursor-pointer items-center justify-between py-1.5"
       >
         <div>
           <p className="m-0">
@@ -41,7 +41,7 @@ const SubAccordion = ({ title, description, content }) => {
             className="overflow-hidden"
           >
             <div
-              className="prose min-w-full pt-2 prose-p:leading-8 prose-li:leading-8"
+              className="prose min-w-full pt-1.5 prose-p:leading-8 prose-li:leading-8"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
