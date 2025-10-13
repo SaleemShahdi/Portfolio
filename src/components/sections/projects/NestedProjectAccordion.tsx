@@ -15,7 +15,6 @@ const SubAccordion = ({ title, description, content }) => {
         onClick={() => setIsOpen(!isOpen)}
         className="flex cursor-pointer items-center justify-between py-2"
       >
-        {/* CORRECTED: Removed all classes. It will inherit from the parent prose class. */}
         <div>
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
@@ -42,9 +41,8 @@ const SubAccordion = ({ title, description, content }) => {
             transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
-            {/* CORRECTED: Removed all classes to let it inherit styles correctly. */}
             <div
-              className="prose min-w-full pb-2 pl-4 prose-p:leading-8 prose-li:leading-8 [&_ul_li+li]:!pl-0"
+              className="prose min-w-full pb-2 pl-4 prose-p:leading-8 prose-li:leading-8"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
@@ -70,7 +68,6 @@ export function NestedProjectAccordion({ project }) {
     
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
     
-    // CORRECTED: This now trims each line individually to remove inconsistent spacing.
     const content = lines.slice(1).map(line => line.trim()).join('\n');
 
     return { title, description, content };
