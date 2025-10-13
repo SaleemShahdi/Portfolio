@@ -8,7 +8,7 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content);
 
   return (
-    <>
+    <li className="list-none py-1.5 not-last:border-b">
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
@@ -47,7 +47,7 @@ const SubAccordion = ({ title, description, content }) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </li>
   );
 };
 
@@ -123,9 +123,7 @@ export function NestedProjectAccordion({ project }) {
             
             <ul className="prose min-w-full list-disc pl-5 pt-2">
               {subProjects.map(sub => (
-                <li className="py-2 not-first:border-t" key={sub.title}>
-                  <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
-                </li>
+                <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
               ))}
             </ul>
 
