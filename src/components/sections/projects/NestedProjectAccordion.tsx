@@ -6,14 +6,13 @@ import { Marked } from 'marked';
 const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
   const htmlContent = new Marked().parse(content);
-  if (title === "Rot13") console.log(content, '\n', htmlContent);
 
   return (
-    <li className="list-none not-last:border-b">
+    <>
       <motion.header
         initial={false}
         onClick={() => setIsOpen(!isOpen)}
-        className="flex cursor-pointer items-center justify-between py-2"
+        className="flex cursor-pointer items-center justify-between"
       >
         <div>
           <p className="m-0">
@@ -42,13 +41,13 @@ const SubAccordion = ({ title, description, content }) => {
             className="overflow-hidden"
           >
             <div
-              className="prose min-w-full pb-2 prose-p:leading-8 prose-li:leading-8"
+              className="prose min-w-full pt-2 prose-p:leading-8 prose-li:leading-8"
               dangerouslySetInnerHTML={{ __html: htmlContent }}
             />
           </motion.div>
         )}
       </AnimatePresence>
-    </li>
+    </>
   );
 };
 
@@ -124,7 +123,7 @@ export function NestedProjectAccordion({ project }) {
             
             <ul className="prose min-w-full list-disc pl-5 pt-2">
               {subProjects.map(sub => (
-                <li className="not-first:border-t" key={sub.title}>
+                <li className="py-2 not-first:border-t" key={sub.title}>
                   <SubAccordion title={sub.title} description={sub.description} content={sub.content} />
                 </li>
               ))}
