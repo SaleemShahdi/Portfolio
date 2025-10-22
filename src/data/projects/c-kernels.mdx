@@ -1,0 +1,23 @@
+---
+name: "C Kernels"
+type: core
+technologies:
+  - C
+  - Python
+  - ctypes
+  - Shared Objects (.so)
+  - Performance Optimization
+  - Image Processing
+  - YCbCr Color Space
+  - Makefiles
+  - GCC
+  - Linux
+  - Systems Programming
+sourceCode: "https://github.com/SaleemShahdi/SystemsProgramming_PA2"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a high-performance C kernel to accelerate a computationally intensive image processing task, demonstrating the ability to optimize Python code by offloading key operations to a low-level, compiled language.
+- Wrote a C function to convert images from RGB to the YCbCr color space, a common operation in video and digital image compression. The function processed a 1D array of pixel data, applying the standard ITU-R BT.601 conversion formula with floating-point arithmetic.
+- Compiled the C kernel into a shared object (.so file) with high-level optimizations (-O3 flag) and used Python's `ctypes` library to load and call the C function, passing data between the two language environments via pointers.
+- Implemented an equivalent pure-Python version of the same conversion algorithm to serve as a baseline, and conducted a performance analysis comparing the execution time of the C kernel versus the Python implementation, showcasing the significant speedup achieved by the C code.
+- Deepened experience in remote development by using Visual Studio Code to edit, compile, and debug C code directly on a Linux server, managing a more complex build process with a `makefile` to create a shared object library.
