@@ -1,0 +1,19 @@
+---
+name: "Chess"
+type: core
+technologies:
+  - Java
+  - Object-Oriented Design (OOD)
+  - Design Patterns
+  - Game Logic
+  - Algorithms
+  - Teamwork
+  - Software Methodology
+sourceCode: "https://github.com/SaleemShahdi/SoftwareMethodology_Assignment1"
+description: "" # Added empty description to satisfy schema
+---
+- Collaborated in a two-person team to develop a fully functional, two-player chess game in Java from scratch, focusing on a robust Object-Oriented design to model the game's complex rules, piece interactions, and board state. The application manages the complete game loop, parsing player moves from a text-based interface.
+- Championed the project's Object-Oriented architecture by designing the central abstract `Piece` class. This provided a polymorphic contract for unique move validation in each subclass, while also supplying shared helper methods that enabled effective integration of separately developed components.
+- Applied the Composition design principle to efficiently model the Queen's movement by creating internal `Rook` and `Bishop` instances to reuse their existing move logic, a strategy that reduced code duplication and simplified debugging.
+- Engineered a comprehensive rules engine capable of validating all standard moves and handling complex special cases, including castling, pawn promotion with piece selection, en passant captures, and the critical prevention of any move that would place the player's own king in check.
+- Took ownership of the game's most complex logic, refactoring the checkmate detection algorithm to use a systematic, simulation-based approach that tests all possible counter-moves. This design choice improved the code's robustness and was crucial for delivering the project successfully on schedule.
