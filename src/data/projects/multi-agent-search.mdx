@@ -1,0 +1,21 @@
+---
+name: "Multi-Agent Search"
+type: core
+technologies:
+  - Python
+  - Artificial Intelligence
+  - Multi-Agent Systems
+  - Adversarial Search
+  - Game Theory
+  - Minimax
+  - Alpha-Beta Pruning
+  - Expectimax
+  - Heuristics
+  - Evaluation Functions
+sourceCode: "https://github.com/SaleemShahdi/AI_Project3"
+description: "" # Added empty description to satisfy schema
+---
+- Designed and implemented several AI agents to play Pacman by applying adversarial search algorithms, enabling decision-making in a dynamic, multi-agent environment with competing goals between Pacman and the ghosts.
+- Implemented the recursive Minimax algorithm to find the optimal move by exploring the game tree, assuming an optimal ghost adversary. Subsequently optimized this search by implementing Alpha-Beta Pruning, which significantly reduced the number of explored states by pruning subtrees that could not influence the final decision.
+- Developed an Expectimax agent to model and play against non-optimal, probabilistic ghosts. This involved replacing MIN nodes in the game tree with chance nodes that calculate the expected value of ghost moves, leading to more practical, risk-tolerant agent behavior compared to the pessimistic Minimax approach.
+- Engineered a sophisticated heuristic evaluation function to score non-terminal game states. The function incorporated various features, such as distance to the nearest food, ghost positions, and scared ghost timers, to effectively guide the search agents toward high-scoring and winning states.
