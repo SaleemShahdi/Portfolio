@@ -1,0 +1,25 @@
+---
+name: "File Duplicate Detector"
+type: core
+technologies:
+  - C
+  - File System Traversal
+  - Hashing (MD5)
+  - Data Structures (Hash Tables)
+  - uthash.h
+  - Hard Links
+  - Symbolic Links
+  - dirent.h
+  - lstat
+  - Makefiles
+  - GCC
+  - Linux
+  - Systems Programming
+sourceCode: "https://github.com/SaleemShahdi/SystemsProgramming_PA3"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a command-line utility in C to recursively scan a file system sub-tree and identify duplicate files based on their content, as well as hard and soft links.
+- Implemented a recursive directory traversal algorithm using the `dirent.h` library to explore the file system graph, while using `lstat` to correctly identify and handle regular files, directories, and symbolic links without following links outside the target sub-tree.
+- Calculated a unique, content-based identifier for each file by reading its byte contents and computing an MD5 hash, allowing for efficient identification of files with identical content regardless of their name or location.
+- Designed and implemented a multi-level hash table data structure using the `uthash.h` library to group files. Files were first grouped by their MD5 hash, then subgrouped by their inode number to correctly identify and count hard links pointing to the same data block.
+- Gained experience structuring a more complex C application by separating function declarations into a header file (.h) from their implementations (.c), and deepened experience with remote development by using Visual Studio Code and a `makefile` on a Linux server.
