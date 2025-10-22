@@ -1,0 +1,21 @@
+---
+name: "Digital Logic"
+type: core
+technologies:
+  - C
+  - Digital Logic Simulation
+  - Directed Acyclic Graphs (DAG)
+  - Topological Sort
+  - Kahn's Algorithm
+  - Data Structures
+  - Parsing
+  - Memory Management
+  - Computer Architecture
+sourceCode: "https://github.com/SaleemShahdi/CompArch_PA4"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a digital logic simulator in C that processes a sequence of dependent logical operations from a custom circuit description file. The program models the circuit as a directed acyclic graph (DAG) in memory and generates a complete truth table by simulating the circuit's output for every possible input combination.
+- Solved the advanced challenge of out-of-order circuit descriptions by modeling the circuit as a dependency graph and implementing Kahn's algorithm for topological sorting. This is a crucial skill directly applicable to other real-world dependency-resolution problems like software build systems, project task scheduling, and academic course planning.
+- Designed a flexible data model to represent a variety of logic gates, including standard gates (AND, OR, NOT, etc.) and complex, variable-sized components like n-to-2^n DECODERs and 2^n-to-1 MULTIPLEXERs.
+- Created a robust parser using `fscanf` to read the token-based language, mapping symbolic variable names to integer IDs for efficient processing, and meticulously managed memory for all dynamically allocated data structures.
+- Conducted all development remotely on a university-provided Linux server, utilizing the command-line toolchain (GCC, Makefiles) for all compilation, execution, and testing in a standard Unix environment.

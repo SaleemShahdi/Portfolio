@@ -59,8 +59,8 @@ export function ProjectAccordion({ project, renderedContent }) {
             transition={{ duration: 0.5, ease: "easeInOut" }}
             className="overflow-hidden"
           >
-            {/* Added prose-li:leading-8 here for consistent line spacing */}
-            <div className="prose prose-li:leading-8 min-w-full pt-4">
+            {/* Removed pt-1 class here */}
+            <div className="prose prose-li:leading-8 min-w-full">
               <MarkdownContent htmlContent={renderedContent} />
             </div>
 
