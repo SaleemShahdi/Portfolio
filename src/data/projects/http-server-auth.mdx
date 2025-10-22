@@ -1,0 +1,23 @@
+---
+name: "HTTP Server With Authentication"
+type: core
+technologies:
+  - Python
+  - HTTP Server
+  - Network Programming
+  - GET/POST Requests
+  - HTTP Headers
+  - Authentication
+  - Session Management
+  - Cookies
+  - Data Persistence
+  - Data Parsing
+  - Internet Technology
+sourceCode: "https://github.com/SaleemShahdi/IT_Project3"
+description: "" # Added empty description to satisfy schema
+---
+- Built the core application logic for an HTTP server in Python, extending a starter framework to handle GET and POST requests, parse HTTP headers, and manage user authentication through both password-based login and persistent cookie-based sessions.
+- Designed and implemented a dedicated `Database` class to encapsulate all user data management, reading credentials and secrets from text files into an in-memory dictionary. This modular design simplified the main server logic and improved code organization.
+- Implemented the server's logic to parse raw HTTP POST request bodies to extract username and password credentials. Authenticated users against the `Database` object and served protected content upon success, or an error page upon failure.
+- Engineered a full cookie-based session management system. Upon successful login, the server generated a unique 64-bit random token, sent it to the client via a `Set-Cookie` header, and stored it in an in-memory dictionary to validate future requests.
+- Created a logout functionality that correctly cleared the client's session by sending back a `Set-Cookie` header with an expiry date in the past, effectively invalidating the session token.
