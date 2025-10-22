@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Github } from 'lucide-react';
+// Added ExternalLink to the import
+import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
 const SubAccordion = ({ title, description, content }) => {
@@ -61,12 +62,12 @@ export function NestedProjectAccordion({ project }) {
   const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
     const lines = part.trim().split('\n');
     const titleLine = lines[0] || '';
-    
+
     const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-    
+
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-    
+
     const content = lines.slice(1).map(line => line.trim()).join('\n');
 
     return { title, description, content };
@@ -95,7 +96,7 @@ export function NestedProjectAccordion({ project }) {
             </motion.div>
           </div>
         </div>
-        
+
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -120,7 +121,7 @@ export function NestedProjectAccordion({ project }) {
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
-            
+
             {/* THE CHANGE IS HERE: Removed 'prose' and 'pt-2' from this <ul> */}
             <ul className="prose min-w-full list-disc pl-5">
               {subProjects.map(sub => (
@@ -132,9 +133,17 @@ export function NestedProjectAccordion({ project }) {
 
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
-                <a href={project.data.sourceCode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                <a
+                  href={project.data.sourceCode}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  // Original classes with hover:underline
+                  className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
                   <Github className="size-4" />
                   Source Code
+                  {/* Added ExternalLink icon */}
+                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
                 </a>
               )}
             </div>

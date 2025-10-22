@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 
 // This is a helper component to render the markdown content
@@ -33,7 +34,7 @@ export function ProjectAccordion({ project, renderedContent }) {
             </motion.div>
           </div>
         </div>
-        
+
         {/* Technologies are now always visible */}
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
@@ -64,15 +65,31 @@ export function ProjectAccordion({ project, renderedContent }) {
 
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
-                <a href={project.data.sourceCode} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+                <a
+                  href={project.data.sourceCode}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  // Original classes with hover:underline
+                  className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
                   <Github className="size-4" />
                   Source Code
+                  {/* Added ExternalLink icon */}
+                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
                 </a>
               )}
               {project.data.preview && (
-                <a href={project.data.preview} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-sm font-medium text-primary hover:underline">
-                  <ExternalLink className="size-4" />
+                <a
+                  href={project.data.preview}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  // Original classes with hover:underline
+                  className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+                >
+                  <ExternalLink className="size-4" /> {/* Kept original icon for demo */}
                   Live Demo
+                  {/* Added ExternalLink icon */}
+                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
                 </a>
               )}
             </div>
