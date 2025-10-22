@@ -1,0 +1,27 @@
+---
+name: "Memory Cache Daemon"
+type: core
+technologies:
+  - C
+  - Multi-threading (pthreads)
+  - Concurrency
+  - Synchronization (Mutexes)
+  - Socket Programming
+  - TCP/IP
+  - Client-Server Architecture
+  - Custom Binary Protocols
+  - Data Parsing
+  - Key-Value Store
+  - Caching
+  - Makefiles
+  - GCC
+  - Linux
+  - Systems Programming
+sourceCode: "https://github.com/SaleemShahdi/SystemsProgramming_PA4"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a high-performance, multi-threaded memory cache server in C, designed to act as a networked key-value store for binary large objects (BLOBs), similar in concept to memcached.
+- Implemented the server's networking layer using the TCP socket API to listen for and accept multiple simultaneous client connections. Utilized a pool of worker threads (`pthreads`) to process client requests concurrently, maximizing throughput.
+- Engineered a thread-safe data store by implementing synchronization primitives (a global `pthread_mutex_t` for the hash table and individual mutexes for each entry) to manage access to the shared data. This ensured data integrity during concurrent GET, SET, ADD, and DELETE operations from different client threads.
+- Wrote a complete parser for a custom binary protocol based on the memcached format, reading a fixed-length header to determine message details (opcode, key length, body length) and then processing the key and value data from the TCP stream.
+- Further honed remote development skills on a Linux server by using Visual Studio Code to build and debug a multi-threaded C application, configuring the `makefile` to link against necessary libraries like `pthread` for concurrency.
