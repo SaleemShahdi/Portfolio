@@ -1,0 +1,24 @@
+---
+name: "Set up Your Own IP Network"
+type: core
+technologies:
+  - Python
+  - IP Networking
+  - Mininet
+  - Virtualization
+  - Linux Networking (ip addr, ip route)
+  - Routing
+  - Subnetting
+  - NAT
+  - Port Forwarding
+  - SSH
+  - Troubleshooting
+  - Internet Technology
+sourceCode: "https://github.com/SaleemShahdi/InternetTechnology_Project4"
+description: "" # Added empty description to satisfy schema
+---
+- Individually configured a complete IP network from scratch within a Mininet virtualized environment, demonstrating a practical understanding of network setup, routing, and troubleshooting. The final topology consisted of four hosts and a central router with full end-to-end connectivity.
+- Overcame significant environmental challenges by systematically troubleshooting and resolving complex SSH and file-sharing issues between the host OS and the Mininet virtual machine. This involved diagnosing problems with the minimal VM installation and successfully configuring a NAT network adapter with port forwarding to establish a stable connection for development and testing.
+- Utilized the `ip addr add` command to manually assign specific IP addresses to all 8 virtual network interfaces across the four hosts and the router, creating two distinct subnets within the virtualized environment.
+- Engineered the network's routing logic using the `ip route add` command, which included setting a default gateway on each host and programming the router's forwarding table with specific routes to enable full communication between all nodes.
+- Verified the complete network configuration and end-to-end connectivity using standard Linux networking utilities, performing successful `ping` and `traceroute` tests between all host pairs to confirm that the routing logic was implemented correctly.
