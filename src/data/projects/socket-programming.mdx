@@ -1,0 +1,19 @@
+---
+name: "Socket Programming"
+type: core
+technologies:
+  - Python
+  - Socket Programming
+  - TCP/IP
+  - Network Programming
+  - Client-Server Architecture
+  - Data Serialization (UTF-8)
+  - File I/O
+  - Internet Technology
+sourceCode: "https://github.com/SaleemShahdi/InternetTechnology_Project1"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a client-server application in Python to demonstrate fundamental network programming concepts using the socket API, refactoring an initial multi-threaded program into distinct client.py and server.py applications that communicate over a TCP connection.
+- Implemented the core server logic to listen for and accept a client connection, then receive a data stream, parse it into individual lines, and perform a transformation (reversing the string and swapping its case) on each line before sending a response.
+- Built the client application to read all lines from a local input file, concatenate them into a single string, and send the entire block to the server in one transmission before waiting for the transformed response.
+- Managed the end-to-end data flow, including data serialization for network transport (encoding/decoding strings to UTF-8) and file I/O, with the client reading from `in-proj.txt` and the server writing the final output to `out-proj.txt`.
