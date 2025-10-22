@@ -1,0 +1,23 @@
+---
+name: "Advanced C Kernel"
+type: core
+technologies:
+  - C
+  - Python
+  - ctypes
+  - Shared Objects (.so)
+  - Performance Optimization
+  - Machine Learning
+  - K-means Clustering
+  - Image Processing
+  - Makefiles
+  - GCC
+  - Linux
+  - Systems Programming
+sourceCode: "https://github.com/SaleemShahdi/SystemsProgramming_EC1"
+description: "" # Added empty description to satisfy schema
+---
+- Developed a high-performance C kernel to accelerate the K-means clustering algorithm, a computationally intensive machine learning task used here to create an 8-bit color map from a 24-bit color image.
+- Wrote the core K-means logic in C, which iteratively assigns each pixel to the nearest of 256 centroids in a 3D color space (based on Euclidean distance) and then recalculates the new centroid positions by averaging the assigned pixels.
+- Compiled the C kernel into a highly optimized (-O3) shared object library (.so) and used Python's `ctypes` library to call the function from a high-level script, passing large arrays of pixel and centroid data between the two language environments via pointers.
+- Conducted a detailed performance analysis by comparing the execution time of the C kernel against an equivalent pure-Python implementation across five different images. The analysis, documented in a formal write-up, demonstrated a significant speedup, with the C kernel being approximately 26 times faster on average per pixel.
