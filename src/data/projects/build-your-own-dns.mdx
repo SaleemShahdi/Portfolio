@@ -1,0 +1,23 @@
+---
+name: "Build Your Own DNS"
+type: core
+technologies:
+  - Python
+  - DNS
+  - TCP/IP
+  - Socket Programming
+  - Network Programming
+  - Client-Server Architecture
+  - Iterative Queries
+  - Recursive Queries
+  - Custom Protocols
+  - Data Parsing
+  - Internet Technology
+  - Teamwork
+sourceCode: "https://github.com/SaleemShahdi/InternetTechnology_Project2"
+description: "" # Added empty description to satisfy schema
+---
+- Collaborated in a two-person team to develop a simplified, custom DNS system named RU-DNS, consisting of four distinct Python programs: a client, a root DNS server (RS), and two top-level domain (TLD) servers that communicate over TCP sockets.
+- Designed and implemented the complete logic for both iterative and recursive DNS queries. For iterative queries, the root server correctly returned a referral to the appropriate TLD server; for recursive queries, the root server queried the TLD server on the client's behalf and relayed the final response.
+- Implemented the full lifecycle of the custom RU-DNS protocol, including parsing space-delimited request and response messages, managing unique query identification numbers, and correctly setting response flags (e.g., authoritative aa, recursive ra, name server ns).
+- Built each DNS server to manage its own local database by reading from a text file into an in-memory dictionary, performing case-insensitive lookups to resolve domain names or identify the next server in the resolution chain.
