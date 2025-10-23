@@ -6,6 +6,8 @@ import { getCollection } from "astro:content";
 import ProjectAccordionItem from "@/components/sections/projects/project-accordion-item.astro";
 
 const projects = await getCollection("projects");
+// Sort projects alphabetically by name for consistent order
+projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
 ---
 
 <div id="projects-view" class="hidden">
@@ -16,10 +18,13 @@ const projects = await getCollection("projects");
     <BoxContent>
       <div class="prose">
         <p>
-          My approach to software engineering is driven by a passion for continuous learning. I believe a developer's true value lies not in the tools they already know, but in their ability to master the <em>next</em> tool required to solve a new challenge.
+          My approach to software engineering is driven by a passion for continuous learning.
+          I believe a developer's true value lies not in the tools they already know, but in their ability to master the <em>next</em> tool required to solve a new challenge.
         </p>
         <p>
-          The projects below are a chronicle of this philosophy in action. They showcase my journey across different programming paradigms and problem domains—from the low-level memory management of <strong>C</strong>, to the high-level data processing of <strong>Python</strong> and <strong>SQL</strong>, to the robust object-oriented architecture of <strong>Java</strong>. Each technology listed is evidence of a new concept learned and a new problem solved.
+          The projects below are a chronicle of this philosophy in action.
+          They showcase my journey across different programming paradigms and problem domains—from the low-level memory management of <strong>C</strong>, to the high-level data processing of <strong>Python</strong> and <strong>SQL</strong>, to the robust object-oriented architecture of <strong>Java</strong>.
+          Each technology listed is evidence of a new concept learned and a new problem solved.
         </p>
         <p>
           You can explore these projects to see the technologies I've mastered, while I am always expanding my technological horizons.
@@ -37,6 +42,7 @@ const projects = await getCollection("projects");
       id="project-search-bar"
       placeholder="Search projects by name, technology, etc..."
       class="w-full max-w-lg rounded-md border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+      aria-label="Search projects"
     />
   </div>
 
@@ -53,3 +59,54 @@ const projects = await getCollection("projects");
   </Box>
   <Pattern />
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const searchBar = document.getElementById('project-search-bar');
+    const projectsList = document.getElementById('projects-list');
+    const noResultsMessage = document.getElementById('no-results-message');
+    // Get all project items. It's safer to add a common class to items if needed,
+    // but selecting direct children works if the structure is consistent.
+    const projectItems = projectsList ? Array.from(projectsList.children) : [];
+
+    function filterProjects() {
+      if (!searchBar || !projectsList || !noResultsMessage) return;
+
+      const searchTerm = searchBar.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      projectItems.forEach(item => {
+        // Check if the item has text content to search within
+        const itemText = item.textContent?.toLowerCase() || '';
+        // More robust check: also check technologies specifically if they are rendered with specific classes/attributes
+        const technologies = Array.from(item.querySelectorAll('.flex-wrap > span')) // Adjust selector based on actual rendered HTML for tags
+                                 .map(tag => tag.textContent?.toLowerCase() || '')
+                                 .join(' ');
+
+        const combinedText = itemText + ' ' + technologies;
+
+        if (combinedText.includes(searchTerm)) {
+          item.style.display = ''; // Show item
+          visibleCount++;
+        } else {
+          item.style.display = 'none'; // Hide item
+        }
+      });
+
+      // Show/hide the "No Results" message
+      if (visibleCount === 0) {
+        noResultsMessage.style.display = 'block';
+      } else {
+        noResultsMessage.style.display = 'none';
+      }
+    }
+
+    if (searchBar) {
+      // Use 'input' event for real-time filtering as the user types
+      searchBar.addEventListener('input', filterProjects);
+    }
+
+    // Initial filter call in case the search bar has a pre-filled value (e.g., from browser history)
+    filterProjects();
+  });
+</script>
