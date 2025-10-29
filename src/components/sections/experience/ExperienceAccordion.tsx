@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronDown, ChevronUp } from 'lucide-react'; // Import ChevronUp as well
+
+// Helper to render Markdown HTML
+const MarkdownContent = ({ htmlContent }) => {
+  // Apply prose classes for styling consistent with projects, and line spacing
+  return <div className="prose prose-li:leading-8 min-w-full" dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+};
+
+export function ExperienceAccordion({ companyName, position, renderedContent }) {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+  return (
+    <div className="experience-item flex w-full flex-col p-4 not-last:border-b">
+      {/* Clickable Header Area */}
+      <motion.header
+        initial={false}
+        onClick={toggleOpen} // Allow clicking anywhere on header to toggle
+        // Add cursor-pointer to the whole header
+        className="flex cursor-pointer list-none flex-col text-left"
+      >
+        {/* Top part: Company, Role, Period */}
+        <div className="mb-2"> {/* Added margin-bottom for spacing */}
+          <h3 className="text-lg font-semibold">{companyName}</h3>
+          <p className="text-base text-muted-foreground">{position.title}</p>
+          <p className="text-sm font-light text-muted-foreground">{position.year}</p>
+        </div>
+
+        {/* SINGLE Toggling Button */}
+        <button
+          onClick={(e) => { e.stopPropagation(); toggleOpen(); }} // Prevent header click trigger
+          // Added cursor-pointer here
+          className="mt-1 flex cursor-pointer items-center gap-1 text-sm font-medium text-primary hover:underline self-start" // Left align
+          aria-expanded={isOpen}
+        >
+          {isOpen ? "Show less" : "Show more"}
+          {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+        </button>
+
+      </motion.header>
+
+      {/* Expandable Content Section */}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.section
+            key="content"
+            initial="collapsed"
+            animate="open"
+            exit="collapsed"
+            variants={{
+              open: { opacity: 1, height: 'auto', marginTop: '1rem' }, // Add margin-top when open
+              collapsed: { opacity: 0, height: 0, marginTop: '0rem' },
+            }}
+            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            className="overflow-hidden"
+          >
+            {/* Description */}
+            <MarkdownContent htmlContent={renderedContent} />
+
+            {/* Skills Tags */}
+            <div className="mt-4 flex flex-wrap gap-1.5">
+              {position.skills.map((skill) => (
+                <span key={skill} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
+                  {skill}
+                </span>
+              ))}
+            </div>
+
+            {/* REMOVED the bottom Show Less button entirely */}
+
+          </motion.section>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}

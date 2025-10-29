@@ -4,18 +4,23 @@ import BoxHeader from "@/components/box/header.astro";
 import BoxTitle from "@/components/box/title.astro";
 import BoxContent from "@/components/box/content.astro";
 import { EXPERIENCES } from "@/lib/constants/experience";
-import ExperienceItem from "./experience-item.astro";
+// Import the new accordion item wrapper
+import ExperienceAccordionItem from "./experience-accordion-item.astro";
 ---
 
 <Box id="experience">
   <BoxHeader>
     <BoxTitle> Experience </BoxTitle>
   </BoxHeader>
-  <BoxContent className="px-0">
-    {
-      EXPERIENCES.map(experience => {
-        return <ExperienceItem experience={experience} />;
-      })
-    }
+  <BoxContent class="px-0"> {/* Removed padding-x from content */}
+    <div class="flex w-full flex-col"> {/* Added flex container */}
+      {
+        EXPERIENCES.map(experience => (
+          experience.positions.map(position => (
+            <ExperienceAccordionItem companyName={experience.company} position={position} />
+          ))
+        ))
+      }
+    </div>
   </BoxContent>
 </Box>

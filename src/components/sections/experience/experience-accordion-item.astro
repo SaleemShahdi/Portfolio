@@ -1,0 +1,21 @@
+---
+import type { ExperiencePosition } from "@/lib/types"; // Make sure Position type is exported from types.ts
+import { ExperienceAccordion } from "./ExperienceAccordion";
+import { Marked } from 'marked';
+
+interface Props {
+  companyName: string;
+  position: Position;
+}
+
+const { companyName, position } = Astro.props;
+// Render markdown description to HTML
+const renderedContent = new Marked().parse(position.description);
+---
+
+<ExperienceAccordion
+  client:load
+  companyName={companyName}
+  position={position}
+  renderedContent={renderedContent}
+/>
