@@ -1,7 +1,6 @@
 ---
 import Box from "@/components/box/index.astro";
-import BoxHeader from "@/components/box/header.astro";
-import BoxTitle from "@/components/box/title.astro";
+// BoxHeader and BoxTitle imports removed
 import BoxContent from "@/components/box/content.astro";
 import { EXPERIENCES } from "@/lib/constants/experience";
 // Import the new accordion item wrapper
@@ -9,9 +8,7 @@ import ExperienceAccordionItem from "./experience-accordion-item.astro";
 ---
 
 <Box id="experience">
-  <BoxHeader>
-    <BoxTitle> Experience </BoxTitle>
-  </BoxHeader>
+  {/* BoxHeader section removed */}
   <BoxContent class="px-0"> {/* Removed padding-x from content */}
     <div class="flex w-full flex-col"> {/* Added flex container */}
       {
