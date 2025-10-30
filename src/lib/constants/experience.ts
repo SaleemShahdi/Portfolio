@@ -123,6 +123,32 @@ export const EXPERIENCES: Experience[] = [
   },
 
   {
+    company: "Comcast",
+    positions: [
+      {
+        title: "Contractor",
+        year: "08.2022 - 01.2023",
+        description: `
+- ♦ Familiarized myself with CI/CD and gained proficiency in Concourse in order to contribute to PULSE locker team.
+- ♦ Troubleshooted issue with Docker on local Macbook Pro and resolved by running pipelines directly on Comcast Concourse server.
+- ♦ Mastered the fly CLI (command line interface) through specific use cases and examples including set-pipeline, unpause-pipeline, watch, trigger-job, and execute.
+- ♦ Created SSH key on local Macbook Pro and utilized in github gist in order to implement making changes to github resource in real-time through Concourse.
+- ♦ Configured .yml files to implement different functionalities including triggering jobs with resources, using resource inputs in job tasks, passing task outputs to task inputs, publishing outputs and including parameters.
+            `,
+        skills: [
+          "CI/CD",
+          "Concourse",
+          "Docker",
+          "fly CLI",
+          "SSH",
+          "GitHub", // Removed the stray underscore
+          "YAML"
+        ],
+      },
+    ],
+  },
+
+  {
     company: "Education",
     positions: [
       {
@@ -152,4 +178,3 @@ export const EXPERIENCES: Experience[] = [
     ],
   },
 ];
-
