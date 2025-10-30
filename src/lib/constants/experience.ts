@@ -141,9 +141,90 @@ export const EXPERIENCES: Experience[] = [
           "Docker",
           "fly CLI",
           "SSH",
-          "GitHub", // Removed the stray underscore
+          "GitHub",
           "YAML"
         ],
+      },
+    ],
+  },
+
+  {
+    company: "Revature",
+    positions: [
+      {
+        title: "Contractor",
+        year: "06.2021 - 03.2022",
+        // No top-level description or skills
+        subPositions: [
+          {
+            title: "Client Experience",
+            year: "", // Year is in parent
+            description: `
+- ♦ Assisted Fannie Mae in moving code written locally to AWS to take advantage of high performance computing and run PySpark queries in an optimal fashion.
+- ♦ Acquainted myself with AWS and it's practical use and applications to contribute to the project and satisfy company requirements.
+- ♦ Developed a Lambda function that would be called through an API and validate user data before triggering step functions.
+- ♦ Incorporated DynamoDB functionality into the Lambda function and constructed tables with appropriate partition and sort keys.
+            `,
+            skills: [
+              "AWS",
+              "AWS Lambda",
+              "AWS Step Functions",
+              "DynamoDB",
+              "PySpark",
+              "Python"
+            ],
+          },
+          {
+            title: "Training",
+            year: "", // Year is in parent
+            description: `
+- ♦ Completed projects using Scala, Hadoop, Spark, SQL and other related big data processing tools in order to be prepared for big data contracting roles.
+- ♦ Wrote and compiled a program in Scala that solves the quadratic formula in order to enhance Scala programming skills and reinforce concepts.
+- ♦ Utilized HDFS and HIVE commands to analyze sample coffee shop data in order to gain experience using queries and answer relevant questions.
+  - Loaded data from CSV files into tables using SparkSQL Hive commands
+  - Joined multiple tables together using SparkSQL
+  - Utilized aggregate functions in SparkSQL queries
+  - Created custom views for joined tables using SparkSQL
+  - Aliased queries and components of tables to increase comprehension and readability
+  - Filtered records using the WHERE clause in SparkSQL
+  - Used DENSE_RANK() function to select top results from tables
+  - Used GROUP BY clause to group the result set and ORDER BY clause to sort the result set
+- ♦ Pulled a COVID dataset from Johns Hopkins and with 3 other programmers used Spark to analyze COVID trends
+  - Manipulated the data in Microsoft Excel for exploratory analysis
+  - Converted the data loaded (from time-series CSV files) from dataframes to RDD back to a differently formatted dataframe to allow for the use of SparkSQL queries and other dataframe methods
+  - Converted the data to a format of high potential
+  - Graphed results in Microsoft Excel
+  - Selected the top 10 countries in terms of total Covid-19 cases using SparkSQL
+  - Selected the least 10 countries in terms of total Covid-19 cases using SparkSQL
+  - Though the methodology mentioned in points 1-5 was used to obtain results that were presented in our presentations, the Project Repo referenced in the URL does not contain an implementation of the methodology due to timeline constraints.
+- ♦ Capitalized on AWS big data processing resources to streamline the investigation of tech job posting trends since the start of COVID
+  - Delegated tasks among 20 other programmers
+  - Worked with the Amazon Common Crawl Columnar Index
+    - Loaded parquet file into Apache Spark using dataframe
+    - Explored the common crawl structure
+      - Derived schema from imported parquet file using the inbuilt dataframe.schema method
+      - Used the inbuilt dataframe.columns method to get list of all columns in table
+      - Discovered there was an inconsistency in the schema loaded from the parquet file and the actual schema of the table. Finding the actual schema on an official website and using that as an input parameter when loading the parquet file to load correct schema with correct number of columns.
+  - Adjusted dependencies in Spark to allow for Amazon S3 functionality in Spark-Scala command line terminal
+- ♦ Adjusted configuration parameters and created robust filtering queries to allow Spark jobs to complete on Amazon EMR within a reasonable amount of time.
+            `,
+            skills: [
+              "Scala",
+              "Hadoop",
+              "Spark",
+              "SQL",
+              "Big Data",
+              "HDFS",
+              "HIVE",
+              "SparkSQL",
+              "RDD",
+              "Amazon EMR",
+              "Amazon S3",
+              "Parquet",
+              "Data Analysis"
+            ],
+          }
+        ]
       },
     ],
   },

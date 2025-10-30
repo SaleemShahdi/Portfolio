@@ -1,21 +1,37 @@
 ---
-import type { ExperiencePosition } from "@/lib/types"; // Make sure Position type is exported from types.ts
+import type { ExperiencePosition } from "@/lib/types";
 import { ExperienceAccordion } from "./ExperienceAccordion";
+import { NestedExperienceAccordion } from "./NestedExperienceAccordion.tsx"; // Import the new component
 import { Marked } from 'marked';
 
 interface Props {
   companyName: string;
-  position: Position;
+  position: ExperiencePosition;
 }
 
 const { companyName, position } = Astro.props;
-// Render markdown description to HTML
-const renderedContent = new Marked().parse(position.description);
+
+// Render markdown only if it's NOT a nested one
+const renderedContent = position.description ? new Marked().parse(position.description) : "";
 ---
 
-<ExperienceAccordion
-  client:load
-  companyName={companyName}
-  position={position}
-  renderedContent={renderedContent}
-/>
+{/* Check if the 'subPositions' array exists and has items.
+  If YES, render the NestedExperienceAccordion.
+  If NO, render the standard ExperienceAccordion.
+*/}
+{position.subPositions && position.subPositions.length > 0 ?
+  (
+    <NestedExperienceAccordion
+      client:load
+      companyName={companyName}
+      position={position}
+    />
+  ) : (
+    <ExperienceAccordion
+      client:load
+      companyName={companyName}
+      position={position}
+      renderedContent={renderedContent}
+    />
+  )
+}

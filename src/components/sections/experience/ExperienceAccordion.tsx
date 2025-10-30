@@ -13,7 +13,7 @@ export function ExperienceAccordion({ companyName, position, renderedContent }) 
   const toggleOpen = () => setIsOpen(!isOpen);
 
   return (
-    <div className="experience-item flex w-full flex-col p-4 not-last:border-b">
+    <div className="experience-item flex w-full flex-col p-4 not-last:border-b"> {/* Added class */}
       {/* Clickable Header Area */}
       <motion.header
         initial={false}
@@ -21,11 +21,14 @@ export function ExperienceAccordion({ companyName, position, renderedContent }) 
         // Add cursor-pointer to the whole header
         className="flex cursor-pointer list-none flex-col text-left"
       >
-        {/* Top part: Company, Role, Period */}
+        {/* Top part: Company, Role, Period - FONT STYLES CORRECTED */}
         <div className="mb-2"> {/* Added margin-bottom for spacing */}
-          <h3 className="text-lg font-semibold">{companyName}</h3>
-          <p className="text-base text-muted-foreground">{position.title}</p>
-          <p className="text-sm font-light text-muted-foreground">{position.year}</p>
+          {/* Company Name: <p> tag (Geist Sans) + original <h3> styles (text-lg font-semibold) */}
+          <p className="text-lg font-semibold">{companyName}</p>
+          {/* Role Title: <h3> tag (Roboto Condensed) + original <p> styles (text-base text-muted-foreground) */}
+          <h3 className="text-base font-normal text-muted-foreground">{position.title}</h3>
+          {/* Time Period: <h3> tag (Roboto Condensed) + original <p> styles (text-sm font-light text-muted-foreground) */}
+          <h3 className="text-sm font-light text-muted-foreground">{position.year}</h3>
         </div>
 
         {/* SINGLE Toggling Button */}
@@ -67,8 +70,6 @@ export function ExperienceAccordion({ companyName, position, renderedContent }) 
                 </span>
               ))}
             </div>
-
-            {/* REMOVED the bottom Show Less button entirely */}
 
           </motion.section>
         )}
