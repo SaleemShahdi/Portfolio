@@ -229,6 +229,36 @@ export const EXPERIENCES: Experience[] = [
     ],
   },
 
+  // --- NEW ENTRY ADDED HERE ---
+  {
+    company: "Reno Subsystems",
+    positions: [
+      {
+        title: "Software Development Intern",
+        year: "05.2019 - 09.2019",
+        description: `
+Reno Sub-Systems, Inc. (Reno) is a developer of high performance radio frequency (RF) matching networks for leading-edge nanoscale semiconductor manufacturing. Reno distributes its patented Electronic Variable Capacitor (EVCTM) technology to customers and attracts investors like Samsung and Intel. My purpose as an intern was to develop a piece of software that would streamline the customer’s use of one of Reno’s products. Before the software was written, customers would interact with the unit using commands through Tera Term. The software eliminates this need and includes robust features that benefit the customer, like real-time data plotting and tabular parameter setup.
+
+- ♦ Developed a Graphical User Interface (GUI) for Windows that interacts with an essential production unit
+- ♦ Learned and implemented Python in order to create the GUI, and developed a successful product with no prior experience in Python
+- ♦ Researched and implemented various coding techniques such as serial bus communication and multithreading
+- ♦ Incorporated 5 pages into the GUI: a “Main” page that receives data from the unit and plots on Smith Charts in real time, a “Configure Communications” page with dropdown menus to adjust communication settings between the software and unit, a “Status and Plot” page that plots data from the unit on a line chart in real-time, a “Setup” page that allows the user to efficiently change parameters of the unit, and a “Software Update” page that was intended to install new versions of the program right from the program itself.
+            `,
+        skills: [
+          "Python",
+          "GUI Development",
+          "Serial Bus Communication",
+          "Multithreading",
+          "Data Visualization",
+          "Smith Charts",
+          "UI/UX Design",
+          "Tera Term"
+        ],
+      },
+    ],
+  },
+  // --- END OF NEW ENTRY ---
+
   {
     company: "Education",
     positions: [
