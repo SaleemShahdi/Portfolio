@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ChevronUp } from 'lucide-react'; // Import ChevronUp as well
+// Removed Dot and Code icons from import
+import { ChevronDown, ChevronUp } from 'lucide-react'; 
 
 // Helper to render Markdown HTML
 const MarkdownContent = ({ htmlContent }) => {
@@ -39,7 +40,13 @@ export function ExperienceAccordion({ companyName, position, renderedContent }) 
           aria-expanded={isOpen}
         >
           {isOpen ? "Show less" : "Show more"}
-          {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          {/* Animated Chevron */}
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown className="size-4" />
+          </motion.div>
         </button>
 
       </motion.header>

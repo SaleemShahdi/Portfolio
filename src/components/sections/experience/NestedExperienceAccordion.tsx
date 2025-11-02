@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// Removed Dot and Code icons from import
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { Marked } from 'marked';
 
@@ -9,7 +10,6 @@ const MarkdownContent = ({ htmlContent }) => {
 };
 
 // Sub-Accordion for nested items (Client Experience, Training)
-// This is now styled to match the main experience accordions.
 const SubAccordion = ({ title, description, skills }) => {
   const [isOpen, setIsOpen] = useState(false);
   const toggleOpen = () => setIsOpen(!isOpen);
@@ -25,20 +25,24 @@ const SubAccordion = ({ title, description, skills }) => {
       >
         {/* Top part: Title */}
         <div className="mb-1"> {/* Less margin than parent */}
-          {/* This 'h3' tag will use Roboto Condensed.
-            We use 'text-base' and 'font-semibold' to style it as a sub-heading.
-          */}
+          {/* Sub-accordion title uses h3 (Roboto) */}
           <h3 className="text-base font-semibold">{title}</h3>
         </div>
 
-        {/* SINGLE Toggling Button - Copied from main accordion */}
+        {/* SINGLE Toggling Button */}
         <button
           onClick={(e) => { e.stopPropagation(); toggleOpen(); }}
           className="mt-1 flex cursor-pointer items-center gap-1 text-sm font-medium text-primary hover:underline self-start"
           aria-expanded={isOpen}
         >
           {isOpen ? "Show less" : "Show more"}
-          {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          {/* Animated Chevron */}
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown className="size-4" />
+          </motion.div>
         </button>
       </motion.header>
 
@@ -87,7 +91,7 @@ export function NestedExperienceAccordion({ companyName, position }) {
         onClick={toggleOpen}
         className="flex cursor-pointer list-none flex-col text-left"
       >
-        {/* Top part: Company, Role, Period */}
+        {/* Top part: Company, Role, Period - FONT STYLES CORRECTED */}
         <div className="mb-2">
           {/* Company Name: <p> tag (Geist Sans) + original <h3> styles (text-lg font-semibold) */}
           <p className="text-lg font-semibold">{companyName}</p>
@@ -104,7 +108,13 @@ export function NestedExperienceAccordion({ companyName, position }) {
           aria-expanded={isOpen}
         >
           {isOpen ? "Show less" : "Show more"}
-          {isOpen ? <ChevronUp className="size-4" /> : <ChevronDown className="size-4" />}
+          {/* Animated Chevron */}
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <ChevronDown className="size-4" />
+          </motion.div>
         </button>
       </motion.header>
 
