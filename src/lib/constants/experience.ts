@@ -162,33 +162,4 @@ Reno Sub-Systems, Inc. (Reno) is a developer of high performance radio frequency
   },
   // --- END OF NEW ENTRY ---
 
-  {
-    company: "Education",
-    positions: [
-      {
-        title: "Web Development & Infographics | University of Boumerdes",
-        year: "09.2022 - 07.2025",
-        description: `
-- ♦ Built a strong foundation in **software engineering**, focusing on **web development** and **UI/UX principles**.
-- ♦ Gained hands-on experience with **C/C++ and Linux**, enhancing problem-solving and system-level programming skills.
-- ♦ Developed expertise in **relational databases** and **networking**, applying concepts to real-world applications.
-- ♦ Strengthened **communication and teamwork skills** through group projects, presentations, and technical discussions.
-            `,
-        skills: [
-          "C/C++",
-          "Linux",
-          "UI/UX Foundation",
-          "Marketing",
-          "WordPress",
-          "Networking",
-          "Algorithms",
-          "Relational Databases",
-          "Software Engineering",
-          "Self-learning",
-          "Teamwork",
-          "Presentation",
-        ],
-      },
-    ],
-  },
 ];
