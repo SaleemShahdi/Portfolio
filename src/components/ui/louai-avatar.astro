@@ -47,7 +47,8 @@ const formats = ["avif", "webp"];
     <button
       id="avatar-close"
       type="button"
-      class="absolute right-8 top-8 z-50 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none"
+      // Added cursor-pointer here
+      class="absolute right-8 top-8 z-50 cursor-pointer rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none"
       aria-label="Close image"
     >
       <X className="size-8" />
@@ -83,6 +84,7 @@ const formats = ["avif", "webp"];
     const closeDialog = () => {
       dialog.close();
       document.body.style.overflow = ''; // Restore body scroll
+      trigger.blur(); // REMOVE FOCUS RING from the trigger button
     };
 
     // Close on X button click
@@ -101,6 +103,7 @@ const formats = ["avif", "webp"];
     // Restore scroll if closed via Escape key
     dialog.addEventListener('close', () => {
         document.body.style.overflow = '';
+        trigger.blur(); // Also remove focus if closed via ESC
     });
   }
 </script>
