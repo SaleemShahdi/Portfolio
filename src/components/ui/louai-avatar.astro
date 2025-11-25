@@ -23,16 +23,14 @@ const formats = ["avif", "webp"];
 <button
   id="avatar-trigger"
   type="button"
-  class="group relative cursor-zoom-in rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  class="group relative cursor-pointer rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
   aria-label="View profile picture in full size"
 >
   <Picture
-    class:list={[className, "transition-transform duration-300 group-hover:scale-105"]}
+    class:list={[className]} 
     src={ImgAvatar}
     // FORCE HIGH RESOLUTION:
-    // Instead of generating small versions (1x, 2x), we simply serve a single
-    // high-quality 800px image to everyone. The browser will downscale it,
-    // ensuring it looks perfectly sharp on any screen (retina, 4k, etc).
+    // Serving a single high-quality 800px image to everyone.
     widths={[800]}
     sizes={`(max-width: ${size}px) 100vw, ${size}px`}
     formats={formats}
@@ -44,7 +42,8 @@ const formats = ["avif", "webp"];
 </button>
 
 <dialog id="avatar-dialog" class="bg-transparent p-0 backdrop:bg-black/90 backdrop:backdrop-blur-sm">
-  <div class="relative flex h-screen w-screen items-center justify-center p-4" id="dialog-inner">
+  <div class="relative h-screen w-screen flex items-center justify-center p-4" id="dialog-inner">
+    
     <button
       id="avatar-close"
       type="button"
@@ -56,7 +55,6 @@ const formats = ["avif", "webp"];
 
     <Picture
       src={ImgAvatar}
-      // Generate even larger versions for the full-screen view
       widths={[800, 1600]}
       sizes="(max-width: 768px) 100vw, 800px"
       formats={formats}
@@ -93,7 +91,7 @@ const formats = ["avif", "webp"];
     // Close on clicking the backdrop (outside the image)
     if (dialogInner) {
         dialog.addEventListener('click', (e) => {
-            // Check if the click was on the background container, not the image itself
+            // Check if the click was on the background container (flex parent), not the image itself
             if (e.target === dialog || e.target === dialogInner) {
                 closeDialog();
             }
