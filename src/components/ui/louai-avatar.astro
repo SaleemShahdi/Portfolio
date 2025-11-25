@@ -27,7 +27,7 @@ const formats = ["avif", "webp"];
   aria-label="View profile picture in full size"
 >
   <Picture
-    class:list={[className]} 
+    class:list={[className]}
     src={ImgAvatar}
     // FORCE HIGH RESOLUTION:
     // Serving a single high-quality 800px image to everyone.
@@ -41,13 +41,13 @@ const formats = ["avif", "webp"];
   />
 </button>
 
-<dialog id="avatar-dialog" class="bg-transparent p-0 backdrop:bg-black/90 backdrop:backdrop-blur-sm">
-  <div class="relative h-screen w-screen flex items-center justify-center p-4" id="dialog-inner">
+<dialog id="avatar-dialog" class="bg-transparent p-0 backdrop:bg-black/90 backdrop:backdrop-blur-sm overflow-hidden">
+  <div class="fixed inset-0 flex items-center justify-center p-4 w-full h-full" id="dialog-inner">
     
     <button
       id="avatar-close"
       type="button"
-      class="absolute right-6 top-6 z-50 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none"
+      class="absolute right-8 top-8 z-50 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none"
       aria-label="Close image"
     >
       <X className="size-8" />
