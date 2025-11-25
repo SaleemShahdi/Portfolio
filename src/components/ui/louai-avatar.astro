@@ -1,7 +1,9 @@
 ---
 import { Picture } from "astro:assets";
+// Link to your actual high-res image
 import ImgAvatar from "@/assets/louai-avatar.jpg";
 import { PROFILE_INFO } from "@/lib/constants/profile";
+import { X } from "lucide-react";
 
 interface Props {
   className?: string;
@@ -11,22 +13,107 @@ interface Props {
 
 const {
   className,
-  size = 100, // Default size if not provided
+  size = 100,
   priority = false,
 } = Astro.props;
 
-// Determine image formats for fallback and webp
 const formats = ["avif", "webp"];
 ---
 
-<Picture
-  class:list={[className]}
-  src={ImgAvatar}
-  widths={[size, size * 2]}
-  sizes={`(max-width: ${size}px) 100vw, ${size}px`}
-  formats={formats}
-  alt={`${PROFILE_INFO.displayName}'s avatar`}
-  quality="mid"
-  loading={priority ? "eager" : "lazy"}
-  decoding="async"
-/>
+<button
+  id="avatar-trigger"
+  type="button"
+  class="group relative cursor-zoom-in rounded-full focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+  aria-label="View profile picture in full size"
+>
+  <Picture
+    class:list={[className, "transition-transform duration-300 group-hover:scale-105"]}
+    src={ImgAvatar}
+    // FORCE HIGH RESOLUTION:
+    // Instead of generating small versions (1x, 2x), we simply serve a single
+    // high-quality 800px image to everyone. The browser will downscale it,
+    // ensuring it looks perfectly sharp on any screen (retina, 4k, etc).
+    widths={[800]}
+    sizes={`(max-width: ${size}px) 100vw, ${size}px`}
+    formats={formats}
+    alt={`${PROFILE_INFO.displayName}'s avatar`}
+    quality="max"
+    loading={priority ? "eager" : "lazy"}
+    decoding="async"
+  />
+</button>
+
+<dialog id="avatar-dialog" class="bg-transparent p-0 backdrop:bg-black/90 backdrop:backdrop-blur-sm">
+  <div class="relative flex h-screen w-screen items-center justify-center p-4" id="dialog-inner">
+    <button
+      id="avatar-close"
+      type="button"
+      class="absolute right-6 top-6 z-50 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-white/20 focus:outline-none"
+      aria-label="Close image"
+    >
+      <X className="size-8" />
+    </button>
+
+    <Picture
+      src={ImgAvatar}
+      // Generate even larger versions for the full-screen view
+      widths={[800, 1600]}
+      sizes="(max-width: 768px) 100vw, 800px"
+      formats={formats}
+      alt={`${PROFILE_INFO.displayName}'s avatar large`}
+      quality="max"
+      class="max-h-[85vh] max-w-[90vw] rounded-lg object-contain shadow-2xl"
+    />
+  </div>
+</dialog>
+
+<script>
+  const trigger = document.getElementById('avatar-trigger');
+  const dialog = document.getElementById('avatar-dialog');
+  const closeBtn = document.getElementById('avatar-close');
+  const dialogInner = document.getElementById('dialog-inner');
+
+  // Only run if elements exist (defensive check)
+  if (trigger instanceof HTMLElement && dialog instanceof HTMLDialogElement && closeBtn instanceof HTMLElement) {
+    
+    // Open dialog
+    trigger.addEventListener('click', () => {
+      dialog.showModal();
+      document.body.style.overflow = 'hidden'; // Lock body scroll
+    });
+
+    const closeDialog = () => {
+      dialog.close();
+      document.body.style.overflow = ''; // Restore body scroll
+    };
+
+    // Close on X button click
+    closeBtn.addEventListener('click', closeDialog);
+
+    // Close on clicking the backdrop (outside the image)
+    if (dialogInner) {
+        dialog.addEventListener('click', (e) => {
+            // Check if the click was on the background container, not the image itself
+            if (e.target === dialog || e.target === dialogInner) {
+                closeDialog();
+            }
+        });
+    }
+    
+    // Restore scroll if closed via Escape key
+    dialog.addEventListener('close', () => {
+        document.body.style.overflow = '';
+    });
+  }
+</script>
+
+<style>
+  /* Simple zoom-in animation */
+  dialog[open] {
+    animation: zoom-in 0.2s ease-out;
+  }
+  @keyframes zoom-in {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+</style>
