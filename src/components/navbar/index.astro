@@ -17,8 +17,8 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
     <div class="flex items-stretch justify-center">
       <NavLinks />
       
-      {/* Minimal wrapper: No fixed width (like w-12), just fits the content */}
-      <div id="theme-toggle-nudge-wrapper" class="flex items-center self-center ml-1">
+      {/* Removed ml-1 to minimize spacing */}
+      <div id="theme-toggle-nudge-wrapper" class="flex items-center self-center">
           <ModeToggle />
       </div>
     </div>
