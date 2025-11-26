@@ -7,9 +7,8 @@ import { cn, buttonVariants } from "@/lib/utils";
   id="theme-toggle"
   type="button"
   class={cn(
-    buttonVariants({ variant: "ghost" }),
-    // Custom size: 36px (h-9 w-9). Smaller than standard (40px), bigger than tiny (32px).
-    "h-9 w-9 px-0 rounded-full hover:bg-secondary cursor-pointer"
+    buttonVariants({ size: "icon", variant: "ghost" }),
+    "rounded-full hover:bg-secondary cursor-pointer"
   )}
 >
   <Sun
