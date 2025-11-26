@@ -38,7 +38,7 @@ const SubAccordion = ({ title, description, content, isMobile }) => {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Pass the mobile state down to the sub-accordion animation
+            // Keep sub-accordions responsive (0.4s desktop / 0.5s mobile)
             transition={{ 
               duration: isMobile ? 0.5 : 0.4, 
               ease: isMobile ? "easeInOut" : "easeOut" 
@@ -127,14 +127,17 @@ export function NestedProjectAccordion({ project }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Main accordion animation
+            // Fixed duration to 0.5s for BOTH mobile and desktop as requested.
+            // Kept the responsive easing (snappy start on desktop, smooth on mobile).
             transition={{ 
-              duration: isMobile ? 0.5 : 0.4, 
+              duration: 0.5, 
               ease: isMobile ? "easeInOut" : "easeOut" 
             }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
+
+            {/* Removed 'prose' and 'pt-2' from this <ul> */}
             <ul className="prose min-w-full list-disc pl-5">
               {subProjects.map(sub => (
                 <SubAccordion 
@@ -142,11 +145,13 @@ export function NestedProjectAccordion({ project }) {
                   title={sub.title} 
                   description={sub.description} 
                   content={sub.content} 
-                  isMobile={isMobile} // Passing prop down
+                  isMobile={isMobile} // Pass prop down
                 />
               ))}
             </ul>
+
             <div className="prose min-w-full pt-1" dangerouslySetInnerHTML={{ __html: outro }} />
+
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
                 <a
