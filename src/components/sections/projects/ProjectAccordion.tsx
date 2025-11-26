@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
@@ -10,6 +10,21 @@ const MarkdownContent = ({ htmlContent }) => {
 
 export function ProjectAccordion({ project, renderedContent }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // matchMedia is more efficient than checking innerWidth on resize
+    // This matches the standard Tailwind 'md' breakpoint (768px)
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    // Set initial value
+    setIsMobile(mediaQuery.matches);
+
+    // Update value if the screen size changes (or if user toggles "Request Desktop Site")
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -28,7 +43,7 @@ export function ProjectAccordion({ project, renderedContent }) {
             </span>
             <motion.div
               animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.5 }} // Arrow rotation remains at 0.5s
+              transition={{ duration: 0.5 }}
             >
               <ChevronDown className="size-4" />
             </motion.div>
@@ -56,11 +71,15 @@ export function ProjectAccordion({ project, renderedContent }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Expansion speed set to 0.4s
-            transition={{ duration: 0.4}}
+            // Conditional Animation Logic:
+            // Desktop: 0.4s + easeOut (Snappy)
+            // Mobile: 0.5s + easeInOut (Smoother)
+            transition={{ 
+              duration: isMobile ? 0.5 : 0.4, 
+              ease: isMobile ? "easeInOut" : "easeOut" 
+            }}
             className="overflow-hidden"
           >
-            {/* Removed pt-1 class here */}
             <div className="prose prose-li:leading-8 prose-ul:mt-0 min-w-full">
               <MarkdownContent htmlContent={renderedContent} />
             </div>
