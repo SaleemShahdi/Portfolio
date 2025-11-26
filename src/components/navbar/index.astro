@@ -1,7 +1,6 @@
 ---
 import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
-import { cn } from "@/lib/utils";
 
 const pathname = Astro.url.pathname;
 const isExperienceActive = pathname.startsWith('/Portfolio/articles');
@@ -17,10 +16,10 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
   >
     <div class="flex items-stretch justify-center">
       <NavLinks />
-      <div class="flex self-center w-12 items-center justify-center">
-        <div id="theme-toggle-nudge-wrapper">
+      
+      {/* Minimal wrapper for the toggle with slight left margin */}
+      <div id="theme-toggle-nudge-wrapper" class="flex items-center self-center ml-1">
           <ModeToggle />
-        </div>
       </div>
     </div>
   </div>
@@ -30,7 +29,6 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
   function handleNudge() {
     const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
     if (!wrapper) return;
-
     if (window.location.hash === '#experience') {
       wrapper.classList.add('relative', 'left-1.5');
     } else {
@@ -41,4 +39,5 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
   // Run on initial page load and when the view changes
   document.addEventListener('DOMContentLoaded', handleNudge);
   document.addEventListener('viewchange', handleNudge);
+  window.addEventListener('popstate', handleNudge);
 </script>

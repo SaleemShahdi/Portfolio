@@ -5,9 +5,11 @@ import { cn, buttonVariants } from "@/lib/utils";
 
 <button
   id="theme-toggle"
+  type="button"
   class={cn(
-    buttonVariants({ size: "icon", variant: "ghost" }),
-    "rounded-full hover:bg-secondary cursor-pointer"
+    buttonVariants({ variant: "ghost" }),
+    // Changed to h-8 w-8 (32px) and px-0 to minimize footprint
+    "h-8 w-8 px-0 rounded-full hover:bg-secondary cursor-pointer"
   )}
 >
   <Sun
