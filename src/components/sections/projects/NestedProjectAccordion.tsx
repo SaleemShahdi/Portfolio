@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-const SubAccordion = ({ title, description, content }) => {
+const SubAccordion = ({ title, description, content, isMobile }) => {
   const [isOpen, setIsOpen] = useState(false);
   const htmlContent = new Marked().parse(content);
 
@@ -22,7 +22,7 @@ const SubAccordion = ({ title, description, content }) => {
           </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.2 }}
+          transition={{ duration: 0.5 }}
         >
           <ChevronDown className="size-4" />
         </motion.div>
@@ -38,8 +38,11 @@ const SubAccordion = ({ title, description, content }) => {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Changed duration to 0.2
-            transition={{ duration: 0.2, ease: [0.04, 0.62, 0.23, 0.98] }}
+            // Pass the mobile state down to the sub-accordion animation
+            transition={{ 
+              duration: isMobile ? 0.5 : 0.4, 
+              ease: isMobile ? "easeInOut" : "easeOut" 
+            }}
             className="overflow-hidden"
           >
             <div
@@ -55,6 +58,16 @@ const SubAccordion = ({ title, description, content }) => {
 
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    setIsMobile(mediaQuery.matches);
+
+    const handler = (e) => setIsMobile(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
   const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
   const intro = parts[0] ? new Marked().parse(parts[0]) : '';
@@ -63,14 +76,10 @@ export function NestedProjectAccordion({ project }) {
   const subProjects = parts.filter(part => part.startsWith('- **')).map(part => {
     const lines = part.trim().split('\n');
     const titleLine = lines[0] || '';
-
     const titleMatch = titleLine.match(/-\s\*\*(.*?):\*\*/);
     const title = titleMatch ? titleMatch[1] : 'Unnamed';
-
     const description = titleLine.replace(/-\s\*\*(.*?):\*\*/, '').trim();
-
     const content = lines.slice(1).map(line => line.trim()).join('\n');
-
     return { title, description, content };
   });
 
@@ -91,7 +100,7 @@ export function NestedProjectAccordion({ project }) {
             </span>
             <motion.div
               animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.5 }}
             >
               <ChevronDown className="size-4" />
             </motion.div>
@@ -118,34 +127,37 @@ export function NestedProjectAccordion({ project }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Changed duration from 0.5 to 0.2
-            transition={{ duration: 0.2, ease: "easeInOut" }}
+            // Main accordion animation
+            transition={{ 
+              duration: isMobile ? 0.5 : 0.4, 
+              ease: isMobile ? "easeInOut" : "easeOut" 
+            }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
-
-            {/* THE CHANGE IS HERE: Removed 'prose' and 'pt-2' from this <ul> */}
             <ul className="prose min-w-full list-disc pl-5">
               {subProjects.map(sub => (
-                <SubAccordion key={sub.title} title={sub.title} description={sub.description} content={sub.content} />
+                <SubAccordion 
+                  key={sub.title} 
+                  title={sub.title} 
+                  description={sub.description} 
+                  content={sub.content} 
+                  isMobile={isMobile} // Passing prop down
+                />
               ))}
             </ul>
-
             <div className="prose min-w-full pt-1" dangerouslySetInnerHTML={{ __html: outro }} />
-
             <div className="mt-4 flex gap-4">
               {project.data.sourceCode && (
                 <a
                   href={project.data.sourceCode}
                   target="_blank"
                   rel="noopener noreferrer"
-                  // Original classes with hover:underline
                   className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                 >
                   <Github className="size-4" />
                   Source Code
-                  {/* Added ExternalLink icon */}
-                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
+                  <ExternalLink className="size-3.5 opacity-70" />
                 </a>
               )}
             </div>
