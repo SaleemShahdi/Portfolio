@@ -28,7 +28,7 @@ export function ProjectAccordion({ project, renderedContent }) {
             </span>
             <motion.div
               animate={{ rotate: isOpen ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.5 }} // Arrow rotation remains at 0.5s
             >
               <ChevronDown className="size-4" />
             </motion.div>
@@ -56,11 +56,12 @@ export function ProjectAccordion({ project, renderedContent }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            // Expansion speed set to 0.4s
+            transition={{ duration: 0.3, ease: "linear" }}
             className="overflow-hidden"
           >
             {/* Removed pt-1 class here */}
-            <div className="prose prose-li:leading-8 min-w-full">
+            <div className="prose prose-li:leading-8 prose-ul:mt-0 min-w-full">
               <MarkdownContent htmlContent={renderedContent} />
             </div>
 
@@ -70,13 +71,11 @@ export function ProjectAccordion({ project, renderedContent }) {
                   href={project.data.sourceCode}
                   target="_blank"
                   rel="noopener noreferrer"
-                  // Original classes with hover:underline
                   className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                 >
                   <Github className="size-4" />
                   Source Code
-                  {/* Added ExternalLink icon */}
-                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
+                  <ExternalLink className="size-3.5 opacity-70" />
                 </a>
               )}
               {project.data.preview && (
@@ -84,13 +83,11 @@ export function ProjectAccordion({ project, renderedContent }) {
                   href={project.data.preview}
                   target="_blank"
                   rel="noopener noreferrer"
-                  // Original classes with hover:underline
                   className="flex items-center gap-1 text-sm font-medium text-primary hover:underline"
                 >
-                  <ExternalLink className="size-4" /> {/* Kept original icon for demo */}
+                  <ExternalLink className="size-4" />
                   Live Demo
-                  {/* Added ExternalLink icon */}
-                  <ExternalLink className="size-3.5 opacity-70" /> {/* Added slight opacity */}
+                  <ExternalLink className="size-3.5 opacity-70" />
                 </a>
               )}
             </div>

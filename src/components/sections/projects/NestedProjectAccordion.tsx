@@ -38,7 +38,8 @@ const SubAccordion = ({ title, description, content }) => {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
+            // Changed duration to 0.2
+            transition={{ duration: 0.2, ease: [0.04, 0.62, 0.23, 0.98] }}
             className="overflow-hidden"
           >
             <div
@@ -117,7 +118,8 @@ export function NestedProjectAccordion({ project }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
+            // Changed duration from 0.5 to 0.2
+            transition={{ duration: 0.2, ease: "easeInOut" }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
