@@ -57,7 +57,7 @@ export function ProjectAccordion({ project, renderedContent }) {
               collapsed: { opacity: 0, height: 0 },
             }}
             // Expansion speed set to 0.4s
-            transition={{ duration: 0.4, ease: "easeInOut" }}
+            transition={{ duration: 0.4}}
             className="overflow-hidden"
           >
             {/* Removed pt-1 class here */}
