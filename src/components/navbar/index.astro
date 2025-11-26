@@ -17,7 +17,7 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
     <div class="flex items-stretch justify-center">
       <NavLinks />
       
-      {/* Removed ml-1 to minimize spacing */}
+      {/* Wrapper for the toggle */}
       <div id="theme-toggle-nudge-wrapper" class="flex items-center self-center">
           <ModeToggle />
       </div>
@@ -30,9 +30,10 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
     const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
     if (!wrapper) return;
     if (window.location.hash === '#experience') {
-      wrapper.classList.add('relative', 'left-1.5');
+      // Adjusted nudge to left-2 (8px) for better centering
+      wrapper.classList.add('relative', 'left-2');
     } else {
-      wrapper.classList.remove('relative', 'left-1.5');
+      wrapper.classList.remove('relative', 'left-2');
     }
   }
 
