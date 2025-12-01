@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-// SubAccordion receives isTouch prop, but can override it with its own local interaction
+// SubAccordion receives parentIsTouch prop, but can override it with its own local interaction
 const SubAccordion = ({ title, description, content, parentIsTouch }) => {
   const [isOpen, setIsOpen] = useState(false);
   // Initialize local state with parent's state as a reasonable default
@@ -17,6 +18,12 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
     setIsTouch(isTouchInput);
     setIsOpen(!isOpen);
   };
+
+  // Animation Settings
+  const heightDuration = isTouch ? 0.5 : 0.4;
+  const heightEase = isTouch ? "easeInOut" : "easeOut";
+  const opacityDurationOpen = isTouch ? 0.5 : 0;
+  const opacityDurationClose = isTouch ? 0.5 : 0.3;
 
   return (
     <li className="py-2 not-last:border-b">
@@ -45,13 +52,22 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, height: 'auto' },
-              collapsed: { opacity: 0, height: 0 },
-            }}
-            // Use local interaction detection
-            transition={{ 
-              duration: isTouch ? 0.5 : 0.4, 
-              ease: isTouch ? "easeInOut" : "easeOut" 
+              open: {
+                opacity: 1,
+                height: 'auto',
+                transition: {
+                  height: { duration: heightDuration, ease: heightEase },
+                  opacity: { duration: opacityDurationOpen }
+                }
+              },
+              collapsed: {
+                opacity: 0,
+                height: 0,
+                transition: {
+                  height: { duration: heightDuration, ease: heightEase },
+                  opacity: { duration: opacityDurationClose }
+                }
+              }
             }}
             className="overflow-hidden"
           >
@@ -70,7 +86,6 @@ export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
-  // Detect interaction type for the Main Accordion toggle
   const toggleOpen = (e) => {
     const isTouchInput = e.nativeEvent?.pointerType === 'touch';
     setIsTouch(isTouchInput);
@@ -90,6 +105,12 @@ export function NestedProjectAccordion({ project }) {
     const content = lines.slice(1).map(line => line.trim()).join('\n');
     return { title, description, content };
   });
+
+  // For main accordion: always 0.5s height duration due to large content
+  const mainHeightDuration = 0.5;
+  const mainHeightEase = isTouch ? "easeInOut" : "easeOut";
+  const mainOpacityDurationOpen = isTouch ? 0.5 : 0;
+  const mainOpacityDurationClose = isTouch ? 0.5 : 0.3;
 
   return (
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
@@ -132,13 +153,22 @@ export function NestedProjectAccordion({ project }) {
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, height: 'auto' },
-              collapsed: { opacity: 0, height: 0 },
-            }}
-            // Main Accordion (Intro to C) kept at 0.5s constant due to size
-            transition={{ 
-              duration: 0.5, 
-              ease: isTouch ? "easeInOut" : "easeOut" 
+              open: {
+                opacity: 1,
+                height: 'auto',
+                transition: {
+                  height: { duration: mainHeightDuration, ease: mainHeightEase },
+                  opacity: { duration: mainOpacityDurationOpen }
+                }
+              },
+              collapsed: {
+                opacity: 0,
+                height: 0,
+                transition: {
+                  height: { duration: mainHeightDuration, ease: mainHeightEase },
+                  opacity: { duration: mainOpacityDurationClose }
+                }
+              }
             }}
             className="overflow-hidden"
           >
@@ -151,7 +181,7 @@ export function NestedProjectAccordion({ project }) {
                   title={sub.title} 
                   description={sub.description} 
                   content={sub.content}
-                  parentIsTouch={isTouch} // Pass down as default
+                  parentIsTouch={isTouch} 
                 />
               ))}
             </ul>

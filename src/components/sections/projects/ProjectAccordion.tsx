@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 
+// This is a helper component to render the markdown content
 const MarkdownContent = ({ htmlContent }) => {
   return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
 };
@@ -18,6 +20,19 @@ export function ProjectAccordion({ project, renderedContent }) {
     setIsTouch(isTouchInput);
     setIsOpen(!isOpen);
   };
+
+  // Animation Settings
+  const heightDuration = isTouch ? 0.5 : 0.4;
+  const heightEase = isTouch ? "easeInOut" : "easeOut";
+  
+  // Opacity Settings
+  // Mouse: Instant appear (0s) on open.
+  // Touch: Smooth fade (0.5s) on open.
+  const opacityDurationOpen = isTouch ? 0.5 : 0;
+  
+  // Mouse: Fast fade out (0.3s) on close.
+  // Touch: Smooth fade out (0.5s) on close.
+  const opacityDurationClose = isTouch ? 0.5 : 0.3;
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -43,6 +58,7 @@ export function ProjectAccordion({ project, renderedContent }) {
           </div>
         </div>
 
+        {/* Technologies are now always visible */}
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -60,15 +76,22 @@ export function ProjectAccordion({ project, renderedContent }) {
             animate="open"
             exit="collapsed"
             variants={{
-              open: { opacity: 1, height: 'auto' },
-              collapsed: { opacity: 0, height: 0 },
-            }}
-            // Purely event-driven logic:
-            // Mouse/Trackpad = 0.4s easeOut (Fast)
-            // Finger Tap = 0.5s easeInOut (Smooth)
-            transition={{ 
-              duration: isTouch ? 0.5 : 0.4, 
-              ease: isTouch ? "easeInOut" : "easeOut" 
+              open: {
+                opacity: 1,
+                height: 'auto',
+                transition: {
+                  height: { duration: heightDuration, ease: heightEase },
+                  opacity: { duration: opacityDurationOpen } // Conditional duration
+                }
+              },
+              collapsed: {
+                opacity: 0,
+                height: 0,
+                transition: {
+                  height: { duration: heightDuration, ease: heightEase },
+                  opacity: { duration: opacityDurationClose }
+                }
+              }
             }}
             className="overflow-hidden"
           >
