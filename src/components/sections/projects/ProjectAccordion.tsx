@@ -1,36 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 
-// This is a helper component to render the markdown content
 const MarkdownContent = ({ htmlContent }) => {
   return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
 };
 
 export function ProjectAccordion({ project, renderedContent }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
-  useEffect(() => {
-    // matchMedia is more efficient than checking innerWidth on resize
-    // This matches the standard Tailwind 'md' breakpoint (768px)
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    
-    // Set initial value
-    setIsMobile(mediaQuery.matches);
-
-    // Update value if the screen size changes (or if user toggles "Request Desktop Site")
-    const handler = (e) => setIsMobile(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+  // Unified handler: Detects input type directly from the event
+  const toggleOpen = (e) => {
+    // Check native event for pointerType ('mouse', 'touch', or 'pen')
+    // Default to 'mouse' (false) if undefined (e.g., keyboard nav)
+    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
+    setIsTouch(isTouchInput);
+    setIsOpen(!isOpen);
+  };
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
       <motion.header
         initial={false}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
@@ -50,7 +43,6 @@ export function ProjectAccordion({ project, renderedContent }) {
           </div>
         </div>
 
-        {/* Technologies are now always visible */}
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -71,12 +63,12 @@ export function ProjectAccordion({ project, renderedContent }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Conditional Animation Logic:
-            // Desktop: 0.4s + easeOut (Snappy)
-            // Mobile: 0.5s + easeInOut (Smoother)
+            // Purely event-driven logic:
+            // Mouse/Trackpad = 0.4s easeOut (Fast)
+            // Finger Tap = 0.5s easeInOut (Smooth)
             transition={{ 
-              duration: isMobile ? 0.5 : 0.4, 
-              ease: isMobile ? "easeInOut" : "easeOut" 
+              duration: isTouch ? 0.5 : 0.4, 
+              ease: isTouch ? "easeInOut" : "easeOut" 
             }}
             className="overflow-hidden"
           >

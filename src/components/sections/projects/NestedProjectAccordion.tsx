@@ -1,18 +1,28 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-const SubAccordion = ({ title, description, content, isMobile }) => {
+// SubAccordion receives isTouch prop, but can override it with its own local interaction
+const SubAccordion = ({ title, description, content, parentIsTouch }) => {
   const [isOpen, setIsOpen] = useState(false);
+  // Initialize local state with parent's state as a reasonable default
+  const [isTouch, setIsTouch] = useState(parentIsTouch); 
+  
   const htmlContent = new Marked().parse(content);
+
+  const toggleOpen = (e) => {
+    // Detect specific interaction type for THIS click
+    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
+    setIsTouch(isTouchInput);
+    setIsOpen(!isOpen);
+  };
 
   return (
     <li className="py-2 not-last:border-b">
       <motion.header
         initial={false}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="flex cursor-pointer items-center justify-between"
       >
         <div className="prose">
@@ -38,10 +48,10 @@ const SubAccordion = ({ title, description, content, isMobile }) => {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Keep sub-accordions responsive (0.4s desktop / 0.5s mobile)
+            // Use local interaction detection
             transition={{ 
-              duration: isMobile ? 0.5 : 0.4, 
-              ease: isMobile ? "easeInOut" : "easeOut" 
+              duration: isTouch ? 0.5 : 0.4, 
+              ease: isTouch ? "easeInOut" : "easeOut" 
             }}
             className="overflow-hidden"
           >
@@ -58,16 +68,14 @@ const SubAccordion = ({ title, description, content, isMobile }) => {
 
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isTouch, setIsTouch] = useState(false);
 
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    setIsMobile(mediaQuery.matches);
-
-    const handler = (e) => setIsMobile(e.matches);
-    mediaQuery.addEventListener('change', handler);
-    return () => mediaQuery.removeEventListener('change', handler);
-  }, []);
+  // Detect interaction type for the Main Accordion toggle
+  const toggleOpen = (e) => {
+    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
+    setIsTouch(isTouchInput);
+    setIsOpen(!isOpen);
+  };
 
   const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
   const intro = parts[0] ? new Marked().parse(parts[0]) : '';
@@ -87,7 +95,7 @@ export function NestedProjectAccordion({ project }) {
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
        <motion.header
         initial={false}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggleOpen}
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
@@ -127,25 +135,23 @@ export function NestedProjectAccordion({ project }) {
               open: { opacity: 1, height: 'auto' },
               collapsed: { opacity: 0, height: 0 },
             }}
-            // Fixed duration to 0.5s for BOTH mobile and desktop as requested.
-            // Kept the responsive easing (snappy start on desktop, smooth on mobile).
+            // Main Accordion (Intro to C) kept at 0.5s constant due to size
             transition={{ 
               duration: 0.5, 
-              ease: isMobile ? "easeInOut" : "easeOut" 
+              ease: isTouch ? "easeInOut" : "easeOut" 
             }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
 
-            {/* Removed 'prose' and 'pt-2' from this <ul> */}
             <ul className="prose min-w-full list-disc pl-5">
               {subProjects.map(sub => (
                 <SubAccordion 
                   key={sub.title} 
                   title={sub.title} 
                   description={sub.description} 
-                  content={sub.content} 
-                  isMobile={isMobile} // Pass prop down
+                  content={sub.content}
+                  parentIsTouch={isTouch} // Pass down as default
                 />
               ))}
             </ul>
