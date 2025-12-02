@@ -15,24 +15,25 @@ export function ProjectAccordion({ project, renderedContent }) {
   // Unified handler: Detects input type directly from the event
   const toggleOpen = (e) => {
     // Check native event for pointerType ('mouse', 'touch', or 'pen')
-    // Default to 'mouse' (false) if undefined (e.g., keyboard nav)
     const isTouchInput = e.nativeEvent?.pointerType === 'touch';
     setIsTouch(isTouchInput);
     setIsOpen(!isOpen);
   };
 
-  // Animation Settings
-  const heightDuration = isTouch ? 0.5 : 0.4;
-  const heightEase = isTouch ? "easeInOut" : "easeOut";
+  // CONSTANT VELOCITY CALCULATION (Calibrated to Advanced C Kernel)
+  // Reference: ~1200 chars = 0.3s. Ratio = 0.00025s per char.
+  const contentLength = renderedContent ? renderedContent.length : 0;
   
-  // Opacity Settings
-  // Mouse: Instant appear (0s) on open.
-  // Touch: Smooth fade (0.5s) on open.
-  const opacityDurationOpen = isTouch ? 0.5 : 0;
-  
-  // Mouse: Fast fade out (0.3s) on close.
-  // Touch: Smooth fade out (0.5s) on close.
-  const opacityDurationClose = isTouch ? 0.5 : 0.3;
+  // Formula: CharCount * 0.00025
+  // Clamped: Min 0.25s (to prevent instant vanish), Max 0.8s (to prevent drag)
+  const calculatedDuration = Math.min(Math.max(contentLength * 0.00025, 0.25), 0.8);
+
+  const activeDuration = isTouch ? 0.5 : calculatedDuration;
+  const activeEase = isTouch ? "easeInOut" : "easeOut";
+
+  // Opacity: Instant (0s) on open for Mouse, 0.5s for Touch
+  const opacityOpen = isTouch ? 0.5 : 0;
+  const opacityClose = isTouch ? 0.5 : 0.3;
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -80,16 +81,16 @@ export function ProjectAccordion({ project, renderedContent }) {
                 opacity: 1,
                 height: 'auto',
                 transition: {
-                  height: { duration: heightDuration, ease: heightEase },
-                  opacity: { duration: opacityDurationOpen } // Conditional duration
+                  height: { duration: activeDuration, ease: activeEase },
+                  opacity: { duration: opacityOpen }
                 }
               },
               collapsed: {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: heightDuration, ease: heightEase },
-                  opacity: { duration: opacityDurationClose }
+                  height: { duration: activeDuration, ease: activeEase },
+                  opacity: { duration: opacityClose }
                 }
               }
             }}

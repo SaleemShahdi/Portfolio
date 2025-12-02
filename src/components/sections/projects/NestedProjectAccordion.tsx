@@ -4,26 +4,31 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-// SubAccordion receives parentIsTouch prop, but can override it with its own local interaction
+// SubAccordion receives parentIsTouch prop
 const SubAccordion = ({ title, description, content, parentIsTouch }) => {
   const [isOpen, setIsOpen] = useState(false);
-  // Initialize local state with parent's state as a reasonable default
-  const [isTouch, setIsTouch] = useState(parentIsTouch); 
+  const [isTouch, setIsTouch] = useState(parentIsTouch);
   
   const htmlContent = new Marked().parse(content);
 
   const toggleOpen = (e) => {
-    // Detect specific interaction type for THIS click
     const isTouchInput = e.nativeEvent?.pointerType === 'touch';
     setIsTouch(isTouchInput);
     setIsOpen(!isOpen);
   };
 
-  // Animation Settings
-  const heightDuration = isTouch ? 0.5 : 0.4;
-  const heightEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityDurationOpen = isTouch ? 0.5 : 0;
-  const opacityDurationClose = isTouch ? 0.5 : 0.3;
+  // Sub-Accordion Logic
+  const contentLength = content ? content.length : 0;
+  // Calculate Open Duration (Constant Velocity)
+  const calculatedDuration = Math.min(Math.max(0.25 + (contentLength * 0.00025), 0.25), 0.8);
+  
+  // Set Durations: Open is calculated, Close is 60% faster
+  const openDuration = isTouch ? 0.5 : calculatedDuration;
+  const closeDuration = isTouch ? 0.5 : (calculatedDuration * 0.6); 
+
+  const activeEase = isTouch ? "easeInOut" : "easeOut";
+  const opacityOpen = isTouch ? 0.5 : 0;
+  const opacityClose = isTouch ? 0.5 : 0.3;
 
   return (
     <li className="py-2 not-last:border-b">
@@ -56,16 +61,16 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 opacity: 1,
                 height: 'auto',
                 transition: {
-                  height: { duration: heightDuration, ease: heightEase },
-                  opacity: { duration: opacityDurationOpen }
+                  height: { duration: openDuration, ease: activeEase },
+                  opacity: { duration: opacityOpen }
                 }
               },
               collapsed: {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: heightDuration, ease: heightEase },
-                  opacity: { duration: opacityDurationClose }
+                  height: { duration: closeDuration, ease: activeEase }, // Using faster closeDuration
+                  opacity: { duration: opacityClose }
                 }
               }
             }}
@@ -106,11 +111,23 @@ export function NestedProjectAccordion({ project }) {
     return { title, description, content };
   });
 
-  // For main accordion: always 0.5s height duration due to large content
-  const mainHeightDuration = 0.5;
-  const mainHeightEase = isTouch ? "easeInOut" : "easeOut";
-  const mainOpacityDurationOpen = isTouch ? 0.5 : 0;
-  const mainOpacityDurationClose = isTouch ? 0.5 : 0.3;
+  // SMART CALCULATION for Main Accordion (Introduction to C)
+  // 1. Calculate weighted content length (ignoring hidden nested text)
+  const introLen = parts[0] ? parts[0].length : 0;
+  const outroLen = (parts.length > 1 && !parts[parts.length-1].startsWith('- **')) ? parts[parts.length-1].length : 0;
+  const headersLen = subProjects.length * 150; 
+  const effectiveLength = introLen + outroLen + headersLen;
+
+  // 2. Calculate Open Duration based on that length
+  const calculatedDuration = Math.min(Math.max(0.25 + (effectiveLength * 0.00025), 0.25), 0.8);
+
+  // 3. Set Durations: Open is calculated, Close is 60% faster
+  const openDuration = isTouch ? 0.5 : calculatedDuration;
+  const closeDuration = isTouch ? 0.5 : (calculatedDuration * 0.6);
+
+  const activeEase = isTouch ? "easeInOut" : "easeOut";
+  const opacityOpen = isTouch ? 0.5 : 0;
+  const opacityClose = isTouch ? 0.5 : 0.3;
 
   return (
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
@@ -157,16 +174,16 @@ export function NestedProjectAccordion({ project }) {
                 opacity: 1,
                 height: 'auto',
                 transition: {
-                  height: { duration: mainHeightDuration, ease: mainHeightEase },
-                  opacity: { duration: mainOpacityDurationOpen }
+                  height: { duration: openDuration, ease: activeEase },
+                  opacity: { duration: opacityOpen }
                 }
               },
               collapsed: {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: mainHeightDuration, ease: mainHeightEase },
-                  opacity: { duration: mainOpacityDurationClose }
+                  height: { duration: closeDuration, ease: activeEase }, // Using faster closeDuration
+                  opacity: { duration: opacityClose }
                 }
               }
             }}
@@ -180,7 +197,7 @@ export function NestedProjectAccordion({ project }) {
                   key={sub.title} 
                   title={sub.title} 
                   description={sub.description} 
-                  content={sub.content}
+                  content={sub.content} 
                   parentIsTouch={isTouch} 
                 />
               ))}
