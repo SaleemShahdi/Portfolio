@@ -20,20 +20,26 @@ export function ProjectAccordion({ project, renderedContent }) {
     setIsOpen(!isOpen);
   };
 
-  // CONSTANT VELOCITY CALCULATION (Calibrated to Advanced C Kernel)
-  // Reference: ~1200 chars = 0.3s. Ratio = 0.00025s per char.
+  // CONSTANT VELOCITY CALCULATION
   const contentLength = renderedContent ? renderedContent.length : 0;
   
-  // Formula: CharCount * 0.00025
-  // Clamped: Min 0.25s (to prevent instant vanish), Max 0.8s (to prevent drag)
-  const calculatedDuration = Math.min(Math.max(contentLength * 0.00025, 0.25), 0.8);
+  // Pure character-based duration
+  const rawDuration = contentLength * 0.00025;
+  // Clamped: Min 0.25s, Max 0.8s
+  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
 
+  // Active Duration (Open)
   const activeDuration = isTouch ? 0.5 : calculatedDuration;
+  
+  // Close Duration: Now SAME as Open Duration
+  const closeDuration = activeDuration;
+  
   const activeEase = isTouch ? "easeInOut" : "easeOut";
 
-  // Opacity: Instant (0s) on open for Mouse, 0.5s for Touch
-  const opacityOpen = isTouch ? 0.5 : 0;
-  const opacityClose = isTouch ? 0.5 : 0.3;
+  // Opacity Settings
+  // Mouse: 0.4s for both Open and Close
+  const opacityOpen = isTouch ? 0.5 : 0.4;
+  const opacityClose = isTouch ? 0.5 : 0.4;
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -89,11 +95,13 @@ export function ProjectAccordion({ project, renderedContent }) {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: activeDuration, ease: activeEase },
+                  height: { duration: closeDuration, ease: activeEase },
                   opacity: { duration: opacityClose }
                 }
               }
             }}
+            // PERFORMANCE FIX: Forces GPU Acceleration
+            style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >
             <div className="prose prose-li:leading-8 prose-ul:mt-0 min-w-full">

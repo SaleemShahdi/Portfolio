@@ -19,16 +19,19 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
 
   // Sub-Accordion Logic
   const contentLength = content ? content.length : 0;
-  // Calculate Open Duration (Constant Velocity)
-  const calculatedDuration = Math.min(Math.max(0.25 + (contentLength * 0.00025), 0.25), 0.8);
   
-  // Set Durations: Open is calculated, Close is 60% faster
+  const rawDuration = contentLength * 0.00025;
+  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
+  
   const openDuration = isTouch ? 0.5 : calculatedDuration;
-  const closeDuration = isTouch ? 0.5 : (calculatedDuration * 0.6); 
+  // Close Duration same as Open
+  const closeDuration = openDuration;
 
   const activeEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityOpen = isTouch ? 0.5 : 0;
-  const opacityClose = isTouch ? 0.5 : 0.3;
+  
+  // Mouse Open/Close: 0.4s
+  const opacityOpen = isTouch ? 0.5 : 0.4;
+  const opacityClose = isTouch ? 0.5 : 0.4;
 
   return (
     <li className="py-2 not-last:border-b">
@@ -69,11 +72,13 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: closeDuration, ease: activeEase }, // Using faster closeDuration
+                  height: { duration: closeDuration, ease: activeEase },
                   opacity: { duration: opacityClose }
                 }
               }
             }}
+            // PERFORMANCE FIX
+            style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >
             <div
@@ -111,23 +116,25 @@ export function NestedProjectAccordion({ project }) {
     return { title, description, content };
   });
 
-  // SMART CALCULATION for Main Accordion (Introduction to C)
-  // 1. Calculate weighted content length (ignoring hidden nested text)
+  // SMART CALCULATION for Main Accordion (Intro to C)
   const introLen = parts[0] ? parts[0].length : 0;
   const outroLen = (parts.length > 1 && !parts[parts.length-1].startsWith('- **')) ? parts[parts.length-1].length : 0;
   const headersLen = subProjects.length * 150; 
   const effectiveLength = introLen + outroLen + headersLen;
 
-  // 2. Calculate Open Duration based on that length
-  const calculatedDuration = Math.min(Math.max(0.25 + (effectiveLength * 0.00025), 0.25), 0.8);
+  // 1. Calculate Open Duration (Pure calc, no base adder)
+  const calculatedDuration = Math.min(Math.max(effectiveLength * 0.00025, 0.25), 0.8);
 
-  // 3. Set Durations: Open is calculated, Close is 60% faster
+  // 2. Set Durations
   const openDuration = isTouch ? 0.5 : calculatedDuration;
-  const closeDuration = isTouch ? 0.5 : (calculatedDuration * 0.6);
+  // Close Duration same as Open
+  const closeDuration = openDuration;
 
   const activeEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityOpen = isTouch ? 0.5 : 0;
-  const opacityClose = isTouch ? 0.5 : 0.3;
+  
+  // Mouse Open/Close: 0.4s
+  const opacityOpen = isTouch ? 0.5 : 0.4;
+  const opacityClose = isTouch ? 0.5 : 0.4;
 
   return (
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
@@ -182,11 +189,13 @@ export function NestedProjectAccordion({ project }) {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: closeDuration, ease: activeEase }, // Using faster closeDuration
+                  height: { duration: closeDuration, ease: activeEase },
                   opacity: { duration: opacityClose }
                 }
               }
             }}
+            // PERFORMANCE FIX
+            style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >
             <div className="prose min-w-full pt-4 pb-1" dangerouslySetInnerHTML={{ __html: intro }} />
