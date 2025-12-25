@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-// SubAccordion receives parentIsTouch prop
 const SubAccordion = ({ title, description, content, parentIsTouch }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(parentIsTouch);
@@ -17,21 +15,14 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
     setIsOpen(!isOpen);
   };
 
-  // Sub-Accordion Logic
   const contentLength = content ? content.length : 0;
-  
   const rawDuration = contentLength * 0.00025;
   const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
   
   const openDuration = isTouch ? 0.5 : calculatedDuration;
-  // Close Duration same as Open
   const closeDuration = openDuration;
-
   const activeEase = isTouch ? "easeInOut" : "easeOut";
-  
-  // Mouse Open/Close: 0.4s
-  const opacityOpen = isTouch ? 0.5 : 0.4;
-  const opacityClose = isTouch ? 0.5 : 0.4;
+  const opacityDuration = isTouch ? 0.5 : 0.4;
 
   return (
     <li className="py-2 not-last:border-b">
@@ -44,7 +35,7 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
           </p>
-          </div>
+        </div>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.5 }}
@@ -65,7 +56,7 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 height: 'auto',
                 transition: {
                   height: { duration: openDuration, ease: activeEase },
-                  opacity: { duration: opacityOpen }
+                  opacity: { duration: opacityDuration }
                 }
               },
               collapsed: {
@@ -73,11 +64,10 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 height: 0,
                 transition: {
                   height: { duration: closeDuration, ease: activeEase },
-                  opacity: { duration: opacityClose }
+                  opacity: { duration: opacityDuration }
                 }
               }
             }}
-            // PERFORMANCE FIX
             style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >
@@ -116,25 +106,18 @@ export function NestedProjectAccordion({ project }) {
     return { title, description, content };
   });
 
-  // SMART CALCULATION for Main Accordion (Intro to C)
   const introLen = parts[0] ? parts[0].length : 0;
   const outroLen = (parts.length > 1 && !parts[parts.length-1].startsWith('- **')) ? parts[parts.length-1].length : 0;
   const headersLen = subProjects.length * 150; 
   const effectiveLength = introLen + outroLen + headersLen;
 
-  // 1. Calculate Open Duration (Pure calc, no base adder)
-  const calculatedDuration = Math.min(Math.max(effectiveLength * 0.00025, 0.25), 0.8);
+  const rawDuration = effectiveLength * 0.00025;
+  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
 
-  // 2. Set Durations
-  const openDuration = isTouch ? 0.5 : calculatedDuration;
-  // Close Duration same as Open
-  const closeDuration = openDuration;
-
+  const activeDuration = isTouch ? 0.5 : calculatedDuration;
+  const closeDuration = activeDuration;
   const activeEase = isTouch ? "easeInOut" : "easeOut";
-  
-  // Mouse Open/Close: 0.4s
-  const opacityOpen = isTouch ? 0.5 : 0.4;
-  const opacityClose = isTouch ? 0.5 : 0.4;
+  const opacityDuration = isTouch ? 0.5 : 0.4;
 
   return (
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
@@ -144,11 +127,14 @@ export function NestedProjectAccordion({ project }) {
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold underline-offset-6 group-hover:underline">
+          {/* UNDERLINE REMOVED HERE */}
+          <h3 className="text-lg font-semibold">
             {project.data.name}
           </h3>
+          
           <div className="flex items-center">
-            <span className="mr-2 text-xs font-medium text-primary">
+            {/* UNDERLINE ADDED HERE */}
+            <span className="mr-2 text-xs font-medium text-primary underline-offset-4 group-hover:underline">
               {isOpen ? "Show less" : "Show more"}
             </span>
             <motion.div
@@ -181,8 +167,8 @@ export function NestedProjectAccordion({ project }) {
                 opacity: 1,
                 height: 'auto',
                 transition: {
-                  height: { duration: openDuration, ease: activeEase },
-                  opacity: { duration: opacityOpen }
+                  height: { duration: activeDuration, ease: activeEase },
+                  opacity: { duration: opacityDuration }
                 }
               },
               collapsed: {
@@ -190,11 +176,10 @@ export function NestedProjectAccordion({ project }) {
                 height: 0,
                 transition: {
                   height: { duration: closeDuration, ease: activeEase },
-                  opacity: { duration: opacityClose }
+                  opacity: { duration: opacityDuration }
                 }
               }
             }}
-            // PERFORMANCE FIX
             style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >

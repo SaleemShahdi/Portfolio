@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-// Added ExternalLink to the import
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 
-// This is a helper component to render the markdown content
 const MarkdownContent = ({ htmlContent }) => {
   return <div dangerouslySetInnerHTML={{ __html: htmlContent }} />;
 };
@@ -12,34 +10,26 @@ export function ProjectAccordion({ project, renderedContent }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
 
-  // Unified handler: Detects input type directly from the event
   const toggleOpen = (e) => {
-    // Check native event for pointerType ('mouse', 'touch', or 'pen')
+    // Simple, native check for touch devices (Phones/Tablets)
     const isTouchInput = e.nativeEvent?.pointerType === 'touch';
     setIsTouch(isTouchInput);
     setIsOpen(!isOpen);
   };
 
-  // CONSTANT VELOCITY CALCULATION
+  // --- ANIMATION LOGIC ---
   const contentLength = renderedContent ? renderedContent.length : 0;
   
-  // Pure character-based duration
+  // Calculated "Snappy" Duration
   const rawDuration = contentLength * 0.00025;
-  // Clamped: Min 0.25s, Max 0.8s
   const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
 
-  // Active Duration (Open)
+  // If it's a touch device, use fixed 0.5s. Otherwise use calculated snappy speed.
   const activeDuration = isTouch ? 0.5 : calculatedDuration;
-  
-  // Close Duration: Now SAME as Open Duration
   const closeDuration = activeDuration;
   
   const activeEase = isTouch ? "easeInOut" : "easeOut";
-
-  // Opacity Settings
-  // Mouse: 0.4s for both Open and Close
-  const opacityOpen = isTouch ? 0.5 : 0.4;
-  const opacityClose = isTouch ? 0.5 : 0.4;
+  const opacityDuration = isTouch ? 0.5 : 0.4;
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -49,11 +39,14 @@ export function ProjectAccordion({ project, renderedContent }) {
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold underline-offset-6 group-hover:underline">
+          {/* UNDERLINE REMOVED HERE */}
+          <h3 className="text-lg font-semibold">
             {project.data.name}
           </h3>
+          
           <div className="flex items-center">
-            <span className="text-xs font-medium text-primary mr-2">
+            {/* UNDERLINE ADDED HERE */}
+            <span className="text-xs font-medium text-primary mr-2 underline-offset-4 group-hover:underline">
               {isOpen ? "Show less" : "Show more"}
             </span>
             <motion.div
@@ -65,7 +58,6 @@ export function ProjectAccordion({ project, renderedContent }) {
           </div>
         </div>
 
-        {/* Technologies are now always visible */}
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
             <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
@@ -88,7 +80,7 @@ export function ProjectAccordion({ project, renderedContent }) {
                 height: 'auto',
                 transition: {
                   height: { duration: activeDuration, ease: activeEase },
-                  opacity: { duration: opacityOpen }
+                  opacity: { duration: opacityDuration }
                 }
               },
               collapsed: {
@@ -96,11 +88,10 @@ export function ProjectAccordion({ project, renderedContent }) {
                 height: 0,
                 transition: {
                   height: { duration: closeDuration, ease: activeEase },
-                  opacity: { duration: opacityClose }
+                  opacity: { duration: opacityDuration }
                 }
               }
             }}
-            // PERFORMANCE FIX: Forces GPU Acceleration
             style={{ transform: "translateZ(0)" }}
             className="overflow-hidden"
           >
