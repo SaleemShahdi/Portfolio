@@ -3,26 +3,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Github, ExternalLink } from 'lucide-react';
 import { Marked } from 'marked';
 
-const SubAccordion = ({ title, description, content, parentIsTouch }) => {
+const SubAccordion = ({ title, description, content }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isTouch, setIsTouch] = useState(parentIsTouch);
-  
   const htmlContent = new Marked().parse(content);
+  const toggleOpen = () => setIsOpen(!isOpen);
 
-  const toggleOpen = (e) => {
-    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
-    setIsTouch(isTouchInput);
-    setIsOpen(!isOpen);
-  };
-
-  const contentLength = content ? content.length : 0;
-  const rawDuration = contentLength * 0.00025;
-  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
-  
-  const openDuration = isTouch ? 0.5 : calculatedDuration;
-  const closeDuration = openDuration;
-  const activeEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityDuration = isTouch ? 0.5 : 0.4;
+  // Uniform smooth animation
+  const activeDuration = 0.5;
+  const activeEase = "easeInOut";
+  const opacityDuration = 0.5;
 
   return (
     <li className="py-2 not-last:border-b">
@@ -55,7 +44,7 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 opacity: 1,
                 height: 'auto',
                 transition: {
-                  height: { duration: openDuration, ease: activeEase },
+                  height: { duration: activeDuration, ease: activeEase },
                   opacity: { duration: opacityDuration }
                 }
               },
@@ -63,7 +52,7 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: closeDuration, ease: activeEase },
+                  height: { duration: activeDuration, ease: activeEase },
                   opacity: { duration: opacityDuration }
                 }
               }
@@ -84,13 +73,7 @@ const SubAccordion = ({ title, description, content, parentIsTouch }) => {
 
 export function NestedProjectAccordion({ project }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isTouch, setIsTouch] = useState(false);
-
-  const toggleOpen = (e) => {
-    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
-    setIsTouch(isTouchInput);
-    setIsOpen(!isOpen);
-  };
+  const toggleOpen = () => setIsOpen(!isOpen);
 
   const parts = project.body.split('---').map(part => part.trim()).filter(Boolean);
   const intro = parts[0] ? new Marked().parse(parts[0]) : '';
@@ -106,18 +89,10 @@ export function NestedProjectAccordion({ project }) {
     return { title, description, content };
   });
 
-  const introLen = parts[0] ? parts[0].length : 0;
-  const outroLen = (parts.length > 1 && !parts[parts.length-1].startsWith('- **')) ? parts[parts.length-1].length : 0;
-  const headersLen = subProjects.length * 150; 
-  const effectiveLength = introLen + outroLen + headersLen;
-
-  const rawDuration = effectiveLength * 0.00025;
-  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
-
-  const activeDuration = isTouch ? 0.5 : calculatedDuration;
-  const closeDuration = activeDuration;
-  const activeEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityDuration = isTouch ? 0.5 : 0.4;
+  // Uniform smooth animation
+  const activeDuration = 0.5;
+  const activeEase = "easeInOut";
+  const opacityDuration = 0.5;
 
   return (
     <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
@@ -127,13 +102,11 @@ export function NestedProjectAccordion({ project }) {
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
-          {/* UNDERLINE REMOVED HERE */}
           <h3 className="text-lg font-semibold">
             {project.data.name}
           </h3>
           
           <div className="flex items-center">
-            {/* UNDERLINE ADDED HERE */}
             <span className="mr-2 text-xs font-medium text-primary underline-offset-4 group-hover:underline">
               {isOpen ? "Show less" : "Show more"}
             </span>
@@ -175,7 +148,7 @@ export function NestedProjectAccordion({ project }) {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: closeDuration, ease: activeEase },
+                  height: { duration: activeDuration, ease: activeEase },
                   opacity: { duration: opacityDuration }
                 }
               }
@@ -192,7 +165,6 @@ export function NestedProjectAccordion({ project }) {
                   title={sub.title} 
                   description={sub.description} 
                   content={sub.content} 
-                  parentIsTouch={isTouch} 
                 />
               ))}
             </ul>

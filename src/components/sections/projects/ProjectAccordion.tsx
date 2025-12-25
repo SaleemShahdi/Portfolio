@@ -8,28 +8,14 @@ const MarkdownContent = ({ htmlContent }) => {
 
 export function ProjectAccordion({ project, renderedContent }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isTouch, setIsTouch] = useState(false);
 
-  const toggleOpen = (e) => {
-    // Simple, native check for touch devices (Phones/Tablets)
-    const isTouchInput = e.nativeEvent?.pointerType === 'touch';
-    setIsTouch(isTouchInput);
-    setIsOpen(!isOpen);
-  };
+  // Simple toggle - no event analysis needed
+  const toggleOpen = () => setIsOpen(!isOpen);
 
-  // --- ANIMATION LOGIC ---
-  const contentLength = renderedContent ? renderedContent.length : 0;
-  
-  // Calculated "Snappy" Duration
-  const rawDuration = contentLength * 0.00025;
-  const calculatedDuration = Math.min(Math.max(rawDuration, 0.25), 0.8);
-
-  // If it's a touch device, use fixed 0.5s. Otherwise use calculated snappy speed.
-  const activeDuration = isTouch ? 0.5 : calculatedDuration;
-  const closeDuration = activeDuration;
-  
-  const activeEase = isTouch ? "easeInOut" : "easeOut";
-  const opacityDuration = isTouch ? 0.5 : 0.4;
+  // CONSTANTS: Uniform smooth animation for everyone
+  const activeDuration = 0.5;
+  const activeEase = "easeInOut";
+  const opacityDuration = 0.5;
 
   return (
     <div className="project-item group w-full flex-col p-4 not-last:border-b">
@@ -39,13 +25,11 @@ export function ProjectAccordion({ project, renderedContent }) {
         className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
       >
         <div className="flex items-center justify-between">
-          {/* UNDERLINE REMOVED HERE */}
           <h3 className="text-lg font-semibold">
             {project.data.name}
           </h3>
           
           <div className="flex items-center">
-            {/* UNDERLINE ADDED HERE */}
             <span className="text-xs font-medium text-primary mr-2 underline-offset-4 group-hover:underline">
               {isOpen ? "Show less" : "Show more"}
             </span>
@@ -87,7 +71,7 @@ export function ProjectAccordion({ project, renderedContent }) {
                 opacity: 0,
                 height: 0,
                 transition: {
-                  height: { duration: closeDuration, ease: activeEase },
+                  height: { duration: activeDuration, ease: activeEase },
                   opacity: { duration: opacityDuration }
                 }
               }
