@@ -18,11 +18,15 @@ export function ProjectAccordion({ project, renderedContent }) {
   const opacityDuration = 0.5;
 
   return (
-    <div className="project-item group w-full flex-col p-4 not-last:border-b">
+    // REMOVED 'group' from this outer div.
+    // Hovering over the expanded content will no longer trigger the header styles.
+    <div className="project-item w-full flex-col p-4 not-last:border-b">
       <motion.header
         initial={false}
         onClick={toggleOpen}
-        className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
+        // ADDED 'group' here.
+        // Now, the "Show more" underline only appears when hovering strictly over the clickable header area.
+        className="flex cursor-pointer list-none flex-col gap-y-3 text-left group"
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
@@ -30,6 +34,7 @@ export function ProjectAccordion({ project, renderedContent }) {
           </h3>
           
           <div className="flex items-center">
+            {/* This underline now responds only to the header hover */}
             <span className="text-xs font-medium text-primary mr-2 underline-offset-4 group-hover:underline">
               {isOpen ? "Show less" : "Show more"}
             </span>

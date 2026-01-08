@@ -41,7 +41,7 @@ projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
       type="text"
       id="project-search-bar"
       placeholder="Search projects by name, technology, etc..."
-      class="w-full max-w-lg rounded-md border border-gray-300 px-4 py-2 text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+      class="w-full max-w-lg rounded-md border border-input bg-secondary px-4 py-2 text-secondary-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary focus:outline-none"
       aria-label="Search projects"
     />
   </div>
@@ -80,8 +80,8 @@ projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
         const itemText = item.textContent?.toLowerCase() || '';
         // More robust check: also check technologies specifically if they are rendered with specific classes/attributes
         const technologies = Array.from(item.querySelectorAll('.flex-wrap > span')) // Adjust selector based on actual rendered HTML for tags
-                                 .map(tag => tag.textContent?.toLowerCase() || '')
-                                 .join(' ');
+                                         .map(tag => tag.textContent?.toLowerCase() || '')
+                                         .join(' ');
 
         const combinedText = itemText + ' ' + technologies;
 
