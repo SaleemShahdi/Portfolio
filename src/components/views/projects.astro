@@ -40,8 +40,9 @@ projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
     <input
       type="text"
       id="project-search-bar"
-      placeholder="Search projects by name, technology, etc..."
-      class="w-full max-w-lg rounded-md border border-input bg-secondary px-4 py-2 text-secondary-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-primary focus:outline-none"
+      {/* UPDATED: Changed placeholder text to mixed case style */}
+      placeholder="Search projects by name, technology, etc... (cASe InSEnsItiVE)"
+      class="w-full max-w-lg rounded-md border border-input px-4 py-2 focus:border-primary focus:ring-primary focus:outline-none bg-secondary text-secondary-foreground placeholder:text-muted-foreground dark:bg-gray-700 dark:text-white dark:border-gray-600"
       aria-label="Search projects"
     />
   </div>
