@@ -9,7 +9,7 @@ const SubAccordion = ({ title, description, content }) => {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   // --- SUB-ACCORDION SETTINGS ---
-  // Speed: 0.3s (Snappy)
+  // Speed: 0.4s (Updated as requested)
   const activeDuration = 0.4;
   const activeEase = "easeInOut";
   const opacityDuration = 0.4;
@@ -38,13 +38,12 @@ const SubAccordion = ({ title, description, content }) => {
           </motion.div>
 
           {/* THE FAKE UNDERLINE
-              1. h-px: Razor thin (1px height).
-              2. w-full: Matches width of the arrow container (16px).
-              3. REMOVED mt-0.5: Sits directly below the icon now.
-              4. bg-primary: Matches theme color.
-              5. opacity-0 -> opacity-100: Fades in on hover.
+              1. h-px: Razor thin.
+              2. w-full: Matches arrow width.
+              3. bg-foreground: Uses default ink color.
+              4. opacity-0 -> 100: Fades in on hover.
           */}
-          <div className="h-px w-full bg-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+          <div className="h-px w-full bg-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
         </div>
       </motion.header>
 
