@@ -8,30 +8,46 @@ const SubAccordion = ({ title, description, content }) => {
   const htmlContent = new Marked().parse(content);
   const toggleOpen = () => setIsOpen(!isOpen);
 
-  // Uniform smooth animation
-  const activeDuration = 0.5;
+  // --- SUB-ACCORDION SETTINGS ---
+  // Speed: 0.3s (Snappy)
+  const activeDuration = 0.4;
   const activeEase = "easeInOut";
-  const opacityDuration = 0.5;
+  const opacityDuration = 0.4;
 
   return (
     <li className="py-2 not-last:border-b">
       <motion.header
         initial={false}
         onClick={toggleOpen}
-        className="flex cursor-pointer items-center justify-between"
+        // 'group' tracks hover state for this row
+        className="flex cursor-pointer items-center justify-between group"
       >
         <div className="prose">
           <p className="m-0">
             <strong className="font-semibold">{title}:</strong> {description}
           </p>
         </div>
-        <motion.div
-          animate={{ rotate: isOpen ? 180 : 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <ChevronDown className="size-4" />
-        </motion.div>
+        
+        {/* ARROW CONTAINER */}
+        <div className="flex flex-col items-center justify-center">
+          <motion.div
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <ChevronDown className="size-4" />
+          </motion.div>
+
+          {/* THE FAKE UNDERLINE
+              1. h-px: Razor thin (1px height).
+              2. w-full: Matches width of the arrow container (16px).
+              3. REMOVED mt-0.5: Sits directly below the icon now.
+              4. bg-primary: Matches theme color.
+              5. opacity-0 -> opacity-100: Fades in on hover.
+          */}
+          <div className="h-px w-full bg-primary opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+        </div>
       </motion.header>
+
       <AnimatePresence initial={false}>
         {isOpen && (
           <motion.div
@@ -89,17 +105,19 @@ export function NestedProjectAccordion({ project }) {
     return { title, description, content };
   });
 
-  // Uniform smooth animation
+  // --- PARENT ACCORDION SETTINGS ---
+  // Speed: 0.5s (Smooth)
   const activeDuration = 0.5;
   const activeEase = "easeInOut";
   const opacityDuration = 0.5;
 
   return (
-    <div className="project-item group flex w-full flex-col p-4 not-last:border-b">
+    <div className="project-item flex w-full flex-col p-4 not-last:border-b">
        <motion.header
         initial={false}
         onClick={toggleOpen}
-        className="flex cursor-pointer list-none flex-col gap-y-3 text-left"
+        // 'group' tracks hover state for the parent header
+        className="flex cursor-pointer list-none flex-col gap-y-3 text-left group"
       >
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold">
