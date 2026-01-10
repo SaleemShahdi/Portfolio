@@ -9,7 +9,7 @@ const SubAccordion = ({ title, description, content }) => {
   const toggleOpen = () => setIsOpen(!isOpen);
 
   // --- SUB-ACCORDION SETTINGS ---
-  // Speed: 0.4s (Updated as requested)
+  // Speed: 0.4s
   const activeDuration = 0.4;
   const activeEase = "easeInOut";
   const opacityDuration = 0.4;
@@ -37,12 +37,7 @@ const SubAccordion = ({ title, description, content }) => {
             <ChevronDown className="size-4" />
           </motion.div>
 
-          {/* THE FAKE UNDERLINE
-              1. h-px: Razor thin.
-              2. w-full: Matches arrow width.
-              3. bg-foreground: Uses default ink color.
-              4. opacity-0 -> 100: Fades in on hover.
-          */}
+          {/* THE FAKE UNDERLINE */}
           <div className="h-px w-full bg-foreground opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
         </div>
       </motion.header>
@@ -138,7 +133,11 @@ export function NestedProjectAccordion({ project }) {
 
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
-            <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
+            <span 
+              key={tech} 
+              // UPDATED: bg-[#8BECF9], text-[#163E64], ring-[#8BECF9]
+              className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-[#8BECF9] text-[#0000FF] ring-1 ring-inset ring-[#8BECF9] dark:bg-secondary dark:text-secondary-foreground dark:ring-secondary"
+            >
               {tech}
             </span>
           ))}
