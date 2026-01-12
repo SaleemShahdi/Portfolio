@@ -3,12 +3,23 @@ import ModeToggle from "@/components/mode-toggle.astro";
 import NavLinks from "./nav-links.astro";
 
 const pathname = Astro.url.pathname;
-const isExperienceActive = pathname.startsWith('/Portfolio/articles');
+
+// --- CONFIGURATION ---
+// Change this variable to update the light-mode background color everywhere in this file
+const navColor = "#D7EEF9";
 ---
 
 <nav
+  {/* We inject the JS variable into a CSS variable named '--nav-bg' */}
+  style={{ "--nav-bg": navColor }}
   class:list={[
-    "screen-line-after sticky top-0 z-50 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60",
+    "screen-line-after sticky top-0 z-50 w-full backdrop-blur",
+    
+    // 1. LIGHT MODE: Uses the variable we defined above
+    "bg-[var(--nav-bg)]/95 supports-[backdrop-filter]:bg-[var(--nav-bg)]/60",
+    
+    // 2. DARK MODE: Ignores the variable and uses the default dark theme
+    "dark:bg-background/95 dark:supports-[backdrop-filter]:bg-background/60",
   ]}
 >
   <div
@@ -31,7 +42,6 @@ const isExperienceActive = pathname.startsWith('/Portfolio/articles');
     const wrapper = document.getElementById('theme-toggle-nudge-wrapper');
     if (!wrapper) return;
     if (window.location.hash === '#experience') {
-      // Changed to specific arbitrary value left-[0.45rem] (equivalent to "1.8")
       wrapper.classList.add('relative', 'left-[0.45rem]');
     } else {
       wrapper.classList.remove('relative', 'left-[0.45rem]');

@@ -10,7 +10,22 @@ import { cn } from "@/lib/utils";
         href={link.href}
         data-nav-link={link.href}
         class={cn(
-          "nav-link relative flex items-center justify-center px-3 text-xs font-medium text-primary transition-colors duration-150 hover:bg-secondary lg:text-sm"
+          "nav-link relative flex items-center justify-center px-3 text-xs font-medium transition-colors duration-150 lg:text-sm",
+          
+          // 1. DEFAULT TEXT (Base color for both modes)
+          "text-primary",
+
+          // --- LIGHT MODE SETTINGS ---
+          // Hover: Light Blue BG, Black Text
+          "hover:bg-[#C1E5F5] hover:text-black",
+          // Selected: Hijack the 'bg-secondary' class to show Light Blue BG, Black Text
+          "[&.bg-secondary]:!bg-[#C1E5F5] [&.bg-secondary]:!text-black",
+
+          // --- DARK MODE SETTINGS (Restoring Original) ---
+          // Hover: Revert to the original Grey BG and Primary Text
+          "dark:hover:bg-secondary dark:hover:text-primary",
+          // Selected: Force the 'bg-secondary' class to actually behave like 'bg-secondary' again
+          "dark:[&.bg-secondary]:!bg-secondary dark:[&.bg-secondary]:!text-primary"
         )}
       >
         {link.label}
