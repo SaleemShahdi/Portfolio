@@ -136,7 +136,7 @@ export function NestedProjectAccordion({ project }) {
             <span 
               key={tech} 
               // UPDATED: bg-[#8BECF9], text-[#163E64], ring-[#8BECF9]
-              className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-[#C1E5F5] text-[#000000] ring-1 ring-inset ring-[#C1E5F5] dark:bg-secondary dark:text-secondary-foreground dark:ring-secondary"
+              className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-[#E5ECF6] text-[#0F172A] ring-1 ring-inset ring-[#DEE6F2] dark:bg-secondary dark:text-secondary-foreground dark:ring-secondary"
             >
               {tech}
             </span>

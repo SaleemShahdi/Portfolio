@@ -49,7 +49,7 @@ export function ProjectAccordion({ project, renderedContent }) {
 
         <div className="flex flex-wrap gap-1.5">
           {project.data.technologies.map((tech) => (
-            <span key={tech} className="inline-flex items-center rounded-md bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground ring-1 ring-inset ring-secondary">
+            <span key={tech} className="inline-flex items-center rounded-md px-2 py-1 text-xs font-medium bg-[#E5ECF6] text-black dark:bg-secondary dark:text-secondary-foreground">
               {tech}
             </span>
           ))}
