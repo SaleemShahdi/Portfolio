@@ -35,16 +35,31 @@ projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
 
   <Pattern />
 
-  {/* Search Bar */}
+  {/* Search Bar Section */}
   <div class="my-8 flex w-full justify-center px-4 md:border-x">
-    <input
-      type="text"
-      id="project-search-bar"
-      {/* UPDATED: Changed placeholder text to mixed case style */}
-      placeholder="Search projects by name, technology, etc... (cASe InSEnsItiVE)"
-      class="w-full max-w-lg rounded-md border border-input px-4 py-2 focus:border-primary focus:ring-primary focus:outline-none bg-secondary text-secondary-foreground placeholder:text-muted-foreground dark:bg-gray-700 dark:text-white dark:border-gray-600"
-      aria-label="Search projects"
-    />
+    {/* Wrapper acts as the "Search Bar" visually. 
+      - 'focus-within': Lights up the border when you click anywhere inside.
+      - 'flex-col': Stacks the input (top) and the text (bottom).
+    */}
+    <div class="flex w-full max-w-lg flex-col rounded-md border border-input bg-secondary px-4 py-2 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary dark:bg-gray-700 dark:border-gray-600">
+      
+      <input
+        type="text"
+        id="project-search-bar"
+        placeholder="Search projects by name, technology, etc..."
+        class="w-full bg-transparent p-0 text-secondary-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:text-white border-none"
+        aria-label="Search projects"
+      />
+      
+      {/* Helper Text: 
+        - text-xs: Smaller size as requested.
+        - mt-1: Adds a tiny bit of breathing room from the input.
+      */}
+      <span class="mt-1 text-xs text-muted-foreground">
+        (cASe InSEnsItiVE)
+      </span>
+      
+    </div>
   </div>
 
   <Pattern />
@@ -81,8 +96,8 @@ projects.sort((a, b) => a.data.name.localeCompare(b.data.name));
         const itemText = item.textContent?.toLowerCase() || '';
         // More robust check: also check technologies specifically if they are rendered with specific classes/attributes
         const technologies = Array.from(item.querySelectorAll('.flex-wrap > span')) // Adjust selector based on actual rendered HTML for tags
-                                         .map(tag => tag.textContent?.toLowerCase() || '')
-                                         .join(' ');
+                                             .map(tag => tag.textContent?.toLowerCase() || '')
+                                             .join(' ');
 
         const combinedText = itemText + ' ' + technologies;
 
